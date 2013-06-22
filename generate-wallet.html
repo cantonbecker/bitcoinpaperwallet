@@ -3,12 +3,12 @@
 <head>
 	<meta charset="iso-8859-1">
 	<!--
-    
+
     generate-wallet.html (from https://bitcoinpaperwallet.com)
-    
+
     Wallet design and portions of this code are © Copyright 2013 Canton Becker and bitaddress.org
     Other portions of this code are copyrighted by their respective authors - see below.
-    
+
 
     ****************************************************************************************
     ****************************************************************************************
@@ -25,9 +25,9 @@
 
 	Notice of Copyrights and Licenses:
 	***********************************
-	The bitaddress.org project, software and embedded resources are copyright bitaddress.org. 
+	The bitaddress.org project, software and embedded resources are copyright bitaddress.org.
 
-	Portions of the all-in-one HTML document contain JavaScript codes that are the copyrights of others. 
+	Portions of the all-in-one HTML document contain JavaScript codes that are the copyrights of others.
 	The individual copyrights are included throughout the document along with their licenses.
 	Included JavaScript libraries are separated with HTML script tags.
 
@@ -43,22 +43,22 @@
 	window.Bitcoin			MIT License
 	ninja.(*)				MIT License			// lots of code from bitaddress.org
 	parser.setUA			GPLv2 & MIT			// UAParser.js
-    
+
 	This HTML file and the graphics required to make it work are available under The MIT License (MIT)
 
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
-	associated documentation files (the "Software"), to deal in the Software without restriction, including 
-	without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
-	sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject 
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+	associated documentation files (the "Software"), to deal in the Software without restriction, including
+	without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+	sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject
 	to the following conditions:
 
-	The above copyright notice and this permission notice shall be included in all copies or substantial 
+	The above copyright notice and this permission notice shall be included in all copies or substantial
 	portions of the Software.
 
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
-	LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-	WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+	LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+	WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 	GitHub Repository: https://github.com/cantonbecker/bitcoinpaperwallet
@@ -68,64 +68,64 @@
 
 	<script type="text/javascript">
 	// Array.prototype.map function is in the public domain.
-	// Production steps of ECMA-262, Edition 5, 15.4.4.19  
-	// Reference: http://es5.github.com/#x15.4.4.19  
+	// Production steps of ECMA-262, Edition 5, 15.4.4.19
+	// Reference: http://es5.github.com/#x15.4.4.19
 	if (!Array.prototype.map) {
 		Array.prototype.map = function (callback, thisArg) {
 			var T, A, k;
 			if (this == null) {
 				throw new TypeError(" this is null or not defined");
 			}
-			// 1. Let O be the result of calling ToObject passing the |this| value as the argument.  
+			// 1. Let O be the result of calling ToObject passing the |this| value as the argument.
 			var O = Object(this);
-			// 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".  
-			// 3. Let len be ToUint32(lenValue).  
+			// 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+			// 3. Let len be ToUint32(lenValue).
 			var len = O.length >>> 0;
-			// 4. If IsCallable(callback) is false, throw a TypeError exception.  
-			// See: http://es5.github.com/#x9.11  
+			// 4. If IsCallable(callback) is false, throw a TypeError exception.
+			// See: http://es5.github.com/#x9.11
 			if ({}.toString.call(callback) != "[object Function]") {
 				throw new TypeError(callback + " is not a function");
 			}
-			// 5. If thisArg was supplied, let T be thisArg; else let T be undefined.  
+			// 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
 			if (thisArg) {
 				T = thisArg;
 			}
-			// 6. Let A be a new array created as if by the expression new Array(len) where Array is  
-			// the standard built-in constructor with that name and len is the value of len.  
+			// 6. Let A be a new array created as if by the expression new Array(len) where Array is
+			// the standard built-in constructor with that name and len is the value of len.
 			A = new Array(len);
-			// 7. Let k be 0  
+			// 7. Let k be 0
 			k = 0;
-			// 8. Repeat, while k < len  
+			// 8. Repeat, while k < len
 			while (k < len) {
 				var kValue, mappedValue;
-				// a. Let Pk be ToString(k).  
-				//   This is implicit for LHS operands of the in operator  
-				// b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.  
-				//   This step can be combined with c  
-				// c. If kPresent is true, then  
+				// a. Let Pk be ToString(k).
+				//   This is implicit for LHS operands of the in operator
+				// b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+				//   This step can be combined with c
+				// c. If kPresent is true, then
 				if (k in O) {
-					// i. Let kValue be the result of calling the Get internal method of O with argument Pk.  
+					// i. Let kValue be the result of calling the Get internal method of O with argument Pk.
 					kValue = O[k];
-					// ii. Let mappedValue be the result of calling the Call internal method of callback  
-					// with T as the this value and argument list containing kValue, k, and O.  
+					// ii. Let mappedValue be the result of calling the Call internal method of callback
+					// with T as the this value and argument list containing kValue, k, and O.
 					mappedValue = callback.call(T, kValue, k, O);
-					// iii. Call the DefineOwnProperty internal method of A with arguments  
-					// Pk, Property Descriptor {Value: mappedValue, Writable: true, Enumerable: true, Configurable: true},  
-					// and false.  
-					// In browsers that support Object.defineProperty, use the following:  
-					// Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });  
-					// For best browser support, use the following:  
+					// iii. Call the DefineOwnProperty internal method of A with arguments
+					// Pk, Property Descriptor {Value: mappedValue, Writable: true, Enumerable: true, Configurable: true},
+					// and false.
+					// In browsers that support Object.defineProperty, use the following:
+					// Object.defineProperty(A, Pk, { value: mappedValue, writable: true, enumerable: true, configurable: true });
+					// For best browser support, use the following:
 					A[k] = mappedValue;
 				}
-				// d. Increase k by 1.  
+				// d. Increase k by 1.
 				k++;
 			}
-			// 9. return A  
+			// 9. return A
 			return A;
 		};
-	}  
+	}
 	</script>
-	
+
 	<script type="text/javascript">
 	/*!
 	* Crypto-JS v2.5.4	Crypto.js
@@ -277,7 +277,7 @@
 		})();
 	}
 	</script>
-	
+
 	<script type="text/javascript">
 	/*!
 	* Crypto-JS v2.5.4	SHA256.js
@@ -624,7 +624,7 @@
 				// Allow mode to override options
 				if (mode.fixOptions) mode.fixOptions(options);
 
-				var 
+				var
 
 				// Convert to bytes if message is a string
 		m = (
@@ -665,7 +665,7 @@
 				// Allow mode to override options
 				if (mode.fixOptions) mode.fixOptions(options);
 
-				var 
+				var
 
 				// Convert to bytes if ciphertext is a string
 		c = (
@@ -1108,9 +1108,9 @@
 
 		/**
 		* Electronic Code Book mode.
-		* 
+		*
 		* ECB applies the cipher directly against each block of the input.
-		* 
+		*
 		* ECB does not require an initialization vector.
 		*/
 		var ECB = C_mode.ECB = function () {
@@ -1145,7 +1145,7 @@
 
 		/**
 		* Cipher block chaining
-		* 
+		*
 		* The first block is XORed with the IV. Subsequent blocks are XOR with the
 		* previous cipher output.
 		*/
@@ -1199,11 +1199,11 @@
 
 		/**
 		* Cipher feed back
-		* 
+		*
 		* The cipher output is XORed with the plain text to produce the cipher output,
 		* which is then fed back into the cipher to produce a bit pattern to XOR the
 		* next block with.
-		* 
+		*
 		* This is a stream cipher mode and does not require padding.
 		*/
 		var CFB = C_mode.CFB = function () {
@@ -1251,10 +1251,10 @@
 
 		/**
 		* Output feed back
-		* 
+		*
 		* The cipher repeatedly encrypts its own output. The output is XORed with the
 		* plain text to produce the cipher text.
-		* 
+		*
 		* This is a stream cipher mode and does not require padding.
 		*/
 		var OFB = C_mode.OFB = function () {
@@ -1508,15 +1508,15 @@
 			}
 		})();
 	</script>
-	
+
 	<script type="text/javascript">
 	/*!
 	* Random number generator with ArcFour PRNG
-	* 
+	*
 	* NOTE: For best results, put code like
 	* <body onclick='SecureRandom.seedTime();' onkeypress='SecureRandom.seedTime();'>
 	* in your main HTML document.
-	* 
+	*
 	* Copyright Tom Wu, bitaddress.org  BSD License.
 	* http://www-cs-students.stanford.edu/~tjw/jsbn/LICENSE
 	*/
@@ -1655,7 +1655,7 @@
 	* Basic Javascript Elliptic Curve implementation
 	* Ported loosely from BouncyCastle's Java EC code
 	* Only Fp curves implemented for now
-	* 
+	*
 	* Copyright Tom Wu, bitaddress.org  BSD License.
 	* http://www-cs-students.stanford.edu/~tjw/jsbn/LICENSE
 	*/
@@ -1716,7 +1716,7 @@
 		/**
 		* return a sqrt root - the routine verifies that the calculation
 		* returns the right value - if none exists it returns null.
-		* 
+		*
 		* Copyright (c) 2000 - 2011 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
 		* Ported to JavaScript by bitaddress.org
 		*/
@@ -2000,7 +2000,7 @@
 			var len = 32; // integerToBytes will zero pad if integer is less than 32 bytes. 32 bytes length is required by the Bitcoin protocol.
 			var enc = ec.integerToBytes(x, len);
 
-			// when compressed prepend byte depending if y point is even or odd 
+			// when compressed prepend byte depending if y point is even or odd
 			if (compressed) {
 				if (y.isEven()) {
 					enc.unshift(0x02);
@@ -2299,7 +2299,7 @@
 	<script type="text/javascript">
 		/*!
 		* Basic JavaScript BN library - subset useful for RSA encryption. v1.3
-		* 
+		*
 		* Copyright (c) 2005  Tom Wu
 		* All Rights Reserved.
 		* BSD License
@@ -3581,7 +3581,7 @@
 	// Licensed under the MIT license:
 	//   http://www.opensource.org/licenses/mit-license.php
 	//
-	// The word "QR Code" is registered trademark of 
+	// The word "QR Code" is registered trademark of
 	// DENSO WAVE INCORPORATED
 	//   http://www.denso-wave.com/qrcode/faqpatent-e.html
 	//
@@ -3795,7 +3795,7 @@
 				var data = (this.errorCorrectLevel << 3) | maskPattern;
 				var bits = QRCode.Util.getBCHTypeInfo(data);
 
-				// vertical		
+				// vertical
 				for (var i = 0; i < 15; i++) {
 
 					var mod = (!test && ((bits >> i) & 1) == 1);
@@ -4478,7 +4478,7 @@
 	[2, 35, 17],
 	[2, 35, 13],
 
-		// 4		
+		// 4
 	[1, 100, 80],
 	[2, 50, 32],
 	[2, 50, 24],
@@ -4496,7 +4496,7 @@
 	[4, 43, 19],
 	[4, 43, 15],
 
-		// 7		
+		// 7
 	[2, 98, 78],
 	[4, 49, 31],
 	[2, 32, 14, 4, 33, 15],
@@ -4514,7 +4514,7 @@
 	[4, 36, 16, 4, 37, 17],
 	[4, 36, 12, 4, 37, 13],
 
-		// 10		
+		// 10
 	[2, 86, 68, 2, 87, 69],
 	[4, 69, 43, 1, 70, 44],
 	[6, 43, 19, 2, 44, 20],
@@ -4897,7 +4897,7 @@
 				* Parses a byte array containing a DER-encoded signature.
 				*
 				* This function will return an object of the form:
-				* 
+				*
 				* {
 				*   r: BigInteger,
 				*   s: BigInteger
@@ -5172,7 +5172,7 @@
 				this.pubPoint = ecPoint;
 			};
 
-			// Sipa Private Key Wallet Import Format 
+			// Sipa Private Key Wallet Import Format
 			ECKey.prototype.getBitcoinWalletImportFormat = function () {
 				var bytes = this.getBitcoinPrivateKeyByteArray();
 				bytes.unshift(ECKey.privateKeyPrefix); // prepend 0x80 byte
@@ -5183,12 +5183,12 @@
 				return privWif;
 			};
 
-			// Private Key Hex Format 
+			// Private Key Hex Format
 			ECKey.prototype.getBitcoinHexFormat = function () {
 				return Crypto.util.bytesToHex(this.getBitcoinPrivateKeyByteArray()).toString().toUpperCase();
 			};
 
-			// Private Key Base64 Format 
+			// Private Key Base64 Format
 			ECKey.prototype.getBitcoinBase64Format = function () {
 				return Crypto.util.bytesToBase64(this.getBitcoinPrivateKeyByteArray());
 			};
@@ -5196,7 +5196,7 @@
 			ECKey.prototype.getBitcoinPrivateKeyByteArray = function () {
 				// Get a copy of private key as a byte array
 				var bytes = this.priv.toByteArrayUnsigned();
-				// zero pad if private key is less than 32 bytes 
+				// zero pad if private key is less than 32 bytes
 				while (bytes.length < 32) bytes.unshift(0x00);
 				return bytes;
 			};
@@ -5421,16 +5421,16 @@
 	//
 	// Copyright © 2012-2013 Faisalman <fyzlman@gmail.com>
 	// Dual licensed under GPLv2 & MIT
-	
+
 	(function (window, undefined) {
-	
+
 		'use strict';
-	
+
 		//////////////
 		// Constants
 		/////////////
-	
-	
+
+
 		var EMPTY       = '',
 			UNKNOWN     = '?',
 			FUNC_TYPE   = 'function',
@@ -5446,13 +5446,13 @@
 			CONSOLE     = 'console',
 			MOBILE      = 'mobile',
 			TABLET      = 'tablet';
-	
-	
+
+
 		///////////
 		// Helper
 		//////////
-	
-	
+
+
 		var util = {
 			has : function (str1, str2) {
 				return str2.toLowerCase().indexOf(str1.toLowerCase()) !== -1;
@@ -5461,23 +5461,23 @@
 				return str.toLowerCase();
 			}
 		};
-	
-	
+
+
 		///////////////
 		// Map helper
 		//////////////
-	
-	
+
+
 		var mapper = {
-	
+
 			rgx : function () {
-	
+
 				// loop through all regexes maps
 				for (var result, i = 0, j, k, p, q, matches, match, args = arguments; i < args.length; i += 2) {
-	
+
 					var regex = args[i],       // even sequence (0,2,4,..)
 						props = args[i + 1];   // odd sequence (1,3,5,..)
-	
+
 					// construct object barebones
 					if (typeof(result) === UNDEF_TYPE) {
 						result = {};
@@ -5490,7 +5490,7 @@
 							}
 						}
 					}
-	
+
 					// try matching uastring with regexes
 					for (j = k = 0; j < regex.length; j++) {
 						matches = regex[j].exec(this.getUA());
@@ -5527,14 +5527,14 @@
 							break;
 						}
 					}
-	
+
 					if(!!matches) break; // break the loop immediately if match found
 				}
 				return result;
 			},
-	
+
 			str : function (str, map) {
-	
+
 				for (var i in map) {
 					// check if array
 					if (typeof(map[i]) === OBJ_TYPE && map[i].length > 0) {
@@ -5550,15 +5550,15 @@
 				return str;
 			}
 		};
-	
-	
+
+
 		///////////////
 		// String map
 		//////////////
-	
-	
+
+
 		var maps = {
-	
+
 			browser : {
 				oldsafari : {
 					major : {
@@ -5578,7 +5578,7 @@
 					}
 				}
 			},
-	
+
 			device : {
 				sprint : {
 					model : {
@@ -5590,7 +5590,7 @@
 					}
 				}
 			},
-	
+
 			os : {
 				windows : {
 					version : {
@@ -5607,73 +5607,73 @@
 				}
 			}
 		};
-	
-	
+
+
 		//////////////
 		// Regex map
 		/////////////
-	
-	
+
+
 		var regexes = {
-	
+
 			browser : [[
-	
+
 				// Presto based
 				/(opera\smini)\/((\d+)?[\w\.-]+)/i,                                 // Opera Mini
 				/(opera\s[mobiletab]+).+version\/((\d+)?[\w\.-]+)/i,                // Opera Mobi/Tablet
 				/(opera).+version\/((\d+)?[\w\.]+)/i,                               // Opera > 9.80
 				/(opera)[\/\s]+((\d+)?[\w\.]+)/i                                    // Opera < 9.80
-				
+
 				], [NAME, VERSION, MAJOR], [
-	
+
 				/\s(opr)\/((\d+)?[\w\.]+)/i                                         // Opera Webkit
 				], [[NAME, 'Opera'], VERSION, MAJOR], [
-	
+
 				// Mixed
 				/(kindle)\/((\d+)?[\w\.]+)/i,                                       // Kindle
 				/(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?((\d+)?[\w\.]+)*/i,
 																					// Lunascape/Maxthon/Netfront/Jasmine/Blazer
-	
+
 				// Trident based
 				/(avant\s|iemobile|slim|baidu)(?:browser)?[\/\s]?((\d+)?[\w\.]*)/i,
 																					// Avant/IEMobile/SlimBrowser/Baidu
 				/(?:ms|\()(ie)\s((\d+)?[\w\.]+)/i,                                  // Internet Explorer
-	
+
 				// Webkit/KHTML based
 				/(rekonq)((?:\/)[\w\.]+)*/i,                                        // Rekonq
 				/(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt)\/((\d+)?[\w\.-]+)/i
 																					// Chromium/Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt
 				], [NAME, VERSION, MAJOR], [
-	
+
 				/(yabrowser)\/((\d+)?[\w\.]+)/i                                     // Yandex
 				], [[NAME, 'Yandex'], VERSION, MAJOR], [
-	
+
 				/(comodo_dragon)\/((\d+)?[\w\.]+)/i                                 // Comodo Dragon
 				], [[NAME, /_/g, ' '], VERSION, MAJOR], [
-	
+
 				/(chrome|omniweb|arora|[tizenoka]{5}\s?browser)\/v?((\d+)?[\w\.]+)/i
 																					// Chrome/OmniWeb/Arora/Tizen/Nokia
 				], [NAME, VERSION, MAJOR], [
-	
+
 				/(dolfin)\/((\d+)?[\w\.]+)/i                                        // Dolphin
 				], [[NAME, 'Dolphin'], VERSION, MAJOR], [
-	
+
 				/((?:android.+)crmo|crios)\/((\d+)?[\w\.]+)/i                       // Chrome for Android/iOS
 				], [[NAME, 'Chrome'], VERSION, MAJOR], [
-	
+
 				/version\/((\d+)?[\w\.]+).+?mobile\/\w+\s(safari)/i                 // Mobile Safari
 				], [VERSION, MAJOR, [NAME, 'Mobile Safari']], [
-	
+
 				/version\/((\d+)?[\w\.]+).+?(mobile\s?safari|safari)/i              // Safari & Safari Mobile
 				], [VERSION, MAJOR, NAME], [
-	
+
 				/webkit.+?(mobile\s?safari|safari)((\/[\w\.]+))/i                   // Safari < 3.0
 				], [NAME, [MAJOR, mapper.str, maps.browser.oldsafari.major], [VERSION, mapper.str, maps.browser.oldsafari.version]], [
-	
+
 				/(konqueror)\/((\d+)?[\w\.]+)/i,                                    // Konqueror
 				/(webkit|khtml)\/((\d+)?[\w\.]+)/i
 				], [NAME, VERSION, MAJOR], [
-	
+
 				// Gecko based
 				/(navigator|netscape)\/((\d+)?[\w\.-]+)/i                           // Netscape
 				], [[NAME, 'Netscape'], VERSION, MAJOR], [
@@ -5683,7 +5683,7 @@
 				/(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix)\/((\d+)?[\w\.-]+)/i,
 																					// Firefox/SeaMonkey/K-Meleon/IceCat/IceApe/Firebird/Phoenix
 				/(mozilla)\/((\d+)?[\w\.]+).+rv\:.+gecko\/\d+/i,                    // Mozilla
-	
+
 				// Other
 				/(uc\s?browser|polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf)[\/\s]?((\d+)?[\w\.]+)/i,
 																					// UCBrowser/Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf
@@ -5693,44 +5693,44 @@
 				/(mosaic)[\/\s]((\d+)?[\w\.]+)/i                                    // Mosaic
 				], [NAME, VERSION, MAJOR]
 			],
-	
+
 			cpu : [[
-	
+
 				/(?:(amd|x(?:(?:86|64)[_-])?|wow|win)64)[;\)]/i                     // AMD64
 				], [[ARCHITECTURE, 'amd64']], [
-	
+
 				/((?:i[346]|x)86)[;\)]/i                                            // IA32
 				], [[ARCHITECTURE, 'ia32']], [
-	
+
 				// PocketPC mistakenly identified as PowerPC
 				/windows\s(ce|mobile);\sppc;/i
 				], [[ARCHITECTURE, 'arm']], [
-	
+
 				/((?:ppc|powerpc)(?:64)?)(?:\smac|;|\))/i                           // PowerPC
 				], [[ARCHITECTURE, /ower/, '', util.lowerize]], [
-	
+
 				/(sun4\w)[;\)]/i                                                    // SPARC
 				], [[ARCHITECTURE, 'sparc']], [
-	
+
 				/(ia64(?=;)|68k(?=\))|arm(?=v\d+;)|(?:irix|mips|sparc)(?:64)?(?=;)|pa-risc)/i
 																					// IA64, 68K, ARM, IRIX, MIPS, SPARC, PA-RISC
 				], [ARCHITECTURE, util.lowerize]
 			],
-	
+
 			device : [[
-	
+
 				/\((ipad|playbook);[\w\s\);-]+(rim|apple)/i                         // iPad/PlayBook
 				], [MODEL, VENDOR, [TYPE, TABLET]], [
-	
+
 				/(hp).+(touchpad)/i,                                                // HP TouchPad
 				/(kindle)\/([\w\.]+)/i,                                             // Kindle
 				/\s(nook)[\w\s]+build\/(\w+)/i,                                     // Nook
 				/(dell)\s(strea[kpr\s\d]*[\dko])/i                                  // Dell Streak
 				], [VENDOR, MODEL, [TYPE, TABLET]], [
-	
+
 				/\((ip[honed]+);.+(apple)/i                                         // iPod/iPhone
 				], [MODEL, VENDOR, [TYPE, MOBILE]], [
-	
+
 				/(blackberry)[\s-]?(\w+)/i,                                         // BlackBerry
 				/(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|huawei|meizu|motorola)[\s_-]?([\w-]+)*/i,
 																					// BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Huawei/Meizu/Motorola
@@ -5739,34 +5739,34 @@
 				], [VENDOR, MODEL, [TYPE, MOBILE]], [
 				/\((bb10);\s(\w+)/i                                                 // BlackBerry 10
 				], [[VENDOR, 'BlackBerry'], MODEL, [TYPE, MOBILE]], [
-	
+
 				/android.+((transfo[prime\s]{4,10}\s\w+|eeepc|slider\s\w+))/i       // Asus Tablets
 				], [[VENDOR, 'Asus'], MODEL, [TYPE, TABLET]], [
-	
+
 				/(sony)\s(tablet\s[ps])/i                                           // Sony Tablets
 				], [VENDOR, MODEL, [TYPE, TABLET]], [
-	
+
 				/(nintendo)\s([wids3u]+)/i                                          // Nintendo
 				], [VENDOR, MODEL, [TYPE, CONSOLE]], [
-	
+
 				/((playstation)\s[3portablevi]+)/i                                  // Playstation
 				], [[VENDOR, 'Sony'], MODEL, [TYPE, CONSOLE]], [
-	
+
 				/(sprint\s(\w+))/i                                                  // Sprint Phones
 				], [[VENDOR, mapper.str, maps.device.sprint.vendor], [MODEL, mapper.str, maps.device.sprint.model], [TYPE, MOBILE]], [
-	
+
 				/(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i,                               // HTC
 				/(zte)-(\w+)*/i,                                                    // ZTE
 				/(alcatel|geeksphone|huawei|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]+)*/i
 																					// Alcatel/GeeksPhone/Huawei/Lenovo/Nexian/Panasonic/Sony
 				], [VENDOR, [MODEL, /_/g, ' '], [TYPE, MOBILE]], [
-	
+
 				/\s((milestone|droid[2x]?))[globa\s]*\sbuild\//i,                   // Motorola
 				/(mot)[\s-]?(\w+)*/i
 				], [[VENDOR, 'Motorola'], MODEL, [TYPE, MOBILE]], [
 				/android.+\s((mz60\d|xoom[\s2]{0,2}))\sbuild\//i
 				], [[VENDOR, 'Motorola'], MODEL, [TYPE, TABLET]], [
-	
+
 				/android.+((sch-i[89]0\d|shw-m380s|gt-p\d{4}|gt-n8000|sgh-t8[56]9))/i
 				], [[VENDOR, 'Samsung'], MODEL, [TYPE, TABLET]], [                  // Samsung
 				/((s[cgp]h-\w+|gt-\w+|galaxy\snexus))/i,
@@ -5775,45 +5775,45 @@
 				], [[VENDOR, 'Samsung'], MODEL, [TYPE, MOBILE]], [
 				/(sie)-(\w+)*/i                                                     // Siemens
 				], [[VENDOR, 'Siemens'], MODEL, [TYPE, MOBILE]], [
-	
+
 				/(maemo|nokia).*(n900|lumia\s\d+)/i,                                // Nokia
 				/(nokia)[\s_-]?([\w-]+)*/i
 				], [[VENDOR, 'Nokia'], MODEL, [TYPE, MOBILE]], [
-	
+
 				/android\s3\.[\s\w-;]{10}((a\d{3}))/i                               // Acer
 				], [[VENDOR, 'Acer'], MODEL, [TYPE, TABLET]], [
-	
+
 				/android\s3\.[\s\w-;]{10}(lg?)-([06cv9]{3,4})/i                     // LG
 				], [[VENDOR, 'LG'], MODEL, [TYPE, TABLET]], [
 				/((nexus\s4))/i,
 				/(lg)[e;\s-\/]+(\w+)*/i
 				], [[VENDOR, 'LG'], MODEL, [TYPE, MOBILE]], [
-	
+
 				/(mobile|tablet);.+rv\:.+gecko\//i                                  // Unidentifiable
 				], [TYPE, VENDOR, MODEL]
 			],
-	
+
 			engine : [[
-	
+
 				/(presto)\/([\w\.]+)/i,                                             // Presto
 				/(webkit|trident|netfront|netsurf|amaya|lynx|w3m)\/([\w\.]+)/i,     // WebKit/Trident/NetFront/NetSurf/Amaya/Lynx/w3m
 				/(khtml|tasman|links)[\/\s]\(?([\w\.]+)/i,                          // KHTML/Tasman/Links
 				/(icab)[\/\s]([23]\.[\d\.]+)/i                                      // iCab
 				], [NAME, VERSION], [
-	
+
 				/rv\:([\w\.]+).*(gecko)/i                                           // Gecko
 				], [VERSION, NAME]
 			],
-	
+
 			os : [[
-	
+
 				// Windows based
 				/(windows)\snt\s6\.2;\s(arm)/i,                                     // Windows RT
 				/(windows\sphone(?:\sos)*|windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i
 				], [NAME, [VERSION, mapper.str, maps.os.windows.version]], [
 				/(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i
 				], [[NAME, 'Windows'], [VERSION, mapper.str, maps.os.windows.version]], [
-	
+
 				// Mobile/Embedded OS
 				/\((bb)(10);/i                                                      // BlackBerry 10
 				], [[NAME, 'BlackBerry'], VERSION], [
@@ -5826,10 +5826,10 @@
 				], [[NAME, 'Symbian'], VERSION],[
 				/mozilla.+\(mobile;.+gecko.+firefox/i                               // Firefox OS
 				], [[NAME, 'Firefox OS'], VERSION], [
-	
+
 				// Console
 				/(nintendo|playstation)\s([wids3portablevu]+)/i,                    // Nintendo/Playstation
-	
+
 				// GNU/Linux based
 				/(mint)[\/\s\(]?(\w+)*/i,                                           // Mint
 				/(joli|[kxln]?ubuntu|debian|[open]*suse|gentoo|arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk)[\/\s-]?([\w\.-]+)*/i,
@@ -5838,24 +5838,24 @@
 				/(hurd|linux)\s?([\w\.]+)*/i,                                       // Hurd/Linux
 				/(gnu)\s?([\w\.]+)*/i                                               // GNU
 				], [NAME, VERSION], [
-	
+
 				/(cros)\s[\w]+\s([\w\.]+\w)/i                                       // Chromium OS
 				], [[NAME, 'Chromium OS'], VERSION],[
-	
+
 				// Solaris
 				/(sunos)\s?([\w\.]+\d)*/i                                           // Solaris
 				], [[NAME, 'Solaris'], VERSION], [
-	
+
 				// BSD based
 				/\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]+)*/i                   // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
 				], [NAME, VERSION],[
-	
+
 				/(ip[honead]+)(?:.*os\s*([\w]+)*\slike\smac|;\sopera)/i             // iOS
 				], [[NAME, 'iOS'], [VERSION, /_/g, '.']], [
-	
+
 				/(mac\sos\sx)\s?([\w\s\.]+\w)*/i                                    // Mac OS
 				], [NAME, [VERSION, /_/g, '.']], [
-	
+
 				// Other
 				/(haiku)\s(\w+)/i,                                                  // Haiku
 				/(aix)\s((\d)(?=\.|\)|\s)[\w\.]*)*/i,                               // AIX
@@ -5865,17 +5865,17 @@
 				], [NAME, VERSION]
 			]
 		};
-	
-	
+
+
 		/////////////////
 		// Constructor
 		////////////////
-	
-	
+
+
 		var UAParser = function (uastring) {
-	
+
 			var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
-	
+
 			if (!(this instanceof UAParser)) {
 				return new UAParser(uastring).getResult();
 			}
@@ -5913,14 +5913,14 @@
 			};
 			this.setUA(ua);
 		};
-	
-	
+
+
 		///////////
 		// Export
 		//////////
-	
-	
-		// check js environment 
+
+
+		// check js environment
 		if (typeof(exports) !== UNDEF_TYPE) {
 			// nodejs env
 			if (typeof(module) !== UNDEF_TYPE && module.exports) {
@@ -5929,7 +5929,7 @@
 			exports.UAParser = UAParser;
 		} else {
 			// browser env
-			window.UAParser = UAParser;        
+			window.UAParser = UAParser;
 			// requirejs env (optional)
 			if (typeof(define) === FUNC_TYPE && define.amd) {
 				define(function () {
@@ -5953,7 +5953,7 @@
 				};
 			}
 		}
-	
+
 	})(this);
 	</script>
 
@@ -5982,19 +5982,19 @@
 		.faqs ol { padding: 0 0 0 25px; }
 		.faqs li { padding: 3px 0; }
 		body { margin-top: 0; font-family: Arial; background-image:url(images/webpage-background.png); background-repeat: repeat-y; background-position: center; background-color: #e2f9bd;}
-		
+
 		h1 { font-size: 24px; font-weight: 100; color: #090; margin:0 0 10px 0; padding:0; }
-		
+
 		a, a:visited { text-decoration: none; color: #ff6c00; }
 		a:hover {color: #0000FF; text-decoration: underline;}
-		
-		
+
+
 		#main { position: relative; margin: 0px auto; width: 1010px; color: #444; } /* removed text-align: center; */
 		#logoback {  background-image:url(images/logo.png); background-position: top left; background-repeat: no-repeat; }
 		#generate { font-family: Courier New; height: 158px; text-align: left; position: relative; padding: 5px; border: 2px solid #f7931a; }
 		#generate span { padding: 5px 5px 0 5px; }
 		#menu { visibility: hidden; font-size: 90%; padding: 0 12px;}
-		
+
 		#culturemenu { text-align: right; padding: 10px 20px; font-size: 12px; }
 
 		#culturemenu { text-align: right; padding: 10px 20px; font-size: 12px;}
@@ -6010,77 +6010,77 @@
 		#printeradjust a:hover span { background-color: #CCFFCC; }
 		#printeradjust a, #printeradjust a:hover {text-decoration: none;}
 		#printeradjust input { text-align: center; margin: 0 2px;}
-		
-		
+
+
 		#paperarea { min-height: 120px; display: none; }
 		#paperarea .keyarea { border: 2px solid #f7931a; border-top: 0; }
 		#paperarea .keyarea.art { display: block; height: auto; border: 0; font-family: Ubuntu, Arial; padding: 0; margin: 0; }
 		#paperarea .artwallet .papersvg { width: 1010px; height: 331px; border: 0; margin: 0; padding: 0; left: 0; }
-		#paperarea .artwallet .qrcode_public { top: 120px; left: 41px; z-index: 100; margin: 0; float: none; display: block; position: absolute; background-color: #FFFFFF; 
-		                                       padding: 5px 5px 2px 5px; } 
-		#paperarea .artwallet .qrcode_private { top: 105px; left: 827px; z-index: 100; margin: 0; float: none; display: block; position: absolute; background-color: #FFFFFF; 
+		#paperarea .artwallet .qrcode_public { top: 120px; left: 41px; z-index: 100; margin: 0; float: none; display: block; position: absolute; background-color: #FFFFFF;
+		                                       padding: 5px 5px 2px 5px; }
+		#paperarea .artwallet .qrcode_private { top: 105px; left: 827px; z-index: 100; margin: 0; float: none; display: block; position: absolute; background-color: #FFFFFF;
 		                                        padding: 5px 5px 2px 5px; }
-		#paperarea .artwallet .btcaddress  
+		#paperarea .artwallet .btcaddress
 		{
 		    position: absolute; top: 275px; left: 40px; z-index: 100; font-size: 11px; background-color: transparent;
 		    font-weight:bold; color: #1739ad; margin: 0;
-				-webkit-transform-origin:top left; 
+				-webkit-transform-origin:top left;
 				/* -webkit-transform:rotate(-90deg); */
-				-moz-transform-origin:top left;    
+				-moz-transform-origin:top left;
 				/*-moz-transform:rotate(-90deg); */
-				-ms-transform-origin:top left;     
+				-ms-transform-origin:top left;
 				/*-ms-transform:rotate(-90deg);*/
-				-o-transform-origin:top left;      
+				-o-transform-origin:top left;
 				/*-o-transform:rotate(-90deg);*/
-				transform-origin:top left;         
+				transform-origin:top left;
 				/*transform:rotate(-90deg);*/
-		} 
+		}
 
-		#paperarea .artwallet .dupbtcaddress  
+		#paperarea .artwallet .dupbtcaddress
 		{
 		    position: absolute; top: 45px; left: 40px; z-index: 100; font-size: 11px; background-color: transparent;
 		    font-weight:bold; color: #1739ad; margin: 0;
 				/* -webkit-transform-origin:top left; */
-				-webkit-transform:rotate(-180deg); 
-				/* -moz-transform-origin:top left; */   
-				-moz-transform:rotate(-180deg); 
-				/* -ms-transform-origin:top left; */    
+				-webkit-transform:rotate(-180deg);
+				/* -moz-transform-origin:top left; */
+				-moz-transform:rotate(-180deg);
+				/* -ms-transform-origin:top left; */
 				-ms-transform:rotate(-180deg);
-				/* -o-transform-origin:top left; */     
+				/* -o-transform-origin:top left; */
 				-o-transform:rotate(-180deg);
-				/* transform-origin:top left; */        
+				/* transform-origin:top left; */
 				transform:rotate(-180deg);
-		} 
+		}
 
-		#paperarea .artwallet .btcprivwif  
+		#paperarea .artwallet .btcprivwif
 		{
-		    position: absolute; top: 245px; left: 610px; z-index: 100; font-size: 11px; background-color: transparent;
-		    font-weight:bold; color: #000000; margin: 0;  
-				-webkit-transform-origin:top left; 
+		    position: absolute; top: 245px; left: 600px; z-index: 100; font-size: 10px; background-color: transparent;
+		    font-weight:bold; color: #000000; margin: 0;
+				-webkit-transform-origin:top left;
 				/*-webkit-transform:rotate(-90deg);*/
-				-moz-transform-origin:top left;    
+				-moz-transform-origin:top left;
 				/*-moz-transform:rotate(-90deg);*/
-				-ms-transform-origin:top left;     
+				-ms-transform-origin:top left;
 				/*-ms-transform:rotate(-90deg);*/
-				-o-transform-origin:top left;      
+				-o-transform-origin:top left;
 				/*-o-transform:rotate(-90deg);*/
-				transform-origin:top left;         
+				transform-origin:top left;
 				/*transform:rotate(-90deg);*/
 		}
 
-		#paperarea .artwallet .dupbtcprivwif  
+		#paperarea .artwallet .dupbtcprivwif
 		{
-		    position: absolute; top: 75px; left: 610px; z-index: 100; font-size: 11px; background-color: transparent;
-		    font-weight:bold; color: #000000; margin: 0;  
-				/* -webkit-transform-origin:top left; */ 
+		    position: absolute; top: 75px; left: 600px; z-index: 100; font-size: 10px; background-color: transparent;
+		    font-weight:bold; color: #000000; margin: 0;
+				/* -webkit-transform-origin:top left; */
 				-webkit-transform:rotate(-180deg);
-				/* -moz-transform-origin:top left; */   
+				/* -moz-transform-origin:top left; */
 				-moz-transform:rotate(-180deg);
-				/* -ms-transform-origin:top left; */    
+				/* -ms-transform-origin:top left; */
 				-ms-transform:rotate(-180deg);
-				/* -o-transform-origin:top left; */      
+				/* -o-transform-origin:top left; */
 				-o-transform:rotate(-180deg);
-				/* transform-origin:top left; */    
+				/* transform-origin:top left; */
 				transform:rotate(-180deg);
 		}
 
@@ -6100,14 +6100,14 @@
 
 
 		.instructionsarea { padding: 0 25px; }
-		
+
 		.highlighted { font-size: 14px; padding: 8px; background-color: #ebfdbf;}
-		
-		#browserinfo { text-align: center; } 
+
+		#browserinfo { text-align: center; }
 		.englishjson { text-align: center; padding: 40px 0 20px 0; }
 		.unittests { text-align: center; }
 		.unittests div { width: 894px; font-family: monospace; text-align: left; margin: auto; padding: 5px; border: 1px solid black; }
-		
+
 		/* IE8 */
 		.qrcodetable { border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse; }
 		.qrcodetddark { border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 2px; height: 2px; background-color: #000000; }
@@ -6124,43 +6124,43 @@
 		}
 		#generatelabelmovemouse { margin: 30px 150px; padding: 30px; font-weight: bold; background-color: #EBFDBF; text-align: center; }
 		#generatelabelbitcoinaddress { text-align: center;}
-		
-		@media screen 	
+
+		@media screen
 		{
 			#tagline { margin: 10px 0 0 250px; font-style: italic; font-size: 18px; color: #666; }
 			#tagsite { margin: 5px 0 20px 252px; font-size: 14px; color: #666; }
-			
+
 
 			#tagwarning { position: absolute; left: 250px; top: 25px; font-size: 12px; color: red; }
 			.menu { text-align: left; }
-			.menu .tab { border-top-left-radius: 5px; border-top-right-radius: 5px; display: inline-block; background-color: #e2f9bd; 
+			.menu .tab { border-top-left-radius: 5px; border-top-right-radius: 5px; display: inline-block; background-color: #e2f9bd;
 						 color: #060; font-size: 12px;
-						 border-top: 2px solid #f7931a; 
-						 border-left: 2px solid #f7931a; 
-						 border-right: 2px solid #f7931a; 
-						 border-bottom: 2px solid #e2f9bd; 
+						 border-top: 2px solid #f7931a;
+						 border-left: 2px solid #f7931a;
+						 border-right: 2px solid #f7931a;
+						 border-bottom: 2px solid #e2f9bd;
 						 padding: 4px 8px; margin: 0 2px 0 0; position: relative; top: 2px; z-index: 110; cursor: pointer; }
 			.menu .tab:hover { color: #090; }
 			.menu .tab.selected { background-color: #FFF; border-bottom: 4px solid #FFF; cursor: default; font-weight: bold; }
 			.menu .tab.selected:hover { color: #090; }
-			
+
 			.menu #printeradjust { float: right; text-align: right; margin-top: 5px; } /* zoom & shift */
-			
+
 			.pagebreak { height: 50px; }
-			.commands { padding: 10px 0 20px 10px; margin-bottom: 0; } 
-			.commands span { padding: 0 10px; } 
-			.commands span.print { float: right; } 
+			.commands { padding: 10px 0 20px 10px; margin-bottom: 0; }
+			.commands span { padding: 0 10px; }
+			.commands span.print { float: right; }
 			.commands span.right { float: right; }
 			.expandable { padding: 10px 15px; text-align: left; cursor: pointer; }
-			
+
 			.commands p.instructions { width: 700px; float: left; font-size: 13px; }
-			
 
 
 
-			#bulkstartindex, #paperlimit, #paperlimitperpage { width: 35px; } 
+
+			#bulkstartindex, #paperlimit, #paperlimitperpage { width: 35px; }
 			#bulklimit { width: 45px; }
-			
+
 			.footer { font-family: Arial; font-size: 90%; clear: both; padding: 10px 0 10px 0; margin: 50px 20px; color: #999;}
 			.footer div span.item { padding: 10px; }
 			.footer .authorbtc { float: left; width: 470px; }
@@ -6171,7 +6171,7 @@
 			.footer .copyright { font-size: 80%; clear: both; padding: 5px 0; }
 			.footer .copyright span { padding: 10px 10px; }
 
-		}		
+		}
 
 		@media print
 		{
@@ -6194,24 +6194,24 @@
     	<div id="logoback">
           	<div id="culturemenu">
               <!--
-              <span><a href="?culture=en" id="cultureen" class="selected">English</a></span> | 
-              <span><a href="?culture=es" id="culturees">Español</a></span> | 
+              <span><a href="?culture=en" id="cultureen" class="selected">English</a></span> |
+              <span><a href="?culture=es" id="culturees">Español</a></span> |
               <span><a href="?culture=fr" id="culturefr">Français</a></span> -->
               &nbsp;
           	</div>
 			<div id="tagline">Open Source Client-Side JavaScript Bitcoin Wallet Generator</div>
 			<div id="tagsite">For help &amp; security tips, visit <a href="https://bitcoinpaperwallet.com">bitcoinpaperwallet.com</a></div>
             <div id="tagwarning"></div>
-        
+
 		<div class="menu" id="menu">
         	<div id="printeradjust">
 				Zoom:
-                <a href="#" onClick="printZoom(-1); return(false);"><span>-</span></a><input name="printerzoom" id="printerzoom" size="2" value="5" onChange="updateCalibrationInfo();" /><a href="#" onClick="printZoom(1); return(false);"><span>+</span></a> 
+                <a href="#" onClick="printZoom(-1); return(false);"><span>-</span></a><input name="printerzoom" id="printerzoom" size="2" value="5" onChange="updateCalibrationInfo();" /><a href="#" onClick="printZoom(1); return(false);"><span>+</span></a>
                 &nbsp;
-				Horizontal Shift: 
-                <a href="#" onClick="printShift(-1); return(false);"><span>-</span></a><input name="printershift" id="printershift" size="2" value="5" onChange="updateCalibrationInfo();" /><a href="#" onClick="printShift(1); return(false);"><span>+</span></a> 
+				Horizontal Shift:
+                <a href="#" onClick="printShift(-1); return(false);"><span>-</span></a><input name="printershift" id="printershift" size="2" value="5" onChange="updateCalibrationInfo();" /><a href="#" onClick="printShift(1); return(false);"><span>+</span></a>
             </div>
-            
+
 			<div class="tab selected" id="landwallet" onClick="ninja.tabSwitch(this);">Instructions</div>
 			<div class="tab" id="calibratewallet" onClick="ninja.tabSwitch(this);">1. Calibrate Printer</div>
 			<div class="tab" id="paperwallet" onClick="ninja.tabSwitch(this);">2. Print Front</div>
@@ -6221,17 +6221,17 @@
 
 
 		</div><!-- end logoback -->
-		
+
 		<div id="generate">
 			<div id="generatelabelmovemouse"><blink>Please move your mouse around...</blink></div>
 			<p id="generatelabelbitcoinaddress">(This helps to generate more random &amp; secure bitcoin addresses.)</p>
 		</div>
 
 		<div id="wallets">
-        
-        
-        
-			<div id="landarea" class="walletarea">	
+
+
+
+			<div id="landarea" class="walletarea">
 				<div id="landcommands" class="commands">
 					&nbsp;
 				</div>
@@ -6244,23 +6244,23 @@
 
 
 						<span id="instructions2" class="highlighted"><a href="http://www.youtube.com/watch?v=V4H1VE3EAtI" target="_blank">Prefer a 90 second video? Watch a quick demonstration on YouTube &raquo;</a></span>
-						<br /><br />	
+						<br /><br />
 
 
 						<span id="instructions3"><b>Step 1: Calibrate Printer</b> Before printing out a wallet you'll need to "calibrate" your printer for <b>zoom</b> and <b>horizontal shift</b>. Without proper callibration, your wallet will end up the wrong size or with a misaligned reverse side. Don't forget to write down the zoom/shift values for the next time you need them.</span>
 						<br /><br />
 						<span id="instructions4"><b>Step 2: Print Front</b> Next we'll print out the front side of your wallet. A public address and private key will automatically be generated.</span>
-						<br /><br />	
+						<br /><br />
 						<span id="instructions5"><b>Step 3: Print Back</b> Then you will put the same page back in your printer (but upside down) to print out the back side of your wallet. This isn't just for good looks: the back side design includes additional tamper-proof safeguards.</span>
-						<br /><br />	
+						<br /><br />
 						<span id="instructions6"><b>Step 4: Cut, Fold, Seal &amp; Fund</b> Find your scissors! Time to cut out your wallet, fold it, and seal it  with tape (or better yet <a href="https://bitcoinpaperwallet.com/#purchase" target="_blank">tamper-proof holographic tape</a>!) Now you're ready to transfer bitcoins from your online holdings to your new wallet.</span>
-                                                
+
 					</div>
 				</div>
 			</div><!-- end landarea -->
-                    
-        
-        
+
+
+
 			<div id="calibratearea" class="walletarea">
 				<div class="commands">
 					<div id="calibratecommands">
@@ -6287,12 +6287,12 @@
                 </script>
 
 
-                
+
 			</div><!-- end calibratearea -->
-            
-            
-            
-            
+
+
+
+
 
 			<div id="paperarea" class="walletarea">
 				<div id="papercommands" class="commands">
@@ -6306,7 +6306,7 @@
 				</div>
 				<div id="paperkeyarea"></div>
 			</div><!-- end paperarea -->
-            
+
 
 
 
@@ -6318,14 +6318,14 @@
 						<span class="print"><input type="button" name="print" class="nicerButton" value="Print Wallet Back" id="singleprint" onClick="doPrint();" /></span>
 					</div>
 				</div>
-                
+
 				<img id="backsvg" class="backsvg" src="./images/back-300dpi.jpg">
-                
+
 			</div><!-- end backarea -->
 
 
 
-			<div id="foldarea" class="walletarea">	
+			<div id="foldarea" class="walletarea">
 				<div id="foldcommands" class="commands">
 					&nbsp;
 				</div>
@@ -6342,35 +6342,35 @@
                         <br />
 						<span id="instructions23">The final wallet will be a rectangle shape with the more narrow private key area folded over it, like this:</span>
 						<br />
-                        
+
                         <img src="images/finished-sample.jpg" width="400" height="203" alt="Sample Wallet">
-                        
-                        <br />	
+
+                        <br />
                         <br />
 						<span id="instructions13">Finally seal your wallet by placing two strips of sturdy tape over the top and bottom edges of the private (folded) area:</span>
-						<br /><br />	
+						<br /><br />
 
                         <img src="images/finished-sample-sealed.jpg" width="400" height="203" alt="Sealed Wallet">
 
-						<br /><br />	
+						<br /><br />
 						<span id="instructions15" class="highlighted"><a href="https://bitcoinpaperwallet.com/#purchase" target="_blank">Click here to order some holographic tamper-proof tape designed for this job &raquo;</a></span>
-						<br /><br />	
+						<br /><br />
 
 						<h1><span id="instructions16">How to add funds to your wallet:</span></h1>
 
 						<span id="instructions17">Send bitcoins to the address (or QR code) where your wallet says "PUBLIC ADDRESS".</span>
-						<br /><br />	
-                        
+						<br /><br />
+
 						<h1><span id="instructions18">How to withdraw funds from your wallet:</span></h1>
 
 						<span id="instructions19" class="highlighted"><a href="https://bitcoinpaperwallet.com/#security" target="_blank">Click here for important tips on withdrawing funds from your wallet &raquo;</a></span>
-                        
+
 					</div>
 				</div>
 			</div><!-- end landarea -->
 
-            
-            
+
+
 		</div><!-- *** end wallets *** -->
 
 		<div id="footer" class="footer">
@@ -6396,7 +6396,7 @@
 	</div>
 
 	<script type="text/javascript">
-	
+
 		// bitaddress.org code -- though significantly modified for this implementation.
 		// For the original unmolested version of this code see
 		// https://github.com/pointbiz/bitaddress.org
@@ -6587,7 +6587,7 @@
 				return canvas;
 			},
 
-			// generate a QRCode and return it's representation as an Html table 
+			// generate a QRCode and return it's representation as an Html table
 			createTableHtml: function (text) {
 				var typeNumber = ninja.qrCode.getTypeNumber(text);
 				var qr = new QRCode(typeNumber, QRCode.ErrorCorrectLevel.H);
@@ -6610,7 +6610,7 @@
 			},
 
 			// show QRCodes with canvas OR table (IE8)
-			// parameter: keyValuePair 
+			// parameter: keyValuePair
 			// example: { "id1": "string1", "id2": "string2"}
 			//		"id1" is the id of a div element where you want a QRCode inserted.
 			//		"string1" is the string you want encoded into the QRCode.
@@ -6719,7 +6719,7 @@
 					"papergenerate": "Generar",
 					"paperprint": "Imprimir"
 				},
-					
+
 				"fr": {
 					// javascript alerts or messages
 					"paperlabelbitcoinaddress": "Adresse Bitcoin:",
@@ -7482,11 +7482,11 @@
 	</script>
 
 	<script type="text/javascript">
-	
+
 		/****************************************************
-		 Brand new JS functions added for bitcionpaperwallet 
+		 Brand new JS functions added for bitcionpaperwallet
 		 ****************************************************/
-	
+
     	var inlineMediaStyle = null;
 
 		function printZoom (changeBy) { /* handle +/- buttons for print zoom */
@@ -7503,8 +7503,8 @@
 
 		// apply the printer zoom & shift values as !important <head> styles
 		// thanks http://stackoverflow.com/questions/798535/changing-media-specific-css-properties-from-javascript
-		function updateCalibrationInfo() { 
- 
+		function updateCalibrationInfo() {
+
 			var currentZoom = document.getElementById("printerzoom").value;
 			var currentShift = document.getElementById("printershift").value;
 			// first write values onto printable area for reference
@@ -7516,31 +7516,31 @@
 			printerStyle.setAttribute('media', 'print');
 			printerStyle.appendChild(document.createTextNode('body { width: ' + ( 950 + (currentZoom * 10)) + 'px !important;} #main { left: ' + ((currentShift * 5)) + 'px !important;}'));
 
-			if (inlineMediaStyle != null) { 
+			if (inlineMediaStyle != null) {
 				head.replaceChild(printerStyle, inlineMediaStyle)
 			} else {
 				head.appendChild(printerStyle);
 			}
 			inlineMediaStyle = printerStyle;
 		}
-		
+
 		var printCounter=0;
 		var landscapeAlert=0;
-		
+
 		function doPrint(myContext) { /* What to do anytime a print button is clicked */
 			window.landscapeAlert ++;
 			updateCalibrationInfo();
 			if (window.landscapeAlert == 1) {
-				alert ('Important note: This design requires that you set your printer to output in LANDSCAPE (wide) format.');	
+				alert ('Important note: This design requires that you set your printer to output in LANDSCAPE (wide) format.');
 			}
-			
+
 			if (myContext == 'generate') {
 				window.printCounter ++;
 				if (window.printCounter == 2) {
 					alert (" *** WARNING *** WARNING *** WARNING *** \n\nYou are about to print a second wallet with the same set of codes. \n\nUnless you intended to make a backup wallet, cancel this print job and click the 'Generate a new set of codes' button first.");
 				}
 			}
-			window.print();	
+			window.print();
 		}
 
 	</script>
