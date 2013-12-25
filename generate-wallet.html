@@ -7648,40 +7648,69 @@ Bitcoin.Util = {
 					setTimeout(ninja.wallets.paperwallet.batch, 0);
 				}
 			},
+			
+			buildManual: function(useArtisticWallet, publicAddress, privateKey, passphrase) {
+				ninja.wallets.paperwallet.remaining = 0;
+				ninja.wallets.paperwallet.count = 0;
+				ninja.wallets.paperwallet.useArtisticWallet = useArtisticWallet;
+				ninja.wallets.paperwallet.pageBreakAt = 1;
+				document.getElementById("paperkeyarea").innerHTML = "";
+				if (ninja.wallets.paperwallet.encrypt) {
+					if (passphrase == "") {
+						alert(ninja.translator.get("bip38alertpassphraserequired"));
+						return;
+					}
+					document.getElementById("busyblock").className = "busy";
+					ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(privateKey, passphrase, false, function(encodedKey) { 
+						document.getElementById("busyblock").className = "";
+						ninja.wallets.paperwallet.addEmptyTemplate();
+						ninja.wallets.paperwallet.showArtisticWallet(1, publicAddress, encodedKey);
+					});
+				}
+				else {
+					ninja.wallets.paperwallet.addEmptyTemplate();
+					ninja.wallets.paperwallet.showArtisticWallet(1, publicAddress, privateKey);
+				}
+			},
 
 			batch: function () {
 				if (ninja.wallets.paperwallet.remaining > 0) {
-					var paperArea = document.getElementById("paperkeyarea");
-					ninja.wallets.paperwallet.count++;
-					var i = ninja.wallets.paperwallet.count;
-					var pageBreakAt = ninja.wallets.paperwallet.pageBreakAt;
-					var div = document.createElement("div");
-					div.setAttribute("id", "keyarea" + i);
-					if (ninja.wallets.paperwallet.useArtisticWallet) {
-						div.innerHTML = ninja.wallets.paperwallet.templateArtisticHtml(i);
-						div.setAttribute("class", "keyarea art");
-					}
-					else {
-						div.innerHTML = ninja.wallets.paperwallet.templateHtml(i);
-						div.setAttribute("class", "keyarea");
-					}
-					if (paperArea.innerHTML != "") {
-						// page break
-			           if ((i-1) % pageBreakAt == 0 && i >= pageBreakAt) {
-							var pBreak = document.createElement("div");
-							pBreak.setAttribute("class", "pagebreak");
-							document.getElementById("paperkeyarea").appendChild(pBreak);
-							div.style.pageBreakBefore = "always";
-							if (!ninja.wallets.paperwallet.useArtisticWallet) {
-								div.style.borderTop = "2px solid green";
-							}
-						}
-					}
-					document.getElementById("paperkeyarea").appendChild(div);
+					var i = ninja.wallets.paperwallet.addEmptyTemplate();
 					ninja.wallets.paperwallet.generateNewWallet(i);
 					ninja.wallets.paperwallet.remaining--;
 					setTimeout(ninja.wallets.paperwallet.batch, 0);
 				}
+			},
+			
+			addEmptyTemplate: function() {
+				var paperArea = document.getElementById("paperkeyarea");
+				ninja.wallets.paperwallet.count++;
+				var i = ninja.wallets.paperwallet.count;
+				var pageBreakAt = ninja.wallets.paperwallet.pageBreakAt;
+				var div = document.createElement("div");
+				div.setAttribute("id", "keyarea" + i);
+				if (ninja.wallets.paperwallet.useArtisticWallet) {
+					div.innerHTML = ninja.wallets.paperwallet.templateArtisticHtml(i);
+					div.setAttribute("class", "keyarea art");
+				}
+				else {
+					div.innerHTML = ninja.wallets.paperwallet.templateHtml(i);
+					div.setAttribute("class", "keyarea");
+				}
+				if (paperArea.innerHTML != "") {
+					// page break
+				   if ((i-1) % pageBreakAt == 0 && i >= pageBreakAt) {
+						var pBreak = document.createElement("div");
+						pBreak.setAttribute("class", "pagebreak");
+						document.getElementById("paperkeyarea").appendChild(pBreak);
+						div.style.pageBreakBefore = "always";
+						if (!ninja.wallets.paperwallet.useArtisticWallet) {
+							div.style.borderTop = "2px solid green";
+						}
+					}
+				}
+				document.getElementById("paperkeyarea").appendChild(div);
+				return i;
 			},
 
 			// generate bitcoin address, private key, QR Code and update information in the HTML
@@ -8374,7 +8403,7 @@ Bitcoin.Util = {
 			} else {			
 				var computedPublicAddress = new Bitcoin.ECKey(suppliedKey).getBitcoinAddress();
 				alert ('OK! This is a valid private key whose public address is:\r\r'+computedPublicAddress);
-				ninja.wallets.paperwallet.showArtisticWallet(1, computedPublicAddress, suppliedKey);
+				ninja.wallets.paperwallet.buildManual(true, computedPublicAddress, suppliedKey, document.getElementById('paperpassphrase').value);
 				window.printCounter = 0;
 			}
 		}
