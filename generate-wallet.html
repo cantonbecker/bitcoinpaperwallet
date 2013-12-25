@@ -6393,7 +6393,7 @@ Bitcoin.Util = {
 				transform:rotate(-180deg);
 		} 
 
-		#paperarea .artwallet .btcprivwif  
+		#paperarea .artwallet .btcprivwif, #paperarea .artwallet .btcencryptedkey  
 		{
 		    position: absolute; top: 245px; left: 610px; z-index: 100; background-color: transparent;
 		    color: #000000; margin: 0;  
@@ -6409,7 +6409,7 @@ Bitcoin.Util = {
 				/*transform:rotate(-90deg);*/
 		}
 
-		#paperarea .artwallet .dupbtcprivwif  
+		#paperarea .artwallet .dupbtcprivwif, #paperarea .artwallet .dupbtcencryptedkey 
 		{
 		    position: absolute; top: 75px; left: 610px; z-index: 100; background-color: transparent;
 		    color: #000000; margin: 0;  
@@ -6423,6 +6423,11 @@ Bitcoin.Util = {
 				-o-transform:rotate(-180deg);
 				/* transform-origin:top left; */    
 				transform:rotate(-180deg);
+		}
+		
+		#paperarea .artwallet .btcencryptedkey, #paperarea .artwallet .dupbtcencryptedkey
+		{
+			font-size: 12px;
 		}
 
 		.nicerButton { /* thanks http://www.cssbuttongenerator.com */
@@ -6482,6 +6487,11 @@ Bitcoin.Util = {
 		.unittests { text-align: center; }
 		.unittests div { width: 894px; font-family: monospace; text-align: left; margin: auto; padding: 5px; border: 1px solid black; }
 		
+		#busyblock { position: fixed; display: none; background: url("data:image/gif;base64,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") #ccc no-repeat center; opacity: 0.4; width: 100%; height: 100%; top: 0; left: 0; z-index: 5000; }
+		#busyblock.busy { display: block; }
+		.hide { display: none; }
+		.show { display: block; }
+
 		/* IE8 */
 		.qrcodetable { border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse; }
 		.qrcodetddark { border-width: 0px; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 2px; height: 2px; background-color: #000000; }
@@ -6570,6 +6580,7 @@ Bitcoin.Util = {
 	</style>
 </head>
 <body onclick="SecureRandom.seedTime();" onkeypress="SecureRandom.seedTime();" onmousemove="ninja.seeder.seed(event);" onLoad="guessPrinterSettings(); setDesign(ninja.getQueryString()['design']);">
+	<div id="busyblock"></div>
 	<div id="main">
     	<div id="logoback">
           	<div id="culturemenu">
@@ -6730,7 +6741,7 @@ Bitcoin.Util = {
                     </div>
                     
                     <div id="keyButtons" style="display: block; float: left;">
-                    <input type="button" id="papergenerate" value="Random-generate new keys" onClick="ninja.wallets.paperwallet.build(document.getElementById('paperlimit').value * 1, document.getElementById('paperlimitperpage').value * 1, !document.getElementById('paperart').checked); printCounter=0;" />
+                    <input type="button" id="papergenerate" value="Random-generate new keys" onClick="ninja.wallets.paperwallet.build(document.getElementById('paperlimit').value * 1, document.getElementById('paperlimitperpage').value * 1, !document.getElementById('paperart').checked, document.getElementById('paperpassphrase').value); printCounter=0;" />
 
                     <input type="button" id="papergenerate" value="Supply my own key or vanity address..." onClick="document.getElementById('keyButtons').style.display='none'; document.getElementById('supplyKeys').style.display='block';" />
                     </div>
@@ -6740,7 +6751,11 @@ Bitcoin.Util = {
                     </p>
                     <p style="margin: 0; padding:0;"><a href="#" style="font-size: 11px;" onClick="document.getElementById('keyButtons').style.display='block'; document.getElementById('supplyKeys').style.display='none';">&laquo; Back</a></p>
                     </div>
-                    
+
+					<div id="paperadvancedcommands" class="row extra">
+						<span><label id="paperlabelencrypt">BIP38 Encrypt?</label> <input type="checkbox" id="paperencrypt" onchange="ninja.wallets.paperwallet.toggleEncrypt(this);" /></span>
+						<span><label id="paperlabelBIPpassphrase">Passphrase:</label> <input type="text" id="paperpassphrase" /></span>
+					</div>
                     
 					<span class="print">
                     <a href="#" class="nicerButton" onClick="doPrint('generate');">Print Wallet Front</a>
@@ -6905,6 +6920,262 @@ Bitcoin.Util = {
 				// compressed when both keys are compressed
 				if (ecKey1.compressed && ecKey2.compressed) combinedPrivateKey.setCompressed(true);
 				return combinedPrivateKey;
+			},
+			// 58 base58 characters starting with 6P
+			isBIP38Format: function (key) {
+				key = key.toString();
+				return (/^6P[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{56}$/.test(key));
+			},
+			BIP38EncryptedKeyToByteArrayAsync: function (base58Encrypted, passphrase, callback) {
+				var hex;
+				try {
+					hex = Bitcoin.Base58.decode(base58Encrypted);
+				} catch (e) {
+					callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+					return;
+				}
+
+				// 43 bytes: 2 bytes prefix, 37 bytes payload, 4 bytes checksum
+				if (hex.length != 43) {
+					callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+					return;
+				}
+				// first byte is always 0x01 
+				else if (hex[0] != 0x01) {
+					callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+					return;
+				}
+
+				var expChecksum = hex.slice(-4);
+				hex = hex.slice(0, -4);
+				var checksum = Bitcoin.Util.dsha256(hex);
+				if (checksum[0] != expChecksum[0] || checksum[1] != expChecksum[1] || checksum[2] != expChecksum[2] || checksum[3] != expChecksum[3]) {
+					callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+					return;
+				}
+
+				var isCompPoint = false;
+				var isECMult = false;
+				var hasLotSeq = false;
+				// second byte for non-EC-multiplied key
+				if (hex[1] == 0x42) {
+					// key should use compression
+					if (hex[2] == 0xe0) {
+						isCompPoint = true;
+					}
+					// key should NOT use compression
+					else if (hex[2] != 0xc0) {
+						callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+						return;
+					}
+				}
+				// second byte for EC-multiplied key 
+				else if (hex[1] == 0x43) {
+					isECMult = true;
+					isCompPoint = (hex[2] & 0x20) != 0;
+					hasLotSeq = (hex[2] & 0x04) != 0;
+					if ((hex[2] & 0x24) != hex[2]) {
+						callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+						return;
+					}
+				}
+				else {
+					callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+					return;
+				}
+
+				var decrypted;
+				var AES_opts = { mode: new Crypto.mode.ECB(Crypto.pad.NoPadding), asBytes: true };
+
+				var verifyHashAndReturn = function () {
+					var tmpkey = new Bitcoin.ECKey(decrypted); // decrypted using closure
+					var base58AddrText = tmpkey.setCompressed(isCompPoint).getBitcoinAddress(); // isCompPoint using closure
+					checksum = Bitcoin.Util.dsha256(base58AddrText); // checksum using closure
+
+					if (checksum[0] != hex[3] || checksum[1] != hex[4] || checksum[2] != hex[5] || checksum[3] != hex[6]) {
+						callback(new Error(ninja.translator.get("bip38alertincorrectpassphrase"))); // callback using closure
+						return;
+					}
+					callback(tmpkey.getBitcoinPrivateKeyByteArray()); // callback using closure
+				};
+
+				if (!isECMult) {
+					var addresshash = hex.slice(3, 7);
+					Crypto_scrypt(passphrase, addresshash, 16384, 8, 8, 64, function (derivedBytes) {
+						var k = derivedBytes.slice(32, 32 + 32);
+						decrypted = Crypto.AES.decrypt(hex.slice(7, 7 + 32), k, AES_opts);
+						for (var x = 0; x < 32; x++) decrypted[x] ^= derivedBytes[x];
+						verifyHashAndReturn(); //TODO: pass in 'decrypted' as a param
+					});
+				}
+				else {
+					var ownerentropy = hex.slice(7, 7 + 8);
+					var ownersalt = !hasLotSeq ? ownerentropy : ownerentropy.slice(0, 4);
+					Crypto_scrypt(passphrase, ownersalt, 16384, 8, 8, 32, function (prefactorA) {
+						var passfactor;
+						if (!hasLotSeq) { // hasLotSeq using closure
+							passfactor = prefactorA;
+						} else {
+							var prefactorB = prefactorA.concat(ownerentropy); // ownerentropy using closure
+							passfactor = Bitcoin.Util.dsha256(prefactorB);
+						}
+						var kp = new Bitcoin.ECKey(passfactor);
+						var passpoint = kp.setCompressed(true).getPub();
+
+						var encryptedpart2 = hex.slice(23, 23 + 16);
+
+						var addresshashplusownerentropy = hex.slice(3, 3 + 12);
+						Crypto_scrypt(passpoint, addresshashplusownerentropy, 1024, 1, 1, 64, function (derived) {
+							var k = derived.slice(32);
+
+							var unencryptedpart2 = Crypto.AES.decrypt(encryptedpart2, k, AES_opts);
+							for (var i = 0; i < 16; i++) { unencryptedpart2[i] ^= derived[i + 16]; }
+
+							var encryptedpart1 = hex.slice(15, 15 + 8).concat(unencryptedpart2.slice(0, 0 + 8));
+							var unencryptedpart1 = Crypto.AES.decrypt(encryptedpart1, k, AES_opts);
+							for (var i = 0; i < 16; i++) { unencryptedpart1[i] ^= derived[i]; }
+
+							var seedb = unencryptedpart1.slice(0, 0 + 16).concat(unencryptedpart2.slice(8, 8 + 8));
+
+							var factorb = Bitcoin.Util.dsha256(seedb);
+
+							var ps = EllipticCurve.getSECCurveByName("secp256k1");
+							var privateKey = BigInteger.fromByteArrayUnsigned(passfactor).multiply(BigInteger.fromByteArrayUnsigned(factorb)).remainder(ps.getN());
+
+							decrypted = privateKey.toByteArrayUnsigned();
+							verifyHashAndReturn();
+						});
+					});
+				}
+			},
+			BIP38PrivateKeyToEncryptedKeyAsync: function (base58Key, passphrase, compressed, callback) {
+				var privKey = new Bitcoin.ECKey(base58Key);
+				var privKeyBytes = privKey.getBitcoinPrivateKeyByteArray();
+				var address = privKey.setCompressed(compressed).getBitcoinAddress();
+
+				// compute sha256(sha256(address)) and take first 4 bytes
+				var salt = Bitcoin.Util.dsha256(address).slice(0, 4);
+
+				// derive key using scrypt
+				var AES_opts = { mode: new Crypto.mode.ECB(Crypto.pad.NoPadding), asBytes: true };
+
+				Crypto_scrypt(passphrase, salt, 16384, 8, 8, 64, function (derivedBytes) {
+					for (var i = 0; i < 32; ++i) {
+						privKeyBytes[i] ^= derivedBytes[i];
+					}
+
+					// 0x01 0x42 + flagbyte + salt + encryptedhalf1 + encryptedhalf2
+					var flagByte = compressed ? 0xe0 : 0xc0;
+					var encryptedKey = [0x01, 0x42, flagByte].concat(salt);
+					encryptedKey = encryptedKey.concat(Crypto.AES.encrypt(privKeyBytes, derivedBytes.slice(32), AES_opts));
+					encryptedKey = encryptedKey.concat(Bitcoin.Util.dsha256(encryptedKey).slice(0, 4));
+					callback(Bitcoin.Base58.encode(encryptedKey));
+				});
+			},
+			BIP38GenerateIntermediatePointAsync: function (passphrase, lotNum, sequenceNum, callback) {
+				var noNumbers = lotNum === null || sequenceNum === null;
+				var rng = new SecureRandom();
+				var ownerEntropy, ownerSalt;
+
+				if (noNumbers) {
+					ownerSalt = ownerEntropy = new Array(8);
+					rng.nextBytes(ownerEntropy);
+				}
+				else {
+					// 1) generate 4 random bytes
+					ownerSalt = new Array(4);
+
+					rng.nextBytes(ownerSalt);
+
+					// 2)  Encode the lot and sequence numbers as a 4 byte quantity (big-endian):
+					// lotnumber * 4096 + sequencenumber. Call these four bytes lotsequence.
+					var lotSequence = BigInteger(4096 * lotNum + sequenceNum).toByteArrayUnsigned();
+
+					// 3) Concatenate ownersalt + lotsequence and call this ownerentropy.
+					var ownerEntropy = ownerSalt.concat(lotSequence);
+				}
+
+
+				// 4) Derive a key from the passphrase using scrypt
+				Crypto_scrypt(passphrase, ownerSalt, 16384, 8, 8, 32, function (prefactor) {
+					// Take SHA256(SHA256(prefactor + ownerentropy)) and call this passfactor
+					var passfactorBytes = noNumbers ? prefactor : Bitcoin.Util.dsha256(prefactor.concat(ownerEntropy));
+					var passfactor = BigInteger.fromByteArrayUnsigned(passfactorBytes);
+
+					// 5) Compute the elliptic curve point G * passfactor, and convert the result to compressed notation (33 bytes)
+					var ellipticCurve = EllipticCurve.getSECCurveByName("secp256k1");
+					var passpoint = ellipticCurve.getG().multiply(passfactor).getEncoded(1);
+
+					// 6) Convey ownersalt and passpoint to the party generating the keys, along with a checksum to ensure integrity.
+					// magic bytes "2C E9 B3 E1 FF 39 E2 51" followed by ownerentropy, and then passpoint
+					var magicBytes = [0x2C, 0xE9, 0xB3, 0xE1, 0xFF, 0x39, 0xE2, 0x51];
+					if (noNumbers) magicBytes[7] = 0x53;
+
+					var intermediate = magicBytes.concat(ownerEntropy).concat(passpoint);
+
+					// base58check encode
+					intermediate = intermediate.concat(Bitcoin.Util.dsha256(intermediate).slice(0, 4));
+					callback(Bitcoin.Base58.encode(intermediate));
+				});
+			},
+			BIP38GenerateECAddressAsync: function (intermediate, compressed, callback) {
+				// decode IPS
+				var x = Bitcoin.Base58.decode(intermediate);
+				//if(x.slice(49, 4) !== Bitcoin.Util.dsha256(x.slice(0,49)).slice(0,4)) {
+				//	callback({error: 'Invalid intermediate passphrase string'});
+				//}
+				var noNumbers = (x[7] === 0x53);
+				var ownerEntropy = x.slice(8, 8 + 8);
+				var passpoint = x.slice(16, 16 + 33);
+
+				// 1) Set flagbyte.
+				// set bit 0x20 for compressed key
+				// set bit 0x04 if ownerentropy contains a value for lotsequence
+				var flagByte = (compressed ? 0x20 : 0x00) | (noNumbers ? 0x00 : 0x04);
+
+
+				// 2) Generate 24 random bytes, call this seedb.
+				var seedB = new Array(24);
+				var rng = new SecureRandom();
+				rng.nextBytes(seedB);
+
+				// Take SHA256(SHA256(seedb)) to yield 32 bytes, call this factorb.
+				var factorB = Bitcoin.Util.dsha256(seedB);
+
+				// 3) ECMultiply passpoint by factorb. Use the resulting EC point as a public key and hash it into a Bitcoin
+				// address using either compressed or uncompressed public key methodology (specify which methodology is used
+				// inside flagbyte). This is the generated Bitcoin address, call it generatedaddress.
+				var ec = EllipticCurve.getSECCurveByName("secp256k1").getCurve();
+				var generatedPoint = ec.decodePointHex(ninja.publicKey.getHexFromByteArray(passpoint));
+				var generatedBytes = generatedPoint.multiply(BigInteger.fromByteArrayUnsigned(factorB)).getEncoded(compressed);
+				var generatedAddress = (new Bitcoin.Address(Bitcoin.Util.sha256ripe160(generatedBytes))).toString();
+
+				// 4) Take the first four bytes of SHA256(SHA256(generatedaddress)) and call it addresshash.
+				var addressHash = Bitcoin.Util.dsha256(generatedAddress).slice(0, 4);
+
+				// 5) Now we will encrypt seedb. Derive a second key from passpoint using scrypt
+				Crypto_scrypt(passpoint, addressHash.concat(ownerEntropy), 1024, 1, 1, 64, function (derivedBytes) {
+					// 6) Do AES256Encrypt(seedb[0...15]] xor derivedhalf1[0...15], derivedhalf2), call the 16-byte result encryptedpart1
+					for (var i = 0; i < 16; ++i) {
+						seedB[i] ^= derivedBytes[i];
+					}
+					var AES_opts = { mode: new Crypto.mode.ECB(Crypto.pad.NoPadding), asBytes: true };
+					var encryptedPart1 = Crypto.AES.encrypt(seedB.slice(0, 16), derivedBytes.slice(32), AES_opts);
+
+					// 7) Do AES256Encrypt((encryptedpart1[8...15] + seedb[16...23]) xor derivedhalf1[16...31], derivedhalf2), call the 16-byte result encryptedseedb.
+					var message2 = encryptedPart1.slice(8, 8 + 8).concat(seedB.slice(16, 16 + 8));
+					for (var i = 0; i < 16; ++i) {
+						message2[i] ^= derivedBytes[i + 16];
+					}
+					var encryptedSeedB = Crypto.AES.encrypt(message2, derivedBytes.slice(32), AES_opts);
+
+					// 0x01 0x43 + flagbyte + addresshash + ownerentropy + encryptedpart1[0...7] + encryptedpart2
+					var encryptedKey = [0x01, 0x43, flagByte].concat(addressHash).concat(ownerEntropy).concat(encryptedPart1.slice(0, 8)).concat(encryptedSeedB);
+
+					// base58check encode
+					encryptedKey = encryptedKey.concat(Bitcoin.Util.dsha256(encryptedKey).slice(0, 4));
+					callback(generatedAddress, Bitcoin.Base58.encode(encryptedKey));
+				});
 			}
 		};
 
@@ -7157,6 +7428,8 @@ Bitcoin.Util = {
 					// javascript alerts or messages
 					"paperlabelbitcoinaddress": "Bitcoin Address:",
 					"paperlabelprivatekey": "Private Key (Wallet Import Format):",
+					"paperlabelencryptedkey": "Encrypted Private Key (Password required)",
+					"bip38alertpassphraserequired": "Passphrase required for BIP38 key",
 				},
 
 				"es": {
@@ -7333,7 +7606,10 @@ Bitcoin.Util = {
 					limitElement.value = pageBreakAt;
 				}
 				if (document.getElementById("paperkeyarea").innerHTML == "") {
-					ninja.wallets.paperwallet.build(pageBreakAt, pageBreakAt, !document.getElementById('paperart').checked);
+					document.getElementById("paperpassphrase").disabled = true;
+					document.getElementById("paperencrypt").checked = false;
+					ninja.wallets.paperwallet.encrypt = false;
+					ninja.wallets.paperwallet.build(pageBreakAt, pageBreakAt, !document.getElementById('paperart').checked, document.getElementById('paperpassphrase').value);
 				}
 			},
 
@@ -7349,14 +7625,28 @@ Bitcoin.Util = {
 			useArtisticWallet: true,
 			pageBreakAt: null,
 
-			build: function (numWallets, pageBreakAt, useArtisticWallet) {
+			build: function (numWallets, pageBreakAt, useArtisticWallet, passphrase) {
 				if (numWallets < 1) numWallets = 1;
 				ninja.wallets.paperwallet.remaining = numWallets;
 				ninja.wallets.paperwallet.count = 0;
 				ninja.wallets.paperwallet.useArtisticWallet = useArtisticWallet;
 				ninja.wallets.paperwallet.pageBreakAt = pageBreakAt;
 				document.getElementById("paperkeyarea").innerHTML = "";
-				setTimeout(ninja.wallets.paperwallet.batch, 0);
+				if (ninja.wallets.paperwallet.encrypt) {
+					if (passphrase == "") {
+						alert(ninja.translator.get("bip38alertpassphraserequired"));
+						return;
+					}
+					document.getElementById("busyblock").className = "busy";
+					ninja.privateKey.BIP38GenerateIntermediatePointAsync(passphrase, null, null, function (intermediate) {
+						ninja.wallets.paperwallet.intermediatePoint = intermediate;
+						document.getElementById("busyblock").className = "";
+						setTimeout(ninja.wallets.paperwallet.batch, 0);
+					});
+				}
+				else {
+					setTimeout(ninja.wallets.paperwallet.batch, 0);
+				}
 			},
 
 			batch: function () {
@@ -7397,18 +7687,35 @@ Bitcoin.Util = {
 			// generate bitcoin address, private key, QR Code and update information in the HTML
 			// idPostFix: 1, 2, 3, etc.
 			generateNewWallet: function (idPostFix) {
-				var key = new Bitcoin.ECKey(false);
-				var bitcoinAddress = key.getBitcoinAddress();
-				var privateKeyWif = key.getBitcoinWalletImportFormat();
-				if (ninja.wallets.paperwallet.useArtisticWallet) {
-					ninja.wallets.paperwallet.showArtisticWallet(idPostFix, bitcoinAddress, privateKeyWif);
+				if (ninja.wallets.paperwallet.encrypt) {
+					ninja.privateKey.BIP38GenerateECAddressAsync(ninja.wallets.paperwallet.intermediatePoint, false, function (address, encryptedKey) {
+						if (ninja.wallets.paperwallet.useArtisticWallet) {
+							ninja.wallets.paperwallet.showArtisticWallet(idPostFix, address, encryptedKey);
+						}
+						else {
+							ninja.wallets.paperwallet.showWallet(idPostFix, address, encryptedKey);
+						}
+					});
 				}
 				else {
-					ninja.wallets.paperwallet.showWallet(idPostFix, bitcoinAddress, privateKeyWif);
+					var key = new Bitcoin.ECKey(false);
+					var bitcoinAddress = key.getBitcoinAddress();
+					var privateKeyWif = key.getBitcoinWalletImportFormat();
+					if (ninja.wallets.paperwallet.useArtisticWallet) {
+						ninja.wallets.paperwallet.showArtisticWallet(idPostFix, bitcoinAddress, privateKeyWif);
+					}
+					else {
+						ninja.wallets.paperwallet.showWallet(idPostFix, bitcoinAddress, privateKeyWif);
+					}
 				}
 			},
 
 			templateHtml: function (i) {
+				var privateKeyLabel = ninja.translator.get("paperlabelprivatekey");
+				if (ninja.wallets.paperwallet.encrypt) {
+					privateKeyLabel = ninja.translator.get("paperlabelencryptedkey");
+				}
+
 				var walletHtml =
 							"<div class='public'>" +
 								"<div id='qrcode_public" + i + "' class='qrcode_public'></div>" +
@@ -7421,7 +7728,7 @@ Bitcoin.Util = {
 							"<div class='private'>" +
 								"<div id='qrcode_private" + i + "' class='qrcode_private'></div>" +
 								"<div class='privwif'>" +
-									"<span class='label'>" + ninja.translator.get("paperlabelprivatekey") + "</span>" +
+									"<span class='label'>" + privateKeyLabel + "</span>" +
 									"<span class='output' id='btcprivwif" + i + "'></span>" +
 									"<span class='output' id='dupbtcprivwif" + i + "'></span>" +
 								"</div>" +
@@ -7429,19 +7736,24 @@ Bitcoin.Util = {
 				return walletHtml;
 			},
 
-			showWallet: function (idPostFix, bitcoinAddress, privateKeyWif) {
+			showWallet: function (idPostFix, bitcoinAddress, privateKey) {
 				document.getElementById("btcaddress" + idPostFix).innerHTML = bitcoinAddress;
 				document.getElementById("dupbtcaddress" + idPostFix).innerHTML = bitcoinAddress;
-				document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKeyWif;
-				document.getElementById("dupbtcprivwif" + idPostFix).innerHTML = privateKeyWif;
+				document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKey;
+				document.getElementById("dupbtcprivwif" + idPostFix).innerHTML = privateKey;
 				var keyValuePair = {};
 				keyValuePair["qrcode_public" + idPostFix] = bitcoinAddress;
-				keyValuePair["qrcode_private" + idPostFix] = privateKeyWif;
+				keyValuePair["qrcode_private" + idPostFix] = privateKey;
 				ninja.qrCode.showQrCode(keyValuePair);
 				document.getElementById("keyarea" + idPostFix).style.display = "block";
 			},
 
 			templateArtisticHtml: function (i) {
+				var keyelement = 'btcprivwif';
+				if (ninja.wallets.paperwallet.encrypt) {
+					keyelement = 'btcencryptedkey'
+				}
+
 				var walletHtml =
 							"<div class='artwallet' id='artwallet" + i + "'>" +
 				//"<iframe src='bitcoin-wallet-01.svg' id='papersvg" + i + "' class='papersvg' ></iframe>" +
@@ -7450,21 +7762,29 @@ Bitcoin.Util = {
 								"<div id='qrcode_private" + i + "' class='qrcode_private'></div>" +
 								"<div class='btcaddress' id='btcaddress" + i + "'></div>" +
 								"<div class='dupbtcaddress' id='dupbtcaddress" + i + "'></div>" +
-								"<div class='btcprivwif' id='btcprivwif" + i + "'></div>" +
-								"<div class='dupbtcprivwif' id='dupbtcprivwif" + i + "'></div>" +
+								"<div class='" + keyelement + "' id='" + keyelement + i + "'></div>" +
+								"<div class='dup" + keyelement + "' id='dup" + keyelement + i + "'></div>" +
 							"</div>";
 				return walletHtml;
 			},
 
-			showArtisticWallet: function (idPostFix, bitcoinAddress, privateKeyWif) {
+			showArtisticWallet: function (idPostFix, bitcoinAddress, privateKey) {
 				var keyValuePair = {};
 				keyValuePair["qrcode_public" + idPostFix] = bitcoinAddress;
-				keyValuePair["qrcode_private" + idPostFix] = privateKeyWif;
+				keyValuePair["qrcode_private" + idPostFix] = privateKey;
 				ninja.qrCode.showQrCode(keyValuePair, 2.75);
 				document.getElementById("btcaddress" + idPostFix).innerHTML = bitcoinAddress;
 				document.getElementById("dupbtcaddress" + idPostFix).innerHTML = bitcoinAddress;
-				document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKeyWif;
-				document.getElementById("dupbtcprivwif" + idPostFix).innerHTML = privateKeyWif;
+
+				if (ninja.wallets.paperwallet.encrypt) {
+					var half = privateKey.length / 2;
+					document.getElementById("btcencryptedkey" + idPostFix).innerHTML = privateKey;
+					document.getElementById("dupbtcencryptedkey" + idPostFix).innerHTML = privateKey;
+				}
+				else {
+					document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKey;
+					document.getElementById("dupbtcprivwif" + idPostFix).innerHTML = privateKey;
+				}
 
 				// CODE to modify SVG DOM elements
 				//var paperSvg = document.getElementById("papersvg" + idPostFix);
@@ -7492,6 +7812,38 @@ Bitcoin.Util = {
 					document.getElementById("paperlimitperpage").value = ninja.wallets.paperwallet.pageBreakAtDefault;
 					document.getElementById("paperlimit").value = ninja.wallets.paperwallet.pageBreakAtDefault;
 				}
+			},
+
+			toggleEncrypt: function (element) {
+				// enable/disable passphrase textbox
+				document.getElementById("paperpassphrase").disabled = !element.checked;
+				ninja.wallets.paperwallet.encrypt = element.checked;
+				ninja.wallets.paperwallet.resetLimits();
+			},
+
+			resetLimits: function () {
+				var hideArt = document.getElementById("paperart");
+				var paperEncrypt = document.getElementById("paperencrypt");
+				var limit;
+				var limitperpage;
+
+				document.getElementById("paperkeyarea").style.fontSize = "100%";
+				if (!hideArt.checked) {
+					limit = ninja.wallets.paperwallet.pageBreakAtArtisticDefault;
+					limitperpage = ninja.wallets.paperwallet.pageBreakAtArtisticDefault;
+				}
+				else if (hideArt.checked && paperEncrypt.checked) {
+					limit = ninja.wallets.paperwallet.pageBreakAtDefault;
+					limitperpage = ninja.wallets.paperwallet.pageBreakAtDefault;
+					// reduce font size
+					document.getElementById("paperkeyarea").style.fontSize = "95%";
+				}
+				else if (hideArt.checked && !paperEncrypt.checked) {
+					limit = ninja.wallets.paperwallet.pageBreakAtDefault;
+					limitperpage = ninja.wallets.paperwallet.pageBreakAtDefault;
+				}
+				document.getElementById("paperlimitperpage").value = limitperpage;
+				document.getElementById("paperlimit").value = limit;
 			}
 		};
 	</script>
