@@ -8376,7 +8376,12 @@ Bitcoin.Util = {
 			suppliedKey = suppliedKey.trim(); // in case any spaces or whitespace got pasted in
 			document.getElementById('suppliedPrivateKey').value = suppliedKey;
 			if (!ninja.privateKey.isPrivateKey(suppliedKey)) {
-				alert ('*** INVALID KEY! ***\r\rThis should be the private "WIF" Wallet Import Format key -- not the public key (or "Vanity Key") itself. These always start with the number 5 and look something like this:\r\r5HuzK5hG43U7v53R7REt4Eu33BsVfhm86PA3Q6iANs13kwqUgSx');
+				if (confirm ('*** INVALID KEY! ***\r\rThis should be the private "WIF" Wallet Import Format key -- not the public key (or "Vanity Key") itself. These always start with the number 5 and look something like this:\r\r5HuzK5hG43U7v53R7REt4Eu33BsVfhm86PA3Q6iANs13kwqUgSx\r\rWould you like to use the entered text as a passphrase and create a Private Key using a SHA256 hash of the passphrase?\r\rWarning: Choosing a strong passphrase is important to avoid brute force attempts to guess your passphrase and steal your bitcoins.')) {
+					var wallet = new Bitcoin.ECKey(Crypto.SHA256(suppliedKey, { asBytes: true }));
+					var computedPublicAddress = wallet.getBitcoinAddress();
+					var privateKey = wallet.getBitcoinWalletImportFormat();
+					ninja.wallets.paperwallet.buildManual({ address: computedPublicAddress, wifKey: privateKey }, document.getElementById('paperpassphrase').value);
+				}
 			} else {			
 				var computedPublicAddress = new Bitcoin.ECKey(suppliedKey).getBitcoinAddress();
 				alert ('OK! This is a valid private key whose public address is:\r\r'+computedPublicAddress);
