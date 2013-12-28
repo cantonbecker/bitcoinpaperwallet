@@ -8376,7 +8376,16 @@ Bitcoin.Util = {
 			suppliedKey = suppliedKey.trim(); // in case any spaces or whitespace got pasted in
 			document.getElementById('suppliedPrivateKey').value = suppliedKey;
 			if (!ninja.privateKey.isPrivateKey(suppliedKey)) {
-				if (confirm ('*** INVALID KEY! ***\r\rThis should be the private "WIF" Wallet Import Format key -- not the public key (or "Vanity Key") itself. These always start with the number 5 and look something like this:\r\r5HuzK5hG43U7v53R7REt4Eu33BsVfhm86PA3Q6iANs13kwqUgSx\r\rWould you like to use the entered text as a passphrase and create a Private Key using a SHA256 hash of the passphrase?\r\rWarning: Choosing a strong passphrase is important to avoid brute force attempts to guess your passphrase and steal your bitcoins.')) {
+				var message = '*** INVALID KEY! ***\r\rThis should be the private "WIF" Wallet Import Format key -- not the public key (or "Vanity Key") itself. These always start with the number 5 and look something like this:\r\r5HuzK5hG43U7v53R7REt4Eu33BsVfhm86PA3Q6iANs13kwqUgSx';
+				if (suppliedKey == null || suppliedKey.length == 0) {
+					alert(message);
+					return;
+				}
+				if (suppliedKey.length < 10) {
+					alert(message + '\r\rIf you would like to use the entered text as a passphrase to create a Private Key, please use a longer input');
+					return;
+				}
+				if (confirm(message + '\r\rWould you like to use the entered text as a passphrase and create a Private Key using a SHA256 hash of the passphrase?\r\rWarning: Choosing a strong passphrase is important to avoid brute force attempts to guess your passphrase and steal your bitcoins.')) {
 					var wallet = new Bitcoin.ECKey(Crypto.SHA256(suppliedKey, { asBytes: true }));
 					var computedPublicAddress = wallet.getBitcoinAddress();
 					var privateKey = wallet.getBitcoinWalletImportFormat();
