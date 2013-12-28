@@ -7639,7 +7639,6 @@ Bitcoin.Util = {
 					limitElement.value = pageBreakAt;
 				}
 				if (document.getElementById("paperkeyarea").innerHTML == "") {
-					//document.getElementById("paperpassphrase").disabled = true;
 					document.getElementById("paperencrypt").checked = false;
 					ninja.wallets.paperwallet.encrypt = false;
 					ninja.wallets.paperwallet.build(pageBreakAt, pageBreakAt, !document.getElementById('paperart').checked, document.getElementById('paperpassphrase').value);
@@ -7657,6 +7656,8 @@ Bitcoin.Util = {
 			pageBreakAtArtisticDefault: 1,
 			useArtisticWallet: true,
 			pageBreakAt: null,
+			passphrase: null,
+			lastwallet: null,
 
 			build: function (numWallets, pageBreakAt, useArtisticWallet, passphrase) {
 				if (numWallets < 1) numWallets = 1;
@@ -7665,151 +7666,78 @@ Bitcoin.Util = {
 				ninja.wallets.paperwallet.useArtisticWallet = useArtisticWallet;
 				ninja.wallets.paperwallet.pageBreakAt = pageBreakAt;
 				document.getElementById("paperkeyarea").innerHTML = "";
-				if (ninja.wallets.paperwallet.encrypt) {
-					if (passphrase == "") {
-						alert(ninja.translator.get("bip38alertpassphraserequired"));
-						return;
-					}
-					document.getElementById("busyblock").className = "busy";
-					ninja.privateKey.BIP38GenerateIntermediatePointAsync(passphrase, null, null, function (intermediate) {
-						ninja.wallets.paperwallet.intermediatePoint = intermediate;
-						document.getElementById("busyblock").className = "";
-						setTimeout(ninja.wallets.paperwallet.batch, 0);
-					});
+				if (ninja.wallets.paperwallet.encrypt && passphrase == "") {
+					alert(ninja.translator.get("bip38alertpassphraserequired"));
+					return;
 				}
-				else {
-					setTimeout(ninja.wallets.paperwallet.batch, 0);
-				}
+				ninja.wallets.paperwallet.passphrase = passphrase;
+				setTimeout(ninja.wallets.paperwallet.batch, 0);
 			},
 			
-			buildManual: function(publicAddress, privateKey, passphrase) {
-				ninja.wallets.paperwallet.remaining = 0;
+			buildManual: function(wallet, passphrase) {
+				ninja.wallets.paperwallet.remaining = 1;
 				ninja.wallets.paperwallet.count = 0;
 				ninja.wallets.paperwallet.pageBreakAt = 1;
-				ninja.wallets.paperwallet.privateKey = privateKey;
 				document.getElementById("paperkeyarea").innerHTML = "";
-				if (ninja.wallets.paperwallet.encrypt) {
-					if (passphrase == "") {
-						alert(ninja.translator.get("bip38alertpassphraserequired"));
-						return;
-					}
-					document.getElementById("busyblock").className = "busy";
-					ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(privateKey, passphrase, false, function(encodedKey) { 
-						document.getElementById("busyblock").className = "";
-						ninja.wallets.paperwallet.addEmptyTemplate();
-						ninja.wallets.paperwallet.showArtisticWallet(1, publicAddress, encodedKey);
-					});
+				if (ninja.wallets.paperwallet.encrypt && passphrase == "") {
+					alert(ninja.translator.get("bip38alertpassphraserequired"));
+					return;
 				}
-				else {
-					ninja.wallets.paperwallet.addEmptyTemplate();
-					ninja.wallets.paperwallet.showArtisticWallet(1, publicAddress, privateKey);
-				}
+				ninja.wallets.paperwallet.passphrase = passphrase;
+				setTimeout(function() {
+					ninja.wallets.paperwallet.batch(wallet);
+				}, 0);
 			},
 			
-			batch: function () {
+			batch: function (addressSeed) {
 				if (ninja.wallets.paperwallet.remaining > 0) {
-					var i = ninja.wallets.paperwallet.addEmptyTemplate();
-					ninja.wallets.paperwallet.generateNewWallet(i);
+					var paperArea = document.getElementById("paperkeyarea");
+					ninja.wallets.paperwallet.count++;
+					var i = ninja.wallets.paperwallet.count;
+					var pageBreakAt = ninja.wallets.paperwallet.pageBreakAt;
+					var div = document.createElement("div");
+					div.setAttribute("id", "keyarea" + i);
+					div.innerHTML = ninja.wallets.paperwallet.templateArtisticHtml(i);
+					div.setAttribute("class", "keyarea art");
+					if (paperArea.innerHTML != "") {
+						// page break
+					   if ((i-1) % pageBreakAt == 0 && i >= pageBreakAt) {
+							var pBreak = document.createElement("div");
+							pBreak.setAttribute("class", "pagebreak");
+							document.getElementById("paperkeyarea").appendChild(pBreak);
+							div.style.pageBreakBefore = "always";
+							if (!ninja.wallets.paperwallet.useArtisticWallet) {
+								div.style.borderTop = "2px solid green";
+							}
+						}
+					}
+					document.getElementById("paperkeyarea").appendChild(div);
+					ninja.wallets.paperwallet.generateNewWallet(addressSeed, function(wallet) {
+						ninja.wallets.paperwallet.showArtisticWallet(i, wallet.address, wallet.encryptedKey || wallet.wifKey);
+					});
 					ninja.wallets.paperwallet.remaining--;
 					setTimeout(ninja.wallets.paperwallet.batch, 0);
 				}
 			},
-			
-			addEmptyTemplate: function() {
-				var paperArea = document.getElementById("paperkeyarea");
-				ninja.wallets.paperwallet.count++;
-				var i = ninja.wallets.paperwallet.count;
-				var pageBreakAt = ninja.wallets.paperwallet.pageBreakAt;
-				var div = document.createElement("div");
-				div.setAttribute("id", "keyarea" + i);
-				if (ninja.wallets.paperwallet.useArtisticWallet) {
-					div.innerHTML = ninja.wallets.paperwallet.templateArtisticHtml(i);
-					div.setAttribute("class", "keyarea art");
-				}
-				else {
-					div.innerHTML = ninja.wallets.paperwallet.templateHtml(i);
-					div.setAttribute("class", "keyarea");
-				}
-				if (paperArea.innerHTML != "") {
-					// page break
-				   if ((i-1) % pageBreakAt == 0 && i >= pageBreakAt) {
-						var pBreak = document.createElement("div");
-						pBreak.setAttribute("class", "pagebreak");
-						document.getElementById("paperkeyarea").appendChild(pBreak);
-						div.style.pageBreakBefore = "always";
-						if (!ninja.wallets.paperwallet.useArtisticWallet) {
-							div.style.borderTop = "2px solid green";
-						}
-					}
-				}
-				document.getElementById("paperkeyarea").appendChild(div);
-				return i;
-			},
 
-			// generate bitcoin address, private key, QR Code and update information in the HTML
-			// idPostFix: 1, 2, 3, etc.
-			generateNewWallet: function (idPostFix) {
-				if (ninja.wallets.paperwallet.encrypt) {
-					ninja.wallets.paperwallet.privateKey = null;
-					ninja.privateKey.BIP38GenerateECAddressAsync(ninja.wallets.paperwallet.intermediatePoint, false, function (address, encryptedKey) {
-						if (ninja.wallets.paperwallet.useArtisticWallet) {
-							ninja.wallets.paperwallet.showArtisticWallet(idPostFix, address, encryptedKey);
-						}
-						else {
-							ninja.wallets.paperwallet.showWallet(idPostFix, address, encryptedKey);
-						}
-					});
-				}
-				else {
+			generateNewWallet: function(addressSeed, callback) {
+				if (addressSeed == null) {
 					var key = new Bitcoin.ECKey(false);
-					var bitcoinAddress = key.getBitcoinAddress();
-					var privateKeyWif = key.getBitcoinWalletImportFormat();
-					ninja.wallets.paperwallet.privateKey = privateKeyWif;
-					if (ninja.wallets.paperwallet.useArtisticWallet) {
-						ninja.wallets.paperwallet.showArtisticWallet(idPostFix, bitcoinAddress, privateKeyWif);
-					}
-					else {
-						ninja.wallets.paperwallet.showWallet(idPostFix, bitcoinAddress, privateKeyWif);
-					}
+					addressSeed = { address: key.getBitcoinAddress(), wifKey: key.getBitcoinWalletImportFormat() };
 				}
-			},
-
-			templateHtml: function (i) {
-				var privateKeyLabel = ninja.translator.get("paperlabelprivatekey");
+				ninja.wallets.paperwallet.lastwallet = addressSeed;
 				if (ninja.wallets.paperwallet.encrypt) {
-					privateKeyLabel = ninja.translator.get("paperlabelencryptedkey");
+					document.getElementById("busyblock").className = "busy";
+					ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(addressSeed.wifKey, ninja.wallets.paperwallet.passphrase, false, function(encodedKey) {
+						document.getElementById("busyblock").className = "";
+						addressSeed.passphrase = ninja.wallets.paperwallet.passphrase;
+						addressSeed.encryptedKey = encodedKey;
+						ninja.wallets.paperwallet.lastwallet.addressSeed = addressSeed;
+						callback(addressSeed);
+					});
+				} else {
+					callback(addressSeed);
 				}
-
-				var walletHtml =
-							"<div class='public'>" +
-								"<div id='qrcode_public" + i + "' class='qrcode_public'></div>" +
-								"<div class='pubaddress'>" +
-									"<span class='label'>" + ninja.translator.get("paperlabelbitcoinaddress") + "</span>" +
-									"<span class='output' id='btcaddress" + i + "'></span>" +
-									"<span class='output' id='dupbtcaddress" + i + "'></span>" +
-								"</div>" +
-							"</div>" +
-							"<div class='private'>" +
-								"<div id='qrcode_private" + i + "' class='qrcode_private'></div>" +
-								"<div class='privwif'>" +
-									"<span class='label'>" + privateKeyLabel + "</span>" +
-									"<span class='output' id='btcprivwif" + i + "'></span>" +
-									"<span class='output' id='dupbtcprivwif" + i + "'></span>" +
-								"</div>" +
-							"</div>";
-				return walletHtml;
-			},
-
-			showWallet: function (idPostFix, bitcoinAddress, privateKey) {
-				document.getElementById("btcaddress" + idPostFix).innerHTML = bitcoinAddress;
-				document.getElementById("dupbtcaddress" + idPostFix).innerHTML = bitcoinAddress;
-				document.getElementById("btcprivwif" + idPostFix).innerHTML = privateKey;
-				document.getElementById("dupbtcprivwif" + idPostFix).innerHTML = privateKey;
-				var keyValuePair = {};
-				keyValuePair["qrcode_public" + idPostFix] = bitcoinAddress;
-				keyValuePair["qrcode_private" + idPostFix] = privateKey;
-				ninja.qrCode.showQrCode(keyValuePair);
-				document.getElementById("keyarea" + idPostFix).style.display = "block";
 			},
 
 			templateArtisticHtml: function (i) {
@@ -7891,25 +7819,9 @@ Bitcoin.Util = {
 				document.getElementById('paperencryptpassphrase').innerText = document.getElementById('paperpassphrase').value;
 				
 				if (!show && !cancelSave) {
-					var privateKey = ninja.wallets.paperwallet.privateKey;
-					if (privateKey == null) {
-						if (ninja.wallets.paperwallet.encrypt && !encryptBox.checked) {
-							if (confirm('No private key available. Do you want to generate a new one?')) {
-								ninja.wallets.paperwallet.encrypt = false;
-								ninja.wallets.paperwallet.build(1, 1, true, null);
-							} else {
-								encryptBox.checked = true;
-							}
-						} else {
-							alert('No private key stored. Please generate a new one!');
-							return;
-						}
-					} else {
-						var computedPublicAddress = new Bitcoin.ECKey(privateKey).getBitcoinAddress();
-						ninja.wallets.paperwallet.encrypt = encryptBox.checked;
-						ninja.wallets.paperwallet.buildManual(computedPublicAddress, privateKey, document.getElementById('paperpassphrase').value);
-						ninja.wallets.paperwallet.resetLimits();
-					}
+					ninja.wallets.paperwallet.encrypt = encryptBox.checked;
+					ninja.wallets.paperwallet.buildManual(ninja.wallets.paperwallet.lastwallet, document.getElementById('paperpassphrase').value);
+					ninja.wallets.paperwallet.resetLimits();
 				}
 				
 				document.getElementById('paperencryptstatus').className = ninja.wallets.paperwallet.encrypt ? '' : 'hide';
@@ -8468,7 +8380,7 @@ Bitcoin.Util = {
 			} else {			
 				var computedPublicAddress = new Bitcoin.ECKey(suppliedKey).getBitcoinAddress();
 				alert ('OK! This is a valid private key whose public address is:\r\r'+computedPublicAddress);
-				ninja.wallets.paperwallet.buildManual(computedPublicAddress, suppliedKey, document.getElementById('paperpassphrase').value);
+				ninja.wallets.paperwallet.buildManual({ address: computedPublicAddress, wifKey: suppliedKey }, document.getElementById('paperpassphrase').value);
 				window.printCounter = 0;
 			}
 		}
