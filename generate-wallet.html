@@ -7473,6 +7473,40 @@ Bitcoin.Util = {
 			}
 			return result;
 		};
+		
+		// use when passing an Array of Functions
+		ninja.runSerialized = function (functions, onComplete) {
+			onComplete = onComplete || function () { };
+		
+			if (functions.length === 0) onComplete();
+			else {
+				// run the first function, and make it call this
+				// function when finished with the rest of the list
+				var f = functions.shift();
+				f(function () { ninja.runSerialized(functions, onComplete); });
+			}
+		};
+		
+		ninja.forSerialized = function (initial, max, whatToDo, onComplete) {
+			onComplete = onComplete || function () { };
+		
+			if (initial === max) { onComplete(); }
+			else {
+				// same idea as runSerialized
+				whatToDo(initial, function () { ninja.forSerialized(++initial, max, whatToDo, onComplete); });
+			}
+		};
+		
+		// use when passing an Object (dictionary) of Functions
+		ninja.foreachSerialized = function (collection, whatToDo, onComplete) {
+			var keys = [];
+			for (var name in collection) {
+				keys.push(name);
+			}
+			ninja.forSerialized(0, keys.length, function (i, callback) {
+				whatToDo(keys[i], callback);
+			}, onComplete);
+		};
 	</script>
 
 	<script type="text/javascript">
@@ -7911,17 +7945,19 @@ Bitcoin.Util = {
 	<script type="text/javascript">
 	(function (ninja) {
 		var ut = ninja.unitTests = {
-			runTests: function () {
+			runSynchronousTests: function () {
+				document.getElementById("busyblock").className = "busy";
 				var div = document.createElement("div");
 				div.setAttribute("class", "unittests");
+				div.setAttribute("id", "unittests");
 				var testResults = "";
 				var passCount = 0;
 				var testCount = 0;
-				for (var test in ut.tests) {
+				for (var test in ut.synchronousTests) {
 					var exceptionMsg = "";
 					var resultBool = false;
 					try {
-						resultBool = ut.tests[test]();
+						resultBool = ut.synchronousTests[test]();
 					} catch (ex) {
 						exceptionMsg = ex.toString();
 						resultBool = false;
@@ -7936,15 +7972,34 @@ Bitcoin.Util = {
 					testCount++;
 					testResults += test + ": " + passFailStr + "<br/>";
 				}
-				testResults += passCount + " of " + testCount + " tests passed";
-				div.innerHTML = "<h3>Unit Tests</h3><div>" + testResults + "</div>";
-				document.body.appendChild(div);
+				testResults += passCount + " of " + testCount + " synchronous tests passed";
 				if (passCount < testCount) {
-					alert((testCount - passCount) + " unit test(s) failed");
+					testResults += "<b>" + (testCount - passCount) + " unit test(s) failed</b>";
 				}
+				div.innerHTML = "<h3>Unit Tests</h3><div id=\"unittestresults\">" + testResults + "<br/><br/></div>";
+				document.body.appendChild(div);
+				document.getElementById("busyblock").className = "";
+
 			},
 
-			tests: {
+			runAsynchronousTests: function () {
+				var div = document.createElement("div");
+				div.setAttribute("class", "unittests");
+				div.setAttribute("id", "asyncunittests");
+				div.innerHTML = "<h3>Async Unit Tests</h3><div id=\"asyncunittestresults\"></div><br/><br/><br/><br/>";
+				document.body.appendChild(div);
+	
+				// run the asynchronous tests one after another so we don't crash the browser
+				ninja.foreachSerialized(ninja.unitTests.asynchronousTests, function (name, cb) {
+					document.getElementById("busyblock").className = "busy";
+					ninja.unitTests.asynchronousTests[name](cb);
+				}, function () {
+					document.getElementById("asyncunittestresults").innerHTML += "running of asynchronous unit tests complete!<br/>";
+					document.getElementById("busyblock").className = "";
+				});
+			},
+	
+			synchronousTests: {
 				//ninja.publicKey tests
 				testIsPublicKeyHexFormat: function () {
 					var key = "0478982F40FA0C0B7A55717583AFC99A4EDFD301A2729DC59B0B8EB9E18692BCB521F054FAD982AF4CC1933AFD1F1B563EA779A6AA6CCE36A30B947DD653E63E44";
@@ -8303,6 +8358,15 @@ Bitcoin.Util = {
 					}
 					return true;
 				},
+				testGetECKeyFromBase6Key: function () {
+					var baseKey = "100531114202410255230521444145414341221420541210522412225005202300434134213212540304311321323051431";
+					var hexKey = "292665C3872418ADF1DA7FFA3A646F2F0602246DA6098A91D229C32150F2718B";
+					var ecKey = new Bitcoin.ECKey(baseKey);
+					if (ecKey.getBitcoinHexFormat() != hexKey) {
+						return false;
+					}
+					return true;
+				},
 
 				// EllipticCurve tests
 				testDecodePointEqualsDecodeFrom: function () {
@@ -8340,6 +8404,136 @@ Bitcoin.Util = {
 					}
 					return true;
 				}
+			},
+	
+			asynchronousTests: {
+				//https://en.bitcoin.it/wiki/BIP_0038
+				testBip38: function (done) {
+					var tests = [
+					//No compression, no EC multiply
+						["6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg", "TestingOneTwoThree", "5KN7MzqK5wt2TP1fQCYyHBtDrXdJuXbUzm4A9rKAteGu3Qi5CVR"],
+						["6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq", "Satoshi", "5HtasZ6ofTHP6HCwTqTkLDuLQisYPah7aUnSKfC7h4hMUVw2gi5"],
+					//Compression, no EC multiply
+						["6PYNKZ1EAgYgmQfmNVamxyXVWHzK5s6DGhwP4J5o44cvXdoY7sRzhtpUeo", "TestingOneTwoThree", "L44B5gGEpqEDRS9vVPz7QT35jcBG2r3CZwSwQ4fCewXAhAhqGVpP"],
+						["6PYLtMnXvfG3oJde97zRyLYFZCYizPU5T3LwgdYJz1fRhh16bU7u6PPmY7", "Satoshi", "KwYgW8gcxj1JWJXhPSu4Fqwzfhp5Yfi42mdYmMa4XqK7NJxXUSK7"],
+					//EC multiply, no compression, no lot/sequence numbers
+						["6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX", "TestingOneTwoThree", "5K4caxezwjGCGfnoPTZ8tMcJBLB7Jvyjv4xxeacadhq8nLisLR2"],
+						["6PfLGnQs6VZnrNpmVKfjotbnQuaJK4KZoPFrAjx1JMJUa1Ft8gnf5WxfKd", "Satoshi", "5KJ51SgxWaAYR13zd9ReMhJpwrcX47xTJh2D3fGPG9CM8vkv5sH"],
+					//EC multiply, no compression, lot/sequence numbers
+						["6PgNBNNzDkKdhkT6uJntUXwwzQV8Rr2tZcbkDcuC9DZRsS6AtHts4Ypo1j", "MOLON LABE", "5JLdxTtcTHcfYcmJsNVy1v2PMDx432JPoYcBTVVRHpPaxUrdtf8"],
+						["6PgGWtx25kUg8QWvwuJAgorN6k9FbE25rv5dMRwu5SKMnfpfVe5mar2ngH", Crypto.charenc.UTF8.bytesToString([206, 156, 206, 159, 206, 155, 206, 169, 206, 157, 32, 206, 155, 206, 145, 206, 146, 206, 149])/*UTF-8 characters, encoded in source so they don't get corrupted*/, "5KMKKuUmAkiNbA3DazMQiLfDq47qs8MAEThm4yL8R2PhV1ov33D"]];
+	
+					// running each test uses a lot of memory, which isn't freed
+					// immediately, so give the VM a little time to reclaim memory
+					function waitThenCall(callback) {
+						return function () { setTimeout(callback, 10000); }
+					}
+	
+					var decryptTest = function (test, i, onComplete) {
+						ninja.privateKey.BIP38EncryptedKeyToByteArrayAsync(test[0], test[1], function (privBytes) {
+							if (privBytes.constructor == Error) {
+								document.getElementById("asyncunittestresults").innerHTML += "fail testDecryptBip38 #" + i + ", error: " + privBytes.message + "<br/>";
+							} else {
+								var btcKey = new Bitcoin.ECKey(privBytes);
+								var wif = !test[2].substr(0, 1).match(/[LK]/) ? btcKey.setCompressed(false).getBitcoinWalletImportFormat() : btcKey.setCompressed(true).getBitcoinWalletImportFormat();
+								if (wif != test[2]) {
+									document.getElementById("asyncunittestresults").innerHTML += "fail testDecryptBip38 #" + i + "<br/>";
+								} else {
+									document.getElementById("asyncunittestresults").innerHTML += "pass testDecryptBip38 #" + i + "<br/>";
+								}
+							}
+							onComplete();
+						});
+					};
+	
+					var encryptTest = function (test, compressed, i, onComplete) {
+						ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(test[2], test[1], compressed, function (encryptedKey) {
+							if (encryptedKey === test[0]) {
+								document.getElementById("asyncunittestresults").innerHTML += "pass testBip38Encrypt #" + i + "<br/>";
+							} else {
+								document.getElementById("asyncunittestresults").innerHTML += "fail testBip38Encrypt #" + i + "<br/>";
+								document.getElementById("asyncunittestresults").innerHTML += "expected " + test[0] + "<br/>received " + encryptedKey + "<br/>";
+							}
+							onComplete();
+						});
+					};
+	
+					// test randomly generated encryption-decryption cycle
+					var cycleTest = function (i, compress, onComplete) {
+						// create new private key
+						var privKey = (new Bitcoin.ECKey(false)).getBitcoinWalletImportFormat();
+	
+						// encrypt private key
+						ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(privKey, 'testing', compress, function (encryptedKey) {
+							// decrypt encryptedKey
+							ninja.privateKey.BIP38EncryptedKeyToByteArrayAsync(encryptedKey, 'testing', function (decryptedBytes) {
+								var decryptedKey = (new Bitcoin.ECKey(decryptedBytes)).getBitcoinWalletImportFormat();
+	
+								if (decryptedKey === privKey) {
+									document.getElementById("asyncunittestresults").innerHTML += "pass cycleBip38 test #" + i + "<br/>";
+								}
+								else {
+									document.getElementById("asyncunittestresults").innerHTML += "fail cycleBip38 test #" + i + " " + privKey + "<br/>";
+									document.getElementById("asyncunittestresults").innerHTML += "encrypted key: " + encryptedKey + "<br/>decrypted key: " + decryptedKey;
+								}
+								onComplete();
+							});
+						});
+					};
+	
+					// intermediate test - create some encrypted keys from an intermediate
+					// then decrypt them to check that the private keys are recoverable
+					var intermediateTest = function (i, onComplete) {
+						var pass = Math.random().toString(36).substr(2);
+						ninja.privateKey.BIP38GenerateIntermediatePointAsync(pass, null, null, function (intermediatePoint) {
+							ninja.privateKey.BIP38GenerateECAddressAsync(intermediatePoint, false, function (address, encryptedKey) {
+								ninja.privateKey.BIP38EncryptedKeyToByteArrayAsync(encryptedKey, pass, function (privBytes) {
+									if (privBytes.constructor == Error) {
+										document.getElementById("asyncunittestresults").innerHTML += "fail testBip38Intermediate #" + i + ", error: " + privBytes.message + "<br/>";
+									} else {
+										var btcKey = new Bitcoin.ECKey(privBytes);
+										var btcAddress = btcKey.getBitcoinAddress();
+										if (address !== btcKey.getBitcoinAddress()) {
+											document.getElementById("asyncunittestresults").innerHTML += "fail testBip38Intermediate #" + i + "<br/>";
+										} else {
+											document.getElementById("asyncunittestresults").innerHTML += "pass testBip38Intermediate #" + i + "<br/>";
+										}
+									}
+									onComplete();
+								});
+							});
+						});
+					}
+	
+					document.getElementById("asyncunittestresults").innerHTML += "running " + tests.length + " tests named testDecryptBip38<br/>";
+					document.getElementById("asyncunittestresults").innerHTML += "running 4 tests named testBip38Encrypt<br/>";
+					document.getElementById("asyncunittestresults").innerHTML += "running 2 tests named cycleBip38<br/>";
+					document.getElementById("asyncunittestresults").innerHTML += "running 5 tests named testBip38Intermediate<br/>";
+					ninja.runSerialized([
+						function (cb) {
+							ninja.forSerialized(0, tests.length, function (i, callback) {
+								decryptTest(tests[i], i, waitThenCall(callback));
+							}, waitThenCall(cb));
+						},
+						function (cb) {
+							ninja.forSerialized(0, 4, function (i, callback) {
+								// only first 4 test vectors are not EC-multiply,
+								// compression param false for i = 1,2 and true for i = 3,4
+								encryptTest(tests[i], i >= 2, i, waitThenCall(callback));
+							}, waitThenCall(cb));
+						},
+						function (cb) {
+							ninja.forSerialized(0, 2, function (i, callback) {
+								cycleTest(i, i % 2 ? true : false, waitThenCall(callback));
+							}, waitThenCall(cb));
+						},
+						function (cb) {
+							ninja.forSerialized(0, 5, function (i, callback) {
+								intermediateTest(i, waitThenCall(callback));
+							}, cb);
+						}
+					], done);
+				}
 			}
 		};
 	})(ninja);
@@ -8348,11 +8542,14 @@ Bitcoin.Util = {
 	<script type="text/javascript">
 		// run unit tests
 		if (ninja.getQueryString()["unittests"] == "true" || ninja.getQueryString()["unittests"] == "1") {
-			ninja.unitTests.runTests();
+			ninja.unitTests.runSynchronousTests();
 			// ninja.translator.showEnglishJson();
 			// no need to show translations until we actually have some. 9/5/2013 - Canton
 		}
-
+		// run async unit tests
+		if (ninja.getQueryString()["asyncunittests"] == "true" || ninja.getQueryString()["asyncunittests"] == "1") {
+			ninja.unitTests.runAsynchronousTests();
+		}
 		// change language
 		if (ninja.getQueryString()["culture"] != undefined) {
 			ninja.translator.translate(ninja.getQueryString()["culture"]);
