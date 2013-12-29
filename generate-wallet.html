@@ -7713,7 +7713,8 @@ Bitcoin.Util = {
 					}
 					document.getElementById("paperkeyarea").appendChild(div);
 					ninja.wallets.paperwallet.generateNewWallet(addressSeed, function(wallet) {
-						ninja.wallets.paperwallet.showArtisticWallet(i, wallet.address, wallet.encryptedKey || wallet.wifKey);
+						var walletKey = ninja.wallets.paperwallet.encrypt ? wallet.encryptedKey : wallet.wifKey;
+						ninja.wallets.paperwallet.showArtisticWallet(i, wallet.address, walletKey);
 					});
 					ninja.wallets.paperwallet.remaining--;
 					setTimeout(ninja.wallets.paperwallet.batch, 0);
