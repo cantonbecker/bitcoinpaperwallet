@@ -7729,13 +7729,15 @@ Bitcoin.Util = {
 				ninja.wallets.paperwallet.lastwallet = addressSeed;
 				if (ninja.wallets.paperwallet.encrypt) {
 					document.getElementById("busyblock").className = "busy";
-					ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(addressSeed.wifKey, ninja.wallets.paperwallet.passphrase, false, function(encodedKey) {
-						document.getElementById("busyblock").className = "";
-						addressSeed.passphrase = ninja.wallets.paperwallet.passphrase;
-						addressSeed.encryptedKey = encodedKey;
-						ninja.wallets.paperwallet.lastwallet.addressSeed = addressSeed;
-						callback(addressSeed);
-					});
+					setTimeout(function() {
+						ninja.privateKey.BIP38PrivateKeyToEncryptedKeyAsync(addressSeed.wifKey, ninja.wallets.paperwallet.passphrase, false, function(encodedKey) {
+							document.getElementById("busyblock").className = "";
+							addressSeed.passphrase = ninja.wallets.paperwallet.passphrase;
+							addressSeed.encryptedKey = encodedKey;
+							ninja.wallets.paperwallet.lastwallet.addressSeed = addressSeed;
+							callback(addressSeed);
+						});
+					}, 10);
 				} else {
 					callback(addressSeed);
 				}
