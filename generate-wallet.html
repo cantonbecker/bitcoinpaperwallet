@@ -9731,6 +9731,103 @@ function QRCodeDataBlockReader(blocks,  version,  numErrorCorrectionCode)
 }
 	</script>
 
+	<script type="text/javascript">
+function QRCodeScanner(width, height, container, success) {
+    navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+    window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+
+    var _width = width;
+    var _height = height;
+    var _id_container = container;
+    var _id_video = container + '_video';
+    var _success = success;
+
+    var _container = document.getElementById(container);
+    var _video = null;
+    var _stream = null;
+    var _canvas = null;
+    var _ctx = null;
+    var _interval = null;
+
+    function isCanvasSupported() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+
+    function canvasInit() {
+        _canvas = document.createElement('canvas');
+        _canvas.width = _width;
+        _canvas.height = _height;
+        _ctx = _canvas.getContext('2d');
+    }
+
+    function captureToCanvas() {
+        _ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight, 0, 0, _canvas.width, _canvas.height);
+        qrcode.decode(_canvas.toDataURL());
+    }
+
+    this.isSupported = function() {
+    	if (!isCanvasSupported()) return false;
+    	if (!navigator.getUserMedia) return false;
+    	return true;
+    }
+
+    this.start = function() {
+        if (navigator.getUserMedia) {
+            //Append the video element
+            _container.innerHTML = '<video style="width:' + _width + 'px;height:' + _height + 'px" autoplay id="' + _id_video + '"></video>';
+            _video = document.getElementById(_id_video);
+
+            navigator.getUserMedia({video: true}, function(stream) {
+                _stream = stream;
+                _video.src = window.URL.createObjectURL(stream) || stream;
+
+                setTimeout(function() {
+                    canvasInit();
+                    _interval = setInterval(captureToCanvas, 500);
+                }, 250); // Needed to get videoWidth/videoHeight
+            }, function(error) { console.log(error); alert(error); });
+
+
+            qrcode.callback = function(data) {
+		        if (data && data.indexOf('error') != 0) {
+		            stop();
+		            if (data.indexOf('bitcoin:') == 0)
+		            	data = data.substring(8);
+		            _success(data);
+		        }
+            };
+        }else{
+            alert('Sorry your browser is not supported. Please try Firefox, Chrome or safari.');
+        }
+    }
+
+    function stop() {
+        if (_interval) {
+            clearInterval(_interval);
+            _interval = null;
+        }
+
+        if (_container) {
+            _container.innerHTML = '';
+        }
+
+        try {
+            if (_stream) {
+                _stream.stop();
+                _stream = null;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    this.stop = stop;
+}
+	</script>
+
 <!--	****************************************************
 		***************** BEGIN STYLES *********************
 		**************************************************** -->
@@ -9934,8 +10031,8 @@ function QRCodeDataBlockReader(blocks,  version,  numErrorCorrectionCode)
 		.unittests div { width: 894px; font-family: monospace; text-align: left; margin: auto; padding: 5px; border: 1px solid black; }
 		
 		.background { background: #ccc no-repeat center; opacity: 0.4; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-		#busyblock, #paperbip38settings { position: absolute; display: none; width: 100%; height: 100%; top: 0; left: 0; z-index: 5000; vertical-aligh: middle; }
-		#busyblock.busy, #paperbip38settings.show { display: table-cell; }
+		#busyblock, #paperbip38settings, #paperqrscanner { position: absolute; display: none; width: 100%; height: 100%; top: 0; left: 0; z-index: 5000; vertical-aligh: middle; }
+		#busyblock.busy, #paperbip38settings.show, #paperqrscanner.show { display: table-cell; }
 		.dialog {
 			z-index: 6000;
 			position: relative;
@@ -10380,8 +10477,37 @@ function QRCodeDataBlockReader(blocks,  version,  numErrorCorrectionCode)
 					<div style="width: 45%; float: left; padding: 0 15px;">
 						<span class="qrinput">
 							<input type="text" id="detailprivkey" value="" onfocus="this.select();" onkeypress="if (event.keyCode == 13) ninja.wallets.detailwallet.viewDetails();" />
-							<span></span>
+							<span onclick="test_show()"></span>
 						</span>
+						<div id="paperqrscanner">
+							<div class="background"></div>
+							<div id="mainbody" class="dialog instructionsarea">
+								<h2>QR Scanner</h2>
+								<button onclick="test_start()">Start</button>
+								<button onclick="test_stop()">Stop</button>
+								<div id="paperqroutput"></div>
+								<div id="result"></div>
+							</div>
+						</div>
+						<script type="text/javascript">
+							var _scanner = new QRCodeScanner(320, 240, 'paperqroutput', function(data) {
+								document.getElementById('detailprivkey').value = data;
+								document.getElementById('paperqrscanner').className = '';
+							});
+							function test_show() {
+								if (!_scanner.isSupported()) {
+									alert('not supported');
+									return;
+								}
+								document.getElementById('paperqrscanner').className = 'show';
+							}
+							function test_start() {
+								_scanner.start();
+							}
+							function test_stop() {
+								_scanner.stop();
+							}
+						</script>
 						<span><input type="button" id="detailview" value="View Details" onclick="ninja.wallets.detailwallet.viewDetails();" /></span>
 						<span class="print"><input type="button" name="print" id="detailprint" value="Print" onclick="window.print();" /></span>
 						<div class="row extra">
