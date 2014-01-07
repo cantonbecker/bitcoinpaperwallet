@@ -9732,99 +9732,113 @@ function QRCodeDataBlockReader(blocks,  version,  numErrorCorrectionCode)
 	</script>
 
 	<script type="text/javascript">
-function QRCodeScanner(width, height, container, success) {
-    navigator.getUserMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia;
-    window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+function QRCodeScanner(width, height, container, success, error) {
+	navigator.getUserMedia = navigator.getUserMedia ||
+		navigator.webkitGetUserMedia ||
+		navigator.mozGetUserMedia ||
+		navigator.msGetUserMedia;
+	window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
 
-    var _width = width;
-    var _height = height;
-    var _id_container = container;
-    var _id_video = container + '_video';
-    var _success = success;
+	var _width = width;
+	var _height = height;
+	var _id_container = container;
+	var _id_video = container + '_video';
+	var _success = success;
+	var _error = error;
 
-    var _container = document.getElementById(container);
-    var _video = null;
-    var _stream = null;
-    var _canvas = null;
-    var _ctx = null;
-    var _interval = null;
+	var _container = document.getElementById(container);
+	var _video = null;
+	var _stream = null;
+	var _canvas = null;
+	var _ctx = null;
+	var _interval = null;
 
-    function isCanvasSupported() {
-        var elem = document.createElement('canvas');
-        return !!(elem.getContext && elem.getContext('2d'));
-    }
+	function isCanvasSupported() {
+		var elem = document.createElement('canvas');
+		return !!(elem.getContext && elem.getContext('2d'));
+	}
 
-    function canvasInit() {
-        _canvas = document.createElement('canvas');
-        _canvas.width = _width;
-        _canvas.height = _height;
-        _ctx = _canvas.getContext('2d');
-    }
+	function canvasInit() {
+		_canvas = document.createElement('canvas');
+		_canvas.width = _width;
+		_canvas.height = _height;
+		_ctx = _canvas.getContext('2d');
+	}
 
-    function captureToCanvas() {
-        _ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight, 0, 0, _canvas.width, _canvas.height);
-        qrcode.decode(_canvas.toDataURL());
-    }
+	function captureToCanvas() {
+		_ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight, 0, 0, _canvas.width, _canvas.height);
+		qrcode.decode(_canvas.toDataURL());
+	}
 
-    this.isSupported = function() {
-    	if (!isCanvasSupported()) return false;
-    	if (!navigator.getUserMedia) return false;
-    	return true;
-    }
+	this.isSupported = function() {
+		if (!isCanvasSupported()) return false;
+		if (!navigator.getUserMedia) return false;
+		return true;
+	}
 
-    this.start = function() {
-        if (navigator.getUserMedia) {
-            //Append the video element
-            _container.innerHTML = '<video style="width:' + _width + 'px;height:' + _height + 'px" autoplay id="' + _id_video + '"></video>';
-            _video = document.getElementById(_id_video);
+	this.start = function() {
+		if (_video) return;
+		if (navigator.getUserMedia) {
+			//Append the video element
+			_container.innerHTML = '<video style="width:' + _width + 'px;height:' + _height + 'px" autoplay id="' + _id_video + '"></video>';
+			_video = document.getElementById(_id_video);
 
-            navigator.getUserMedia({video: true}, function(stream) {
-                _stream = stream;
-                _video.src = window.URL.createObjectURL(stream) || stream;
+			navigator.getUserMedia(
+				{video: true}, 
+				function(stream) {
+					_stream = stream;
+					_video.src = window.URL.createObjectURL(stream) || stream;
 
-                setTimeout(function() {
-                    canvasInit();
-                    _interval = setInterval(captureToCanvas, 500);
-                }, 250); // Needed to get videoWidth/videoHeight
-            }, function(error) { console.log(error); alert(error); });
+					setTimeout(function() {
+						canvasInit();
+						_interval = setInterval(captureToCanvas, 500);
+					}, 250); // Needed to get videoWidth/videoHeight
+				}, 
+				function(error) {
+					_container.innerHTML = '';
+					_video = null;
+					if (error && error.message)
+						_error(error.message);
+					else if (error && error.name)
+						_error(error.name);
+					else
+						_error(error);
+				});
 
 
-            qrcode.callback = function(data) {
-		        if (data && data.indexOf('error') != 0) {
-		            stop();
-		            if (data.indexOf('bitcoin:') == 0)
-		            	data = data.substring(8);
-		            _success(data);
-		        }
-            };
-        }else{
-            alert('Sorry your browser is not supported. Please try Firefox, Chrome or safari.');
-        }
-    }
+			qrcode.callback = function(data) {
+				if (data && data.indexOf('error') != 0) {
+					stop();
+					if (data.indexOf('bitcoin:') == 0)
+						data = data.substring(8);
+					_success(data);
+				}
+			};
+		}else{
+			_error('Sorry your browser is not supported. Please try Firefox, Chrome or safari.');
+		}
+	}
 
-    function stop() {
-        if (_interval) {
-            clearInterval(_interval);
-            _interval = null;
-        }
+	function stop() {
+		if (_interval) {
+			clearInterval(_interval);
+			_interval = null;
+		}
 
-        if (_container) {
-            _container.innerHTML = '';
-        }
+		_container.innerHTML = '';
+		_video = null;
 
-        try {
-            if (_stream) {
-                _stream.stop();
-                _stream = null;
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
-    this.stop = stop;
+		try {
+			if (_stream) {
+				_stream.stop();
+				_stream = null;
+			}
+		} catch (e) {
+			console.log(e);
+			_error(e);
+		}
+	}
+	this.stop = stop;
 }
 	</script>
 
@@ -10031,8 +10045,8 @@ function QRCodeScanner(width, height, container, success) {
 		.unittests div { width: 894px; font-family: monospace; text-align: left; margin: auto; padding: 5px; border: 1px solid black; }
 		
 		.background { background: #ccc no-repeat center; opacity: 0.4; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-		#busyblock, #paperbip38settings, #paperqrscanner { position: absolute; display: none; width: 100%; height: 100%; top: 0; left: 0; z-index: 5000; vertical-aligh: middle; }
-		#busyblock.busy, #paperbip38settings.show, #paperqrscanner.show { display: table-cell; }
+		#busyblock, #busyblock_decrypt, #paperbip38settings, #paperqrscanner { position: absolute; display: none; width: 100%; height: 100%; top: 0; left: 0; z-index: 5000; vertical-aligh: middle; }
+		#busyblock.busy, #busyblock_decrypt.busy, #paperbip38settings.show, #paperqrscanner.show { display: block; }
 		.dialog {
 			z-index: 6000;
 			position: relative;
@@ -10191,6 +10205,13 @@ function QRCodeScanner(width, height, container, success) {
 		<div class="dialog dialog-narrow">
 			<h2>One moment please...</h2>
 			<p>Encrypting your wallet. This may take up to <u>several minutes</u> on a slower computer.</p>
+		</div>
+	</div>
+	<div id="busyblock_decrypt">
+		<div class="background"></div>
+		<div class="dialog dialog-narrow">
+			<h2>One moment please...</h2>
+			<p>Decrypting the private key. This may take up to <u>several minutes</u> on a slower computer.</p>
 		</div>
 	</div>
 	<div id="main">
@@ -10471,43 +10492,28 @@ function QRCodeScanner(width, height, container, success) {
 				<div id="detailcommands" class="commands">
 					<h1>Validate / decrypt private key</h1>
 					<div style="width: 45%; float: left; padding: 0 15px; border-right: 3px solid #ccc;">
-						<p>Enter or scan any private key into this form to display all available details and formats for that key. This should work for private keys generated by BitcoinPaperWallet.com as well as any other Bitcoin service.</p>
+						<p>Enter or <a onclick="ninja.wallets.detailwallet.qrscanner.start()">scan</a> any private key into this form to display all available details and formats for that key. This should work for private keys generated by BitcoinPaperWallet.com as well as any other Bitcoin service.</p>
  						<p>For example, if you have a wallet encrypted with a BIP38 passphrase, you can use this form to decrypt your private key and retrieve the standard Wallet Import Format (WIF) key suitable for wallet software and services that don't directly support BIP38 importing.</p>
 					</div>
 					<div style="width: 45%; float: left; padding: 0 15px;">
 						<span class="qrinput">
 							<input type="text" id="detailprivkey" value="" onfocus="this.select();" onkeypress="if (event.keyCode == 13) ninja.wallets.detailwallet.viewDetails();" />
-							<span onclick="test_show()"></span>
+							<span onclick="ninja.wallets.detailwallet.qrscanner.start()"></span>
 						</span>
 						<div id="paperqrscanner">
 							<div class="background"></div>
 							<div id="mainbody" class="dialog instructionsarea">
 								<h2>QR Scanner</h2>
-								<button onclick="test_start()">Start</button>
-								<button onclick="test_stop()">Stop</button>
+								<div id="paperqrnotsupported" style="color: red" class="hide">Your browser does not support the HTML5 camera controls. Please try open this page with a recent version of Chrome, Firefox or Opera</div>
+								<div id="paperqrpermissiondenied" style="color: red" class="hide">
+									<p>Permission denied. Your browser should display a message requesting access to your camera. Please click the "Allow" button to enable the camera.</p>
+									<p>If you are running the file locally on Chrome, you need to specify the --allow-file-access-from-files flag when starting Chrome. </p>
+								</div>
+								<div id="paperqrerror" style="color: red"></div>
 								<div id="paperqroutput"></div>
-								<div id="result"></div>
+								<button onclick="ninja.wallets.detailwallet.qrscanner.stop()">Close</button>
 							</div>
 						</div>
-						<script type="text/javascript">
-							var _scanner = new QRCodeScanner(320, 240, 'paperqroutput', function(data) {
-								document.getElementById('detailprivkey').value = data;
-								document.getElementById('paperqrscanner').className = '';
-							});
-							function test_show() {
-								if (!_scanner.isSupported()) {
-									alert('not supported');
-									return;
-								}
-								document.getElementById('paperqrscanner').className = 'show';
-							}
-							function test_start() {
-								_scanner.start();
-							}
-							function test_stop() {
-								_scanner.stop();
-							}
-						</script>
 						<span><input type="button" id="detailview" value="View Details" onclick="ninja.wallets.detailwallet.viewDetails();" /></span>
 						<span class="print"><input type="button" name="print" id="detailprint" value="Print" onclick="window.print();" /></span>
 						<div class="row extra">
@@ -10522,9 +10528,9 @@ function QRCodeScanner(width, height, container, success) {
 					</div>
 					<div style="clear: both;"></div>
 				</div>
-				<div id="detailkeyarea">
+				<div id="detailkeyarea" class="hide">
 					<div class="notes">
-						<h1>Details for: <span>[key]</span></h1>
+						<h1>Details for: <span id="detailkeyareakey"></span></h1>
 						<span id="detaillabelnote1">Your Bitcoin Private Key is a unique secret number that only you know. It can be encoded in a number of different formats. Below we show the Bitcoin Address and Public Key that corresponds to your Private Key as well as your Private Key in the most popular encoding formats (WIF, WIFC, HEX, B64, MINI).</span>
 						<br /><br />
 						<span id="detaillabelnote2">Bitcoin v0.6+ stores public keys in compressed format. The client now also supports import and export of private keys with importprivkey/dumpprivkey. The format of the exported private key is determined by whether the address was generated in an old or new wallet.</span>
@@ -11236,6 +11242,9 @@ function QRCodeScanner(width, height, container, success) {
 					"paperlabelprivatekey": "Private Key (Wallet Import Format):",
 					"paperlabelencryptedkey": "Encrypted Private Key (Password required)",
 					"bip38alertpassphraserequired": "Passphrase required for BIP38 key",
+					"detailalertnotvalidprivatekey": "The text you entered is not a valid Private Key",
+					"detailconfirmsha256": "The text you entered is not a valid Private Key!\n\nWould you like to use the entered text as a passphrase and create a Private Key using a SHA256 hash of the passphrase?\n\nWarning: Choosing a strong passphrase is important to avoid brute force attempts to guess your passphrase and steal your bitcoins.",
+					"bip38alertincorrectpassphrase": "Incorrect passphrase for this encrypted private key.",
 				},
 
 				"es": {
@@ -11631,9 +11640,55 @@ function QRCodeScanner(width, height, container, success) {
 
 	<script type="text/javascript">
 		ninja.wallets.detailwallet = {
+			qrscanner: {
+				scanner: null,
+
+				start: function() {
+					document.getElementById('paperqrscanner').className = 'show';
+					ninja.wallets.detailwallet.qrscanner.showError(null);
+					var supported = ninja.wallets.detailwallet.qrscanner.scanner.isSupported();
+					if (!supported) {
+						document.getElementById('paperqrscannercontrols').className = 'hide';
+						document.getElementById('paperqrnotsupported').className = '';
+					} else {
+						ninja.wallets.detailwallet.qrscanner.scanner.start();
+					}
+				},
+
+				stop: function() {
+					ninja.wallets.detailwallet.qrscanner.scanner.stop();
+					document.getElementById('paperqrscanner').className = '';
+				},
+
+				showError: function(error) {
+					if (error) {
+						if (error == 'PERMISSION_DENIED') {
+							document.getElementById('paperqrerror').innerText = '';
+							document.getElementById('paperqrpermissiondenied').className = '';
+						} else {
+							document.getElementById('paperqrerror').innerText = error;
+							document.getElementById('paperqrpermissiondenied').className = 'hide';
+						}
+					} else {
+						document.getElementById('paperqrerror').innerText = '';
+						document.getElementById('paperqrpermissiondenied').className = 'hide';
+					}
+				}
+			},
+
 			open: function () {
 				document.getElementById("detailarea").style.display = "block";
 				document.getElementById("detailprivkey").focus();
+				if (!ninja.wallets.detailwallet.qrscanner.scanner) {
+					ninja.wallets.detailwallet.qrscanner.scanner = new QRCodeScanner(320, 240, 'paperqroutput', 
+						function(data) {
+							document.getElementById('detailprivkey').value = data;
+							document.getElementById('paperqrscanner').className = '';
+						},
+						function(error) {
+							ninja.wallets.detailwallet.qrscanner.showError(error);
+						});
+				}
 			},
 
 			close: function () {
@@ -11674,12 +11729,12 @@ function QRCodeScanner(width, height, container, success) {
 						alert(ninja.translator.get("bip38alertpassphraserequired"));
 						return;
 					}
-					document.getElementById("busyblock").className = "busy";
+					document.getElementById("busyblock_decrypt").className = "busy";
 					// show Private Key BIP38 Format
 					document.getElementById("detailprivbip38").innerHTML = key;
 					document.getElementById("detailbip38").style.display = "block";
 					ninja.privateKey.BIP38EncryptedKeyToByteArrayAsync(key, passphrase, function (btcKeyOrError) {
-						document.getElementById("busyblock").className = "";
+						document.getElementById("busyblock_decrypt").className = "";
 						if (btcKeyOrError.message) {
 							alert(btcKeyOrError.message);
 							ninja.wallets.detailwallet.clear();
@@ -11725,6 +11780,8 @@ function QRCodeScanner(width, height, container, success) {
 			populateKeyDetails: function (btcKey) {
 				if (btcKey.priv != null) {
 					btcKey.setCompressed(false);
+					document.getElementById('detailkeyarea').className = '';
+					document.getElementById('detailkeyareakey').innerText = document.getElementById('detailprivkey').value;
 					document.getElementById("detailprivhex").innerHTML = btcKey.toString().toUpperCase();
 					document.getElementById("detailprivb64").innerHTML = btcKey.toString("base64");
 					var bitcoinAddress = btcKey.getBitcoinAddress();
@@ -11749,6 +11806,7 @@ function QRCodeScanner(width, height, container, success) {
 			},
 
 			clear: function () {
+				document.getElementById('detailkeyarea').className = 'hide';
 				document.getElementById("detailpubkey").innerHTML = "";
 				document.getElementById("detailpubkeycomp").innerHTML = "";
 				document.getElementById("detailaddress").innerHTML = "";
