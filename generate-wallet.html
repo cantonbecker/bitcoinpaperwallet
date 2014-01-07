@@ -11649,7 +11649,6 @@ function QRCodeScanner(width, height, container, success, error) {
 					ninja.wallets.detailwallet.qrscanner.showError(null);
 					var supported = ninja.wallets.detailwallet.qrscanner.scanner.isSupported();
 					if (!supported) {
-						document.getElementById('paperqrscannercontrols').className = 'hide';
 						document.getElementById('paperqrnotsupported').className = '';
 					} else {
 						ninja.wallets.detailwallet.qrscanner.scanner.start();
