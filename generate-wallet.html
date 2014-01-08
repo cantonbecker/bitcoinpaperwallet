@@ -11601,7 +11601,8 @@ function QRCodeScanner(width, height, container, success, error) {
 				}
 					
 				document.getElementById('paperbip38settings').className = show ? 'show' : '';
-				document.getElementById('paperencryptpassphrase').innerText = document.getElementById('paperpassphrase').value;
+				document.getElementById('paperencryptpassphrase').innerText = 
+					document.getElementById('paperencryptpassphrase').textContent = document.getElementById('paperpassphrase').value;
 				
 				if (!show && !cancelSave) {
 					ninja.wallets.paperwallet.encrypt = encryptBox.checked;
@@ -11663,14 +11664,14 @@ function QRCodeScanner(width, height, container, success, error) {
 				showError: function(error) {
 					if (error) {
 						if (error == 'PERMISSION_DENIED') {
-							document.getElementById('paperqrerror').innerText = '';
+							document.getElementById('paperqrerror').innerHTML = '';
 							document.getElementById('paperqrpermissiondenied').className = '';
 						} else {
-							document.getElementById('paperqrerror').innerText = error;
+							document.getElementById('paperqrerror').innerHTML = error;
 							document.getElementById('paperqrpermissiondenied').className = 'hide';
 						}
 					} else {
-						document.getElementById('paperqrerror').innerText = '';
+						document.getElementById('paperqrerror').innerHTML = '';
 						document.getElementById('paperqrpermissiondenied').className = 'hide';
 					}
 				}
@@ -11781,7 +11782,7 @@ function QRCodeScanner(width, height, container, success, error) {
 				if (btcKey.priv != null) {
 					btcKey.setCompressed(false);
 					document.getElementById('detailkeyarea').className = '';
-					document.getElementById('detailkeyareakey').innerText = document.getElementById('detailprivkey').value;
+					document.getElementById('detailkeyareakey').innerHTML = document.getElementById('detailprivkey').value;
 					document.getElementById("detailprivhex").innerHTML = btcKey.toString().toUpperCase();
 					document.getElementById("detailprivb64").innerHTML = btcKey.toString("base64");
 					var bitcoinAddress = btcKey.getBitcoinAddress();
