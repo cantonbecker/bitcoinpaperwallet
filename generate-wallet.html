@@ -5580,6 +5580,8 @@ Bitcoin.Util = {
 		// using this function to enclose everything needed to create a worker (but also invokable directly for synchronous use)
 		function scryptCore() {
 			var XY = [], V = [];
+			
+			salsa20_8(new Array(32));
 
 			if (typeof B === 'undefined') {
 				onmessage = function (event) {
