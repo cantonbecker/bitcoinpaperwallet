@@ -1589,6 +1589,12 @@ if (typeof Crypto == "undefined" || !Crypto.util) {
 		sr.seedInt8((x >> 24));
 	}
 
+	// Mix in a 16-bit integer into the pool
+	sr.seedInt16 = function (x) {
+		sr.seedInt8(x);
+		sr.seedInt8((x >> 8));
+	}
+
 	// Mix in a 8-bit integer into the pool
 	sr.seedInt8 = function (x) {
 		sr.pool[sr.pptr++] ^= x & 255;
@@ -1655,7 +1661,7 @@ if (typeof Crypto == "undefined" || !Crypto.util) {
 			sr.pool[sr.pptr++] = t >>> 8;
 			sr.pool[sr.pptr++] = t & 255;
 		}
-		sr.pptr = 0;
+		sr.pptr = Math.floor(sr.poolSize * Math.random());
 		sr.seedTime();
 		// entropy
 		var entropyStr = "";
@@ -1680,14 +1686,17 @@ if (typeof Crypto == "undefined" || !Crypto.util) {
 		entropyStr += pluginsStr + mimeTypesStr;
 		// cookies and storage: 1 bit
 		entropyStr += navigator.cookieEnabled + typeof (sessionStorage) + typeof (localStorage);
+		// language: ~7 bit
+		entropyStr += navigator.language;
+		// history: ~2 bit
+		entropyStr += window.history.length;
+		// location
+		entropyStr += window.location;
 
 		var entropyBytes = Crypto.SHA256(entropyStr, { asBytes: true });
-		sr.seedInt8(entropyBytes[0]);
-		sr.seedInt8(entropyBytes[1]);
-		sr.seedInt8(entropyBytes[2]);
-		sr.seedInt8(entropyBytes[3]);
-		sr.seedInt8(entropyBytes[4]);
-		sr.seedInt8(entropyBytes[5]);
+		for (var i = 0 ; i < entropyBytes.length ; i++) {
+			sr.seedInt8(entropyBytes[i]);
+		}
 	}
 })();
 	</script>
@@ -11018,7 +11027,7 @@ function QRCodeScanner(width, height, container, success, error) {
 			// number of mouse movements to wait for
 			seedLimit: (function () {
 				var num = Crypto.util.randomBytes(12)[11];
-				return 100 + Math.floor(num);
+				return 200 + Math.floor(num);
 			})(),
 
 			seedCount: 0, // counter
@@ -11030,7 +11039,7 @@ function QRCodeScanner(width, height, container, success, error) {
 				// seed a bunch (minimum seedLimit) of times based on mouse moves
 				SecureRandom.seedTime();
 				// seed mouse position X and Y
-				if (evt) SecureRandom.seedInt((evt.clientX * evt.clientY));
+				if (evt) SecureRandom.seedInt16((evt.clientX * evt.clientY));
 
 				ninja.seeder.seedCount++;
 				// seeding is over now we generate and display the address
