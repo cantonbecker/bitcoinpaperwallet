@@ -10381,13 +10381,13 @@ function QRCodeScanner(width, height, container, success, error) {
                     <div id="keyButtons" style="display: block; float: left;">
                     <input type="button" id="papergenerate" value="Random-generate new keys" onClick="ninja.wallets.paperwallet.build(document.getElementById('paperlimit').value * 1, document.getElementById('paperlimitperpage').value * 1, !document.getElementById('paperart').checked, document.getElementById('paperpassphrase').value); printCounter=0;" />
 
-                    <input type="button" id="papergenerate" value="Supply my own key or vanity address..." onClick="document.getElementById('keyButtons').style.display='none'; document.getElementById('supplyKeys').style.display='block';" />
+                    <input type="button" id="papergenerate" value="Supply my own key or vanity address..." onClick="ninja.wallets.paperwallet.toggleVanityField(true);" />
                     </div>
                     
                     <div id="supplyKeys" style="display: none; float: left;">
                     <p style="padding: 0; margin: 0;"><input placeholder="Paste your PRIVATE key here" id="suppliedPrivateKey" name="suppliedPrivateKey" size="75" spellcheck="false" style="font-family: ubuntu_mono_bold, 'Courier New', Courier, monospace;" />&nbsp;<input type="button" id="papergenerate" value="Test &amp; Apply &raquo;" onClick="testAndApplyVanityKey();" />
                     </p>
-                    <p style="margin: 0; padding:0;"><a href="#" style="font-size: 11px;" onClick="document.getElementById('keyButtons').style.display='block'; document.getElementById('supplyKeys').style.display='none';">&laquo; Back</a></p>
+                    <p style="margin: 0; padding:0;"><a href="#" style="font-size: 11px;" onClick="ninja.wallets.paperwallet.toggleVanityField(false);">&laquo; Back</a></p>
                     </div>
 
 					<div id="paperadvancedcommands" class="row extra" style="float: left">
@@ -10534,6 +10534,7 @@ function QRCodeScanner(width, height, container, success, error) {
 				<div id="detailkeyarea" class="hide">
 					<div class="notes">
 						<h1>Details for: <span id="detailkeyareakey"></span></h1>
+						<p><button onclick="ninja.wallets.detailwallet.loadInPaperWallet()">Use these details to print a paper wallet</button></p>
 						<span id="detaillabelnote1">Your Bitcoin Private Key is a unique secret number that only you know. It can be encoded in a number of different formats. Below we show the Bitcoin Address and Public Key that corresponds to your Private Key as well as your Private Key in the most popular encoding formats (WIF, WIFC, HEX, B64, MINI).</span>
 						<br /><br />
 						<span id="detaillabelnote2">Bitcoin v0.6+ stores public keys in compressed format. The client now also supports import and export of private keys with importprivkey/dumpprivkey. The format of the exported private key is determined by whether the address was generated in an old or new wallet.</span>
@@ -11435,6 +11436,11 @@ function QRCodeScanner(width, height, container, success, error) {
 				document.getElementById("main").setAttribute("class", ""); // remove 'paper' class from main div
 			},
 
+			toggleVanityField: function(show) {
+				document.getElementById('keyButtons').style.display= show ? 'none' : 'block'; 
+				document.getElementById('supplyKeys').style.display = show ? 'block' : 'none';
+			},
+
 			remaining: null, // use to keep track of how many addresses are left to process when building the paper wallet
 			count: 0,
 			pageBreakAtDefault: 7,
@@ -11789,6 +11795,7 @@ function QRCodeScanner(width, height, container, success, error) {
 					document.getElementById("detailprivb64").innerHTML = btcKey.toString("base64");
 					var bitcoinAddress = btcKey.getBitcoinAddress();
 					var wif = btcKey.getBitcoinWalletImportFormat();
+					ninja.wallets.detailwallet.lastwallet = { address: bitcoinAddress, wifKey: wif };
 					document.getElementById("detailpubkey").innerHTML = btcKey.getPubKeyHex();
 					document.getElementById("detailaddress").innerHTML = bitcoinAddress;
 					document.getElementById("detailprivwif").innerHTML = wif;
@@ -11829,6 +11836,18 @@ function QRCodeScanner(width, height, container, success, error) {
 				document.getElementById("detailmini").style.display = "none";
 				document.getElementById("detailbip38commands").style.display = "none";
 				document.getElementById("detailbip38").style.display = "none";
+			},
+
+			loadInPaperWallet: function() {
+				document.getElementById("paperkeyarea").innerHTML = 'Loading...';
+				ninja.tabSwitch(document.getElementById('paperwallet'));
+				ninja.wallets.paperwallet.toggleVanityField(true);
+				document.getElementById('suppliedPrivateKey').value = ninja.wallets.detailwallet.lastwallet.wifKey;
+				if (ninja.wallets.paperwallet.encrypt && !confirm('Do you want to encrypt this wallet using the previously supplied private key?')) {
+					document.getElementById('paperencrypt').checked = false;
+					ninja.wallets.paperwallet.toggleEncryptSettings(false);
+				}
+				ninja.wallets.paperwallet.buildManual(ninja.wallets.detailwallet.lastwallet, ninja.wallets.paperwallet.passphrase);
 			}
 		};
 	</script>
