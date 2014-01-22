@@ -9899,8 +9899,9 @@ function QRCodeScanner(width, height, container, success, error) {
 		
 		#main { position: relative; margin: 0px auto; width: 1010px; color: #444; } /* removed text-align: center; */
 		#logoback {  background-image:url(images/logo.png); background-position: top left; background-repeat: no-repeat; }
-		#generate { font-family: Courier New; height: 158px; text-align: left; position: relative; padding: 5px; border: none; }
+		#generate { font-family: Courier New; text-align: left; position: relative; padding: 5px; border: none; }
 		#generate span { padding: 5px 5px 0 5px; }
+		#generate #mousemovelimit { font-size: 20px; color: #090; }
 		#menu { visibility: hidden; font-size: 90%; padding: 0 12px;}
 		
 		#culturemenu { text-align: right; padding: 10px 20px; font-size: 12px; }
@@ -10262,10 +10263,11 @@ function QRCodeScanner(width, height, container, success, error) {
 		</div><!-- end logoback -->
 		
 		<div id="generate">
-			<div id="generatelabelmovemouse"><blink>Please move your mouse around...</blink><span id="mousemovelimit"></span></div>
-			<p id="generatelabelbitcoinaddress">(This is necessary to generate more random &amp; secure bitcoin addresses.)</p>
-			<p id="generatelabelkeypress">OR type some random characters into this textbox <input type="text" id="generatekeyinput" onkeypress="ninja.seeder.seed(event);" /></p>
-			<div id="seedpooldisplay"></div>
+			<div id="generatelabelmovemouse">
+				<p>Gathering "entropy" for more random &amp; secure addresses. <span id="mousemovelimit"></span> bits still required.</p>
+				<p id="generatelabelkeypress">Move your mouse, and/or type random letters/numbers/symbols here: <input type="text" id="generatekeyinput" onkeypress="ninja.seeder.seed(event);" /></p>
+				<div id="seedpooldisplay"></div>
+			</div>
 		</div>
 
 		<div id="wallets">
