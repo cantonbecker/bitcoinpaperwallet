@@ -9899,6 +9899,7 @@ function QRCodeScanner(width, height, container, success, error) {
 		
 		#main { position: relative; margin: 0px auto; width: 1010px; color: #444; } /* removed text-align: center; */
 		#logoback {  background-image:url(images/logo.png); background-position: top left; background-repeat: no-repeat; }
+		.seedpoint { width: 6px; height: 6px; display: block; border-radius: 3px; background-color: green; position: absolute; z-index: 10; }
 		#generate { font-family: Courier New; text-align: left; position: relative; padding: 5px; border: none; }
 		#generate span { padding: 5px 5px 0 5px; }
 		#generate #mousemovelimit { font-size: 20px; color: #090; }
@@ -11041,6 +11042,7 @@ function QRCodeScanner(width, height, container, success, error) {
 
 			seedCount: 0, // counter
 			lastInputTime: new Date().getTime(),
+			seedPoints: [],
 
 			// seed function exists to wait for mouse movement to add more entropy before generating an address
 			seed: function (evt) {
@@ -11052,11 +11054,13 @@ function QRCodeScanner(width, height, container, success, error) {
 					ninja.wallets.landwallet.open();
 					document.getElementById("generate").style.display = "none";
 					document.getElementById("menu").style.visibility = "visible";
+					ninja.seeder.removePoints();
 				}
 				// seed mouse position X and Y when mouse movements are greater than 40ms apart.
 				else if ((ninja.seeder.seedCount < ninja.seeder.seedLimit) && evt && (timeStamp - ninja.seeder.lastInputTime) > 40) {
 					SecureRandom.seedTime();
 					SecureRandom.seedInt16((evt.clientX * evt.clientY));
+					ninja.seeder.showPoint(evt.clientX, evt.clientY);
 					ninja.seeder.seedCount++;
 					ninja.seeder.lastInputTime = new Date().getTime();
 					ninja.seeder.showPool();
@@ -11072,6 +11076,7 @@ function QRCodeScanner(width, height, container, success, error) {
 					ninja.wallets.landwallet.open();
 					document.getElementById("generate").style.display = "none";
 					document.getElementById("menu").style.visibility = "visible";
+					ninja.seeder.removePoints();
 				}
 				// seed key press character
 				else if ((ninja.seeder.seedCount < ninja.seeder.seedLimit) && evt.which) {
@@ -11100,6 +11105,22 @@ function QRCodeScanner(width, height, container, success, error) {
 					document.getElementById("seedpooldisplay").innerHTML = poolHex;
 				}
 				document.getElementById("mousemovelimit").innerHTML = (ninja.seeder.seedLimit - ninja.seeder.seedCount);
+			},
+
+			showPoint: function (x, y) {
+				var div = document.createElement("div");
+				div.setAttribute("class", "seedpoint");
+				div.style.top = y + "px";
+				div.style.left = x + "px";
+				document.body.appendChild(div);
+				ninja.seeder.seedPoints.push(div);
+			},
+
+			removePoints: function () {
+				for (var i = 0; i < ninja.seeder.seedPoints.length; i++) {
+					document.body.removeChild(ninja.seeder.seedPoints[i]);
+				}
+				ninja.seeder.seedPoints = [];
 			}
 		};
 
@@ -11492,6 +11513,7 @@ function QRCodeScanner(width, height, container, success, error) {
 			pageBreakAt: null,
 			passphrase: null,
 			lastwallet: null,
+			minPassphraseLength: 15,
 
 			build: function (numWallets, pageBreakAt, useArtisticWallet, passphrase) {
 				if (numWallets < 1) numWallets = 1;
@@ -11809,7 +11831,7 @@ function QRCodeScanner(width, height, container, success, error) {
 					var btcKey = new Bitcoin.ECKey(key);
 					if (btcKey.priv == null) {
 						// enforce a minimum passphrase length
-						if (key.length >= ninja.wallets.brainwallet.minPassphraseLength) {
+						if (key.length >= ninja.wallets.paperwallet.minPassphraseLength) {
 							// Deterministic Wallet confirm box to ask if user wants to SHA256 the input to get a private key
 							var usePassphrase = confirm(ninja.translator.get("detailconfirmsha256"));
 							if (usePassphrase) {
@@ -12586,7 +12608,7 @@ function QRCodeScanner(width, height, container, success, error) {
 					alert(message);
 					return;
 				}
-				if (suppliedKey.length < 10) {
+				if (suppliedKey.length < ninja.wallets.paperwallet.minPassphraseLength) {
 					alert(message + '\r\rIf you would like to use the entered text as a passphrase to create a Private Key, please use a longer input');
 					return;
 				}
