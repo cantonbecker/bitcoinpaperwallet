@@ -92,17 +92,10 @@ function setCryptoCurrency(toThis) {
 	switch (toThis)
 	{
 	case 'Bitcoin':	
-	  window.networkVersion = 0x00;
-	  window.privateKeyPrefix = 0x80;
-	  window.WIFPrefix = '5';
-	  window.compressedWIFPrefix = '[LK]';
-	  break;
-	case 'Litecoin':
-		window.networkVersion = 0x30;
-		window.privateKeyPrefix = 0xb0;
-		window.WIFPrefix = '6';
-		window.compressedWIFPrefix = 'T';
-		document.title = 'Litecoin paper wallet generator';
+		window.networkVersion = 0x00;
+		window.privateKeyPrefix = 0x80;
+		window.WIFPrefix = '5';
+		window.compressedWIFPrefix = '[LK]';
 		break;
 	case 'Dogecoin':
 		window.networkVersion = 0x1e;
@@ -110,6 +103,20 @@ function setCryptoCurrency(toThis) {
 		window.WIFPrefix = '6';
 		window.compressedWIFPrefix = 'Q';	
 		document.title = 'Dogecoin paper wallet generator. Wow! Many coin. Such shiny.';
+		break;
+	case 'Litecoin':
+		window.networkVersion = 0x30;
+		window.privateKeyPrefix = 0xb0;
+		window.WIFPrefix = '6';
+		window.compressedWIFPrefix = 'T';
+		document.title = 'Litecoin paper wallet generator';
+		break;
+	case 'Namecoin':
+		window.networkVersion = 0x34;
+		window.privateKeyPrefix = 0xb4;
+		window.WIFPrefix = '7';
+		window.compressedWIFPrefix = 'U';
+		document.title = 'Namecoin paper wallet generator';
 		break;
 	case 'Testnet':
 		window.networkVersion = 0x6F;
@@ -136,11 +143,14 @@ var myDesign = getParameterByName('design');
 window.suppliesURL = 'https://bitcoinpaperwallet.com/?p=' + myDesign + '#purchase';
 
 switch (myDesign) {
+	case 'alt-dogecoin':
+		setCryptoCurrency('Dogecoin');
+		break;
 	case 'alt-litecoin':
 		setCryptoCurrency('Litecoin');
 		break;
-	case 'alt-dogecoin':
-		setCryptoCurrency('Dogecoin');
+	case 'alt-namecoin':
+		setCryptoCurrency('Namecoin');
 		break;
 	case 'alt-testnet':
 		setCryptoCurrency('Testnet');
@@ -5418,14 +5428,14 @@ Bitcoin.ECKey = (function () {
 		return /^[A-Fa-f0-9]{64}$/.test(key);
 	};
 
-	// 51 characters base58, bitcoin always starts with a 5, litecoin and dogecoin with a '6', testnet with a '9'
+	// 51 characters base58, bitcoin always starts with a 5, litecoin and dogecoin with a '6', namecoin with a '7' and  testnet with a '9'
 	ECKey.isWalletImportFormat = function (key) {
 		key = key.toString();
 		var matcher = new RegExp("^" + window.WIFPrefix + "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{50}$", "g");
 		return (ECKey.privateKeyPrefix == window.privateKeyPrefix) ? (matcher.test(key)) : false;
 	};
 
-	// 52 characters base58, bitcoin always starts with L or K, litecoin with a T, dogecoin with a 'Q', testnet with a 'c'
+	// 52 characters base58, bitcoin always starts with L or K, dogecoin with a 'Q', litecoin with a T, namecoin with a 'U', testnet with a 'c'
 	ECKey.isCompressedWalletImportFormat = function (key) {
 		key = key.toString();
 		var matcher = new RegExp("^" + window.compressedWIFPrefix + "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{51}$", "g");
@@ -10496,8 +10506,9 @@ Bitcoin.Util = {
                           <option value="russian">Standard (Russian)</option>
                   		  <option value="spanish">Standard (Spanish)</option>
                   		  <option value="default">--- Other Cryptocurrencies ---</option>
-                  		  <option value="alt-litecoin">Litecoin</option>
                   		  <option value="alt-dogecoin">Dogecoin</option>
+                  		  <option value="alt-litecoin">Litecoin</option>
+                  		  <option value="alt-namecoin">Namecoin</option>
                   		  <option value="alt-testnet">"Testnet"</option>
                         </select>
                         </p>
