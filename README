@@ -20,6 +20,9 @@ or even rolling dice or shuffling cards.
 As of March 1, 2014, this generator also includes support and designs for making
 Litecoin and Dogecoin wallets.
 
+As of April 21, 2014, this generated also includes support and designs for making
+Defcoin wallets. (added by allansto)
+
 Use the "verify" tab to decrypt a BIP38 password-encrypted wallet, check the
 integrity of any private key, or even duplicate an exising wallet by scanning its
 QR code.
@@ -73,6 +76,9 @@ published fingerprint at http://cantonbecker.com
 
 If you get warnings like "This key is not certified, there is no indication that
 the key belongs to the owner" do not worry, this is normal.
+
+The signature is currently incorrect, since it does not include the defcoin changes.
+(added by allansto)
 
 
 *** DONATIONS ***

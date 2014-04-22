@@ -111,6 +111,13 @@ function setCryptoCurrency(toThis) {
 		window.compressedWIFPrefix = 'Q';	
 		document.title = 'Dogecoin paper wallet generator. Wow! Many coin. Such shiny.';
 		break;
+	case 'Defcoin':
+		window.networkVersion = 0x1E;
+		window.privateKeyPrefix = 0x9E;
+		window.WIFPrefix = '6';
+		window.compressedWIFPrefix = 'Q';	
+		document.title = 'Defcoin paper wallet generator. See defcoin.org.';
+		break;
 	case 'Testnet':
 		window.networkVersion = 0x6F;
 		window.privateKeyPrefix = 0xEF;
@@ -141,6 +148,9 @@ switch (myDesign) {
 		break;
 	case 'alt-dogecoin':
 		setCryptoCurrency('Dogecoin');
+		break;
+	case 'alt-defcoin':
+		setCryptoCurrency('Defcoin');
 		break;
 	case 'alt-testnet':
 		setCryptoCurrency('Testnet');
@@ -10061,7 +10071,7 @@ Bitcoin.Util = {
 		#paperarea .artwallet .btcprivwif, #paperarea .artwallet .btcencryptedkey  
 		{
 		    position: absolute; top: 245px; left: 610px; z-index: 100; background-color: transparent;
-		    color: #000000; margin: 0;  
+		    color: #555555; margin: 0;  
 				-webkit-transform-origin:top left; 
 				/*-webkit-transform:rotate(-90deg);*/
 				-moz-transform-origin:top left;    
@@ -10077,7 +10087,7 @@ Bitcoin.Util = {
 		#paperarea .artwallet .dupbtcprivwif, #paperarea .artwallet .dupbtcencryptedkey 
 		{
 		    position: absolute; top: 75px; left: 610px; z-index: 100; background-color: transparent;
-		    color: #000000; margin: 0;  
+		    color: #555555; margin: 0;  
 				/* -webkit-transform-origin:top left; */ 
 				-webkit-transform:rotate(-180deg);
 				/* -moz-transform-origin:top left; */   
@@ -10498,6 +10508,7 @@ Bitcoin.Util = {
                   		  <option value="default">--- Other Cryptocurrencies ---</option>
                   		  <option value="alt-litecoin">Litecoin</option>
                   		  <option value="alt-dogecoin">Dogecoin</option>
+                  		  <option value="alt-defcoin">Defcoin</option>
                   		  <option value="alt-testnet">"Testnet"</option>
                         </select>
                         </p>
@@ -10829,7 +10840,9 @@ Bitcoin.Util = {
                     <span class="item" style="font-size: 11px; font-family: 'Courier New', Courier, monospace;">
                     <strong>Bitcoin</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1Pjg628vjMLBvADrPHsthtzKiryM2y46DG<br />
                     <strong>Litecoin</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LYrGQmrvba7qJZUD7Jt4S1iejE5ndhw3CE<br />
-                    <strong>Dogecoin</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DSE875u8k14M3K5d93iD1fsgcHkfjjy742<br /></span>
+                    <strong>Dogecoin</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DSE875u8k14M3K5d93iD1fsgcHkfjjy742<br />
+                    <strong>Defcoin</strong>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DFzQ3TkERnUnNamN5N4qpCcLvSw1iV2HYB<br />
+			</span>
                     
                     <span class="item" style="font-size: 11px;">Contributions are shared by the <a href="https://bitcoinpaperwallet.com/#thanks" target="_blank">developers</a>, 
                     including pointbiz of <strong>bitaddress.org</strong>.</span>
