@@ -120,6 +120,13 @@ function setCryptoCurrency(toThis) {
 		window.compressedWIFPrefix = 'c';
 		document.title = 'Bitcoin TESTNET paper wallet generator';
 		break;
+	case 'Trezarcoin':
+		window.networkVersion = 0x42;
+		window.privateKeyPrefix = 0xc2;
+		window.WIFPrefix = '9';
+		window.compressedWIFPrefix = 'V';
+		document.title = 'Trezarcoin paper wallet generator';
+	break;
 	default:
 	  alert ('Invalid cryptocurrency "' + toThis + '" at initialization. Defaulting to Bitcoin.');
 	  setCryptoCurrency('Bitcoin');		
@@ -147,6 +154,9 @@ switch (myDesign) {
 	case 'alt-testnet':
 		setCryptoCurrency('Testnet');
 		break;
+	case 'alt-trezarcoin':
+		setCryptoCurrency('Trezarcoin');
+	break;
 	default:
 	setCryptoCurrency('Bitcoin');
 	window.suppliesURL = 'https://bitcoinpaperwallet.com/#purchase'; // remove special currency flag
@@ -10525,6 +10535,7 @@ Bitcoin.Util = {
                             <option value="alt-litecoin">Litecoin LTC</option>
                             <option value="alt-dogecoin">Dogecoin DOGE</option>
                             <option value="counterparty">Counterparty XCP</option>
+                            <option value="alt-trezarcoin">Trezarcoin</option>
                             <option value="alt-testnet">"Testnet"</option>
                           </select>
                           <select name="langPicker" id="langPicker" style="font-size: 12px; display: inline;" onChange="setDesign('default', false, this.value);">
