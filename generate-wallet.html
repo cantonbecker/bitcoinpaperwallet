@@ -1,7 +1,7 @@
 <!doctype html>
-<html>
+<html style='background-position: center; background-image: url("images/webpage-background-foot.png"); background-repeat: repeat;'>
 <head>
-	<title>Bitcoin Paper Wallet Generator</title>
+	<title>Minexcoin Paper Wallet Generator</title>
 	<!--
     
     generate-wallet.html (from https://bitcoinpaperwallet.com)
@@ -106,6 +106,13 @@ function setCryptoCurrency(toThis) {
 		window.compressedWIFPrefix = 'T';
 		document.title = 'Litecoin paper wallet generator';
 		break;
+	case 'Minexcoin':
+		window.networkVersion = 0x4b;
+		window.privateKeyPrefix = 0x80;
+		window.WIFPrefix = '5';
+		window.compressedWIFPrefix = '[LK]';
+		document.title = 'Minexcoin paper wallet generator';
+		break;
 	case 'Dogecoin':
 		window.networkVersion = 0x1e;
 		window.privateKeyPrefix = 0x9e;
@@ -121,8 +128,8 @@ function setCryptoCurrency(toThis) {
 		document.title = 'Bitcoin TESTNET paper wallet generator';
 		break;
 	default:
-	  alert ('Invalid cryptocurrency "' + toThis + '" at initialization. Defaulting to Bitcoin.');
-	  setCryptoCurrency('Bitcoin');		
+	  alert ('Invalid cryptocurrency "' + toThis + '" at initialization. Defaulting to Minexcoin.');
+	  setCryptoCurrency('Minexcoin');		
 	} // eof switch
 	return (true);
 }
@@ -148,7 +155,7 @@ switch (myDesign) {
 		setCryptoCurrency('Testnet');
 		break;
 	default:
-	setCryptoCurrency('Bitcoin');
+	setCryptoCurrency('Minexcoin');
 	window.suppliesURL = 'https://bitcoinpaperwallet.com/#purchase'; // remove special currency flag
 } 
 
@@ -9953,7 +9960,7 @@ Bitcoin.Util = {
 		}
 		
 		.right { text-align: right; }
-		.walletarea { display: none; border-top: 2px solid #f7931a; }
+		.walletarea { display: none; border-top: 2px solid #00aeef; }
 		.keyarea { font-family: Courier New; height: 110px; text-align: left; position: relative; padding: 5px; }
 		.keyarea .public { float: left; }
 		.keyarea .pubaddress { display: inline-block; height: 40px; padding: 0 0 0 10px; float: left; }
@@ -9965,15 +9972,15 @@ Bitcoin.Util = {
 		.pubkeyhex { word-wrap: break-word; }
 		.faqs ol { padding: 0 0 0 25px; }
 		.faqs li { padding: 3px 0; }
-		body { margin-top: 0; font-family: Arial; background-image:url(images/webpage-background.png); background-repeat: repeat-y; background-position: center; background-color: #e2f9bd; font-size: 14px;}
+		body { margin-top: 0; font-family: Arial; background-image:url(images/webpage-background.png); background-repeat: repeat; background-position: center; background-color: #202d38; font-size: 14px;}
 		
-		h1 { font-size: 24px; font-weight: 100; color: #090; margin:0 0 10px 0; padding:0; }
+		h1 { font-size: 24px; font-weight: 100; color: #00aeef; margin:0 0 10px 0; padding:0; }
 		
-		a, a:visited { text-decoration: none; color: #ff6c00; }
-		a:hover {color: #0000FF; text-decoration: underline;}
+		a, a:visited { text-decoration: none; color: #00aeef; }
+		a:hover {color: #00aeef; text-decoration: underline;}
 
 
-		#generatelabelmovemouse { background-color:#EFFFDD; position: absolute; z-index: 20; top: -10px; left: 0; margin: 0;  padding: 25px 55px; width: 901px; text-align: left;
+		#generatelabelmovemouse {position: absolute; z-index: 20; top: -10px; left: 0; margin: 0;  padding: 25px 55px; width: 901px; text-align: left;
 		-webkit-box-shadow: #B3B3B3 1px 0px 1px; -moz-box-shadow: #B3B3B3 1px 0px 1px; box-shadow: #B3B3B3 1px 0px 1px; }
 
 		#generate { height: 450px; text-align: left; position: relative; padding: 5px; border: none; line-height: 24px;}
@@ -9986,7 +9993,7 @@ Bitcoin.Util = {
 		#generatelabelbitcoinaddress { font-size: 90%;}
 				
 		#seedpoolarea { display: none; }
-		#seedpooldisplay {  font-family: monospace; font-size: 12px; width: 680px; padding: 0 0 0 0; word-wrap: break-word; color: #FF9637; line-height: 16px;}
+		#seedpooldisplay {  font-family: monospace; font-size: 16px; width: 680px; padding: 0 0 0 0; word-wrap: break-word; color: #00aeef; line-height: 16px;}
 
 		#seedSkipper { font-size: 11px; text-align: center; line-height: 14px;}
 		.seedpoint { width: 12px; height: 12px; display: block; border-radius: 6px; background-color: #EAFEC8; border: 1px solid #EEEEEE; position: absolute; z-index: -10; }
@@ -9994,12 +10001,12 @@ Bitcoin.Util = {
 
 		#rightArea { float: right; width: 170px; }
  
-		#progress-bar { width: 170px; background:#99c31b; position: relative; margin-bottom: 20px; } 
+		#progress-bar { width: 170px; background:grey; position: relative; margin-bottom: 20px; } 
 		.fullyRounded { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; } 
-		#progress-bar-percentage { background:#ff952d; padding: 3px 0px; text-align: center; height: 18px; } 
+		#progress-bar-percentage { background:#00aeef; padding: 3px 0px; text-align: center; height: 18px; } 
 		#progress-bar-percentage span { display: inline-block; position: absolute; width: 100%; left: 0; }
 				
-		#main { position: relative; margin: 0px auto; width: 1010px; color: #444; } /* removed text-align: center; */
+		#main { position: relative; margin: 0px auto; width: 1010px; color: #fff;background-color: #202d38} /* removed text-align: center; */
 		#logoback {  background-image:url(images/logo.png); background-position: top left; background-repeat: no-repeat; }
 		#menu { visibility: hidden; font-size: 90%; padding: 0 12px;}
 		
@@ -10010,19 +10017,19 @@ Bitcoin.Util = {
 		#culturemenu .selected { text-decoration: none; color: #000000; }
 
 		#calibratearea .calibratesvg { width: 1010px; height: 331px; border: 0; margin: 0; padding: 0; left: 0; }
-		#calibratearea #calibrationinfo { clear: both; text-align: center; color: #990000; padding: 10px 0;}
+		#calibratearea #calibrationinfo { clear: both; text-align: center; color: #00aeef; padding: 10px 0;}
 		
 		#backarea .commands, #paperarea .commands { height: 120px; } /* identical so back and front line up */
 			
 		#backarea .backsvg { width: 1010px; height: 331px; border: 0; margin: 0; padding: 0; left: 0; }
 
-		#printeradjust { color: #060; font-size: 12px; }
-		#printeradjust span { background-color: #e2f9bd; padding: 2px 3px; border: 1px solid #009900; font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 12px;}
+		#printeradjust { color: #fff; font-size: 12px; }
+		#printeradjust span { background-color: #fff; padding: 2px 3px; border: 2px solid #00aeef; font-family: "Courier New", Courier, monospace; font-weight: bold; font-size: 12px;}
 		#printeradjust a:hover span { background-color: #CCFFCC; }
 		#printeradjust a, #printeradjust a:hover {text-decoration: none;}
 		#printeradjust input { text-align: center; margin: 0 2px; width: 20px;}
 		
-		#detailwallet { margin-left: 35px; color: #d36200; }
+		#detailwallet { margin-left: 35px; color: #fff; }
 		
 		#paperarea { min-height: 120px; display: none; }
 		#paperarea .keyarea { border: 2px solid #f7931a; border-top: 0; }
@@ -10130,7 +10137,7 @@ Bitcoin.Util = {
 		}
 
 		/* Back side */
-		#backText { position: absolute; margin-top: 73px; left: 260px; width: 600px; font-size: 8px; }
+		#backText { position: absolute; margin-top: 73px; left: 260px; width: 600px; font-size: 8px;color:black; }
 		#backText #backPaperWallet { position: absolute; margin-left: 202px; color: #fb9300; font-size: 11px; text-transform: uppercase; font-style: italic; }
 		#backText #backAmount { position: absolute; margin-left: 421px; margin-top: 7px; color: #666666;}
 		#backText #backDate { position: absolute; margin-left: 558px; margin-top: 7px; color: #666666; }
@@ -10154,13 +10161,13 @@ Bitcoin.Util = {
 		#backText #backCustomMessage { display: none; position: absolute; overflow: hidden; margin-left: 210px; width: 195px; margin-top: 20px; font-size: 11px; line-height: 15px; height: 150px; }
 
 		.nicerButton { /* thanks http://www.cssbuttongenerator.com */
-			-moz-box-shadow:inset 0px 1px 0px 0px #c1ed9c;
-			-webkit-box-shadow:inset 0px 1px 0px 0px #c1ed9c;
-			box-shadow:inset 0px 1px 0px 0px #c1ed9c;
-			background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #9dce2c), color-stop(1, #8cb82b) );
-			background:-moz-linear-gradient( center top, #9dce2c 5%, #8cb82b 100% );
-			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9dce2c', endColorstr='#8cb82b');
-			background-color:#9dce2c;
+			-moz-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+			-webkit-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+			box-shadow:inset 0px 1px 0px 0px #bee2f9;
+			background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf) );
+			background:-moz-linear-gradient( center top, #63b8ee 5%, #468ccf 100% );
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf');
+			background-color:#63b8ee;
 			-webkit-border-top-left-radius:12px;
 			-moz-border-radius-topleft:12px;
 			border-top-left-radius:12px;
@@ -10174,7 +10181,7 @@ Bitcoin.Util = {
 			-moz-border-radius-bottomleft:12px;
 			border-bottom-left-radius:12px;
 			text-indent:0;
-			border:1px solid #83c41a;
+			border:1px solid #3866a3;
 			display:inline-block;
 			color:#ffffff !important;
 			font-family:Arial;
@@ -10186,7 +10193,7 @@ Bitcoin.Util = {
 			width:189px;
 			text-decoration:none;
 			text-align:center;
-			text-shadow:1px 1px 0px #689324;
+			text-shadow:1px 1px 0px #7cacde;
 		}
 		.nicerButton:hover {
 		  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8cb82b), color-stop(1, #9dce2c) );
@@ -10203,7 +10210,7 @@ Bitcoin.Util = {
 		.instructionsarea { font-size: 12px; line-height: 18px; }
 		.instructionsarea li { padding-bottom: 8px; list-style: none; }
 		
-		.highlighted { font-size: 14px; padding: 8px; background-color: #ebfdbf;}
+		.highlighted { font-size: 14px; padding: 8px; background-color: rgba(50, 70, 87, 1);}
 		
 		#browserinfo { text-align: center; } 
 		.englishjson { text-align: center; padding: 40px 0 20px 0; }
@@ -10277,10 +10284,10 @@ Bitcoin.Util = {
 		#detailarea .item.clear { clear: both; padding-top: 10px; }
 		#detailarea .label { display: block; font-weight: bold; }
 		#detailarea .output { display: block; font-family: monospace; font-size: 1.25em; }
-		#detailarea #detailqrcodepublic { position: relative; float: left; margin: 0 10px 0 0; padding: 13px 11px 11px 11px; }
-		#detailarea #detailqrcodepubliccomp { position: relative; float: right; margin: 0 0 0 10px; padding: 13px 11px 11px 11px; }
-		#detailarea #detailqrcodeprivate { position: relative; float: left; margin: 0 10px 0 0; padding: 13px 11px 11px 11px; }
-		#detailarea #detailqrcodeprivatecomp { position: relative; float: right; margin: 0 0 0 10px; padding: 13px 11px 11px 11px; }
+		#detailarea #detailqrcodepubliccomp { position: relative; float: left; margin: 0 10px 0 0; padding: 13px 11px 11px 11px; }
+		#detailarea #detailqrcodepublic { position: relative; float: right; margin: 0 0 0 10px; padding: 13px 11px 11px 11px; }
+		#detailarea #detailqrcodeprivatecomp { position: relative; float: left; margin: 0 10px 0 0; padding: 13px 11px 11px 11px; }
+		#detailarea #detailqrcodeprivate { position: relative; float: right; margin: 0 0 0 10px; padding: 13px 11px 11px 11px; }
 		#detailpubkey { width: 590px; }
 		#detailbip38commands { display: none; padding-top: 5px; }	
 		.answer { padding: 0 15px 10px 25px; text-align: left; display: none; font-size: 80%; }
@@ -10305,23 +10312,23 @@ Bitcoin.Util = {
 
 		@media screen 	
 		{
-			#tagline { margin: 10px 0 0 310px; font-style: italic; font-size: 18px; color: #666; }
+			#tagline { margin: 10px 0 0 360px; font-style: italic; font-size: 18px; color: #fff; }
 			#tagline span {padding-left: 10px; font-size: 11px; color: #999;}
-			#tagsite { margin: 5px 0 20px 310px; font-size: 14px; color: #666; }
+			#tagsite { margin: 5px 0 20px 360px; font-size: 14px; color: #fff; }
 			
 
 			#tagwarning { position: absolute; left: 250px; top: 25px; font-size: 12px; color: red; }
 			.menu { text-align: left; }
-			.menu .tab { border-top-left-radius: 5px; border-top-right-radius: 5px; display: inline-block; background-color: #e2f9bd; 
-						 color: #060; font-size: 12px;
-						 border-top: 2px solid #f7931a; 
-						 border-left: 2px solid #f7931a; 
-						 border-right: 2px solid #f7931a; 
-						 border-bottom: 2px solid #e2f9bd; 
+			.menu .tab { border-top-left-radius: 5px; border-top-right-radius: 5px; display: inline-block; background-color: #202d38; 
+						 color: #00aeef; font-size: 12px;
+						 border-top: 2px solid #00aeef; 
+						 border-left: 2px solid #00aeef; 
+						 border-right: 2px solid #00aeef; 
+						 border-bottom: 2px solid #202d38; 
 						 padding: 4px 8px; margin: 0 2px 0 0; position: relative; top: 2px; z-index: 110; cursor: pointer; }
-			.menu .tab:hover { color: #090; }
-			.menu .tab.selected { background-color: #FFF; border-bottom: 4px solid #FFF; cursor: default; font-weight: bold; }
-			.menu .tab.selected:hover { color: #090; }
+			.menu .tab:hover { color: #fff; }
+			.menu .tab.selected { background-color: rgba(0, 60, 112, 1); border-bottom: 4px solid rgba(0, 60, 112, 1); cursor: default; font-weight: bold; }
+			.menu .tab.selected:hover { color: #00aeef }
 			
 			.menu #printeradjust { float: right; text-align: right; margin-top: 5px; } /* zoom & shift */
 			
@@ -10356,7 +10363,7 @@ Bitcoin.Util = {
 
 			#siginfo, #selfinfo { margin: 10px 100px; border: 1px solid #FF9705; padding: 15px; background-color: #FFFFF6; color: #333; z-index: 10000; font-size: 12px;}
 			
-			#supplyKeys { float: left; background-color: #EEFED0; border: 1px solid #CCCCCC; padding: 8px; }
+			#supplyKeys { float: left; background-color: rgba(50, 70, 87, 1); border: 1px solid #CCCCCC; padding: 8px; }
 		}		
 
 		@media print
@@ -10410,7 +10417,7 @@ Bitcoin.Util = {
               <span><a href="?culture=fr" id="culturefr">Français</a></span> -->
               &nbsp;
           	</div>
-			<div id="tagline">Open Source JavaScript <script type="text/javascript">document.write(window.currencyName);</script> Paper Wallet Generator <span>Updated Sep 22, 2017</span></div>
+			<div id="tagline">Open Source JavaScript <script type="text/javascript">document.write(window.currencyName);</script> Paper Wallet Generator <span>Updated Nov 21, 2017</span></div>
 			<div id="tagsite">For help, security tips, or wallet making supplies visit <a href="https://bitcoinpaperwallet.com">bitcoinpaperwallet.com</a></div>
             <div id="tagwarning"></div>
 			<div id="seedpoolarea"><textarea rows="16" cols="62" id="seedpool"></textarea></div>
@@ -10514,19 +10521,7 @@ Bitcoin.Util = {
 						<span id="instructions2">
                         <p style="margin-top: 0;"><strong>Change your wallet's design, language, or cryptocurrency here:</strong>
                           <select name="designPicker" id="designPicker" style="font-size: 12px;" onChange="setDesign(this.value, false);">
-                            <option value="default">Standard Bitcoin Design</option>
-                            <option value="bitcoincash">Bitcoin Cash Design</option>
-                            <option value="blackwhite">Black &amp; White Bitcoin</option>
-                            <option value="holiday">Holiday / Christmas Bitcoin (English)</option>
-                            <option value="chinese-new-year">Chinese New Year Bitcoin (Simplified Chinese)</option>
-                            <option value="traditional-chinese-new-year">Chinese New Year Bitcoin (Traditional Chinese)</option>
-                            <option value="hobbit">"HobBitcoin" :)</option>
-                            <option value="custom">Your own custom Bitcoin design</option>
-                            <option value="default">--- Other Cryptocurrencies ---</option>
-                            <option value="alt-litecoin">Litecoin LTC</option>
-                            <option value="alt-dogecoin">Dogecoin DOGE</option>
-                            <option value="counterparty">Counterparty XCP</option>
-                            <option value="alt-testnet">"Testnet"</option>
+                            <option value="default">Standard Minexcoin Design</option>
                           </select>
                           <select name="langPicker" id="langPicker" style="font-size: 12px; display: inline;" onChange="setDesign('default', false, this.value);">
                             <option value="english">English</option>
@@ -10709,36 +10704,31 @@ Find your scissors! The final step is to cut out your wallet, fold it, and seal 
                   Denomination: 
                   <select id="backDenominationSelect" onChange="setDenomination(this.value);">
                     <option value="">*** None ***</option>
-                    <option value="10 BTC">10 BTC</option>
-                    <option value="5 BTC">5 BTC</option>
-                    <option value="2 BTC">2 BTC</option>
-                    <option value="1 BTC">1 BTC</option>
-                    <option value="50000 Bits">50000 Bits</option>
-                    <option value="10000 Bits">10000 Bits</option>
-                    <option value="5000 Bits">5000 Bits</option>
-                    <option value="1000 Bits">1000 Bits</option>
-                    <option value="500 Bits">500 Bits</option>
-                    <option value="100 Bits">100 Bits</option>
-                    <option value="50000 mBTC">50000 mBTC</option>
-                    <option value="10000 mBTC">10000 mBTC</option>
-                    <option value="5000 mBTC">5000 mBTC</option>
-                    <option value="1000 mBTC">1000 mBTC</option>
-                    <option value="500 mBTC">500 mBTC</option>
-                    <option value="100 mBTC">100 mBTC</option>
-                    <option value="50 mBTC">50 mBTC</option>
-                    <option value="20 mBTC">20 mBTC</option>
-                    <option value="10 mBTC">10 mBTC</option>
-                    <option value="5 mBTC">5 mBTC</option>
-                    <option value="1 mBTC">1 mBTC</option>
+					<option value="1000 MNX">1000 MNX</option>
+					<option value="100 MNX">100 MNX</option>
+                    <option value="10 MNX">10 MNX</option>
+                    <option value="5 BTC">5 MNX</option>
+                    <option value="2 BTC">2 MNX</option>
+                    <option value="1 BTC">1 MNX</option>
+                    <option value="50000 mMNX">50000 mMNX</option>
+                    <option value="10000 mMNX">10000 mMNX</option>
+                    <option value="5000 mMNX">5000 mMNX</option>
+                    <option value="1000 mMNX">1000 mMNX</option>
+                    <option value="500 mMNX">500 mMNX</option>
+                    <option value="100 mMNX">100 mMNX</option>
+                    <option value="50 mMNX">50 mMNX</option>
+                    <option value="20 mMNX">20 mMNX</option>
+                    <option value="10 mMNX">10 mMNX</option>
+                    <option value="5 mMNX">5 mMNX</option>
+                    <option value="1 mMNX">1 mMNX</option>
                     <option value="other">Other...</option>
                   </select>
                   <div id="backDenominationOther" style="display: none;">
                   <input id="backDenominationOtherAmount" maxlength="5" size="6" value="1" onChange="setDenomination('other');">
                   <select id="backDenominationOtherUnit" onChange="setDenomination('other');">
-                  	<option value="BTC">BTC</option>
-                  	<option value="mBTC">mBTC</option>
-                  	<option value="&mu;BTC">&mu;BTC</option>
-                  	<option value="bits">bits</option>
+                  	<option value="MNX">MNX</option>
+                  	<option value="mMNX">mMNX</option>
+                  	<option value="&mu;MNX">&mu;MNX</option>
                   </select>
                   </div><!-- end backDenominationOther -->
                               </div>
@@ -10837,7 +10827,7 @@ Find your scissors! The final step is to cut out your wallet, fold it, and seal 
                         
 						<h1><span id="instructions18">How to withdraw funds from your wallet:</span></h1>
 
-						<span id="instructions19">You should expect to withdraw the entire balance of the wallet by importing it (or "sweeping" it) to a live wallet, e.g. a Bitcoin wallet application or online service like blockchain.info or coinbase.com.
+						<span id="instructions19">You should expect to withdraw the entire balance of the wallet by importing it (or "sweeping" it) to a live wallet, e.g. a Bitcoin wallet application or online service like minexexplorer.com or coinbase.com.
                         <br />
                         <br />
                         <strong>If you elected to BIP38-encrypt your wallet</strong>, you may need to recover your unencrypted WIF "Wallet Import Format" private key by using the "validate" tab on this web page.
@@ -10862,7 +10852,7 @@ Find your scissors! The final step is to cut out your wallet, fold it, and seal 
 			<div class="instructionsarea">	
 					<h1>Validate or decrypt private key</h1>
 					<div style="width: 45%; float: left; padding: 0 15px; border-right: 3px solid #ccc;">
-                    	<p><em>This feature works for private keys made here as well as those generated using any other Bitcoin service or software, e.g. bitaddress.org or brainwallet.org</em></p>
+                    	<p><em>This feature works for private keys made here as well as those generated using any other Minexcoin service or software</em></p>
 						<p><strong>Enter or <a onClick="ninja.wallets.detailwallet.qrscanner.start()">scan</a> any private key to verify that the key is valid</strong> and show its corresponding public key. If your private key validates, then you may be reassured that you will able to retrieve any funds sent to that wallet.</p>
 						<p><strong>To duplicate or BIP38-encrypt any paper wallet</strong>, just validate its private key and click the "Use these details to print a paper wallet" button.</p>
  						<p><strong>Is your wallet BIP38 encrypted?</strong> If so, you can use this form to decrypt your private key and recover the standard Wallet Import Format (WIF) key suitable for wallet software and services that don't directly support BIP38 importing.</p>
@@ -10912,41 +10902,41 @@ Find your scissors! The final step is to cut out your wallet, fold it, and seal 
 					</div>
 					<div class="pubqr">
 						<div class="item">
-							<span class="label" id="detaillabelbitcoinaddress"><strong style="font-size: 150%;">Public <script type="text/javascript">document.write(window.currencyName);</script> Address</strong></span>
-							<div id="detailqrcodepublic" class="qrcode_public"></div>
-							<span class="output" id="detailaddress"></span>
+							<span class="label" id="detaillabelbitcoinaddresscomp"><strong style="font-size: 150%;">Public <script type="text/javascript">document.write(window.currencyName);</script> Address (Compressed Format)</strong></span>
+							<div id="detailqrcodepubliccomp" class="qrcode_public"></div>
+							<span class="output" id="detailaddresscomp"></span>
 						</div>					
 
 						<div class="item right" style="display:block;" id="compressedpicker">
-						<a href="#" onClick="document.getElementById('compressed1').style.display='block'; document.getElementById('compressed2').style.display='block';  document.getElementById('compressedpicker').style.display='none'; return(false);">Display compressed format keys?</a>
+						<a href="#" onClick="document.getElementById('compressed1').style.display='block'; document.getElementById('compressed2').style.display='block';  document.getElementById('compressedpicker').style.display='none'; return(false);">Display uncompressed format keys?</a>
 						</div>
 
 						<div class="item right" style="display: none;" id="compressed1">
-							<span class="label" id="detaillabelbitcoinaddresscomp"><script type="text/javascript">document.write(window.currencyName);</script> Address Compressed Format</span>
-							<div id="detailqrcodepubliccomp" class="qrcode_public"></div>
-							<span class="output" id="detailaddresscomp"></span>
+							<span class="label" id="detaillabelbitcoinaddress">Public <script type="text/javascript">document.write(window.currencyName);</script> Address</span>
+							<div id="detailqrcodepublic" class="qrcode_public"></div>
+							<span class="output" id="detailaddress"></span>
 						</div>
 					</div>
 					<br /><br />
 					<div class="item clear">
-						<span class="label" id="detaillabelpublickey">Public Key (130 characters [0-9A-F]):</span>
-						<span class="output pubkeyhex" id="detailpubkey"></span>
-					</div>
-					<div class="item">
 						<span class="label" id="detaillabelpublickeycomp">Public Key (compressed, 66 characters [0-9A-F]):</span>
 						<span class="output" id="detailpubkeycomp"></span>
+					</div>
+					<div class="item">
+						<span class="label" id="detaillabelpublickey"></span>Public Key (130 characters [0-9A-F]):</span>
+						<span class="output  pubkeyhex" id="detailpubkey"></span>
 					</div>
 					<hr />
 					<div class="privqr">
 						<div class="item">
-							<span class="label"><span id="detaillabelprivwif"><strong style="font-size: 150%;">Private Key WIF</strong><br />51 characters base58, starts with a</span> '<script type="text/javascript">document.write(window.window.WIFPrefix);</script>'</span>
-							<div id="detailqrcodeprivate" class="qrcode_private"></div>
-							<span class="output" id="detailprivwif"></span>
-						</div>
-						<div class="item right" style="display:none;" id="compressed2">
-							<span class="label"><span id="detaillabelprivwifcomp">Private Key WIF Compressed<br />52 characters base58, starts with a</span> '<script type="text/javascript">document.write(window.compressedWIFPrefix);</script>'</span>
+							<span class="label"><span id="detaillabelprivwifcomp"><strong style="font-size: 150%;">Private Key WIF (Compressed)</strong><br />52 characters base58, starts with a</span> '<script type="text/javascript">document.write(window.window.compressedWIFPrefix);</script>'</span>
 							<div id="detailqrcodeprivatecomp" class="qrcode_private"></div>
 							<span class="output" id="detailprivwifcomp"></span>
+						</div>
+						<div class="item right" style="display:none;" id="compressed2">
+							<span class="label"><span id="detaillabelprivwif">Private Key WIF<br />51 characters base58, starts with a</span> '<script type="text/javascript">document.write(window.WIFPrefix);</script>'</span>
+							<div id="detailqrcodeprivate" class="qrcode_private"></div>
+							<span class="output" id="detailprivwif"></span>
 						</div>
 					</div>
 					<br /><br />
@@ -11015,9 +11005,7 @@ Find your scissors! The final step is to cut out your wallet, fold it, and seal 
 
             	<span class="item"><b>Security &amp; signatures</b></span>
                 <span class="item" style="font-size: 90%;">For <a href="https://bitcoinpaperwallet.com/#security" target="_blank">secure wallet generation</a>, do not print wallets "live" from bitcoinpaperwallet.com.<br />Instead, download this generator from GitHub and run the HTML as a "local" file:</span>
-				<span class="item"><a href="https://github.com/cantonbecker/bitcoinpaperwallet" target="_blank" id="footerlabelgithub"><strong>Secure Download</strong> (GitHub ZIP file)</a></span>
-                
-				<span class="item" id="footerlabelsig" style="font-size: 90%;"><a href="#" onClick="document.getElementById('siginfo').style.display='block'; return(false);">Validate PGP/GPG signature</a></span>
+				<span class="item"><a href="https://github.com/racquemis/minexcoinpaperwallet" target="_blank" id="footerlabelgithub"><strong>Secure Download</strong> (GitHub ZIP file)</a></span>
 
                 <span class="item" id="footerlabeltests" style="font-size: 90%;">Run unit tests: <a href="?unittests=1#tests">basic</a> | <a href="?asyncunittests=1#tests">async</a></span>
                 
@@ -11956,6 +11944,7 @@ ninja.publicKey = {
 		generateNewWallet: function(addressSeed, callback) {
 			if (addressSeed == null) {
 				var key = new Bitcoin.ECKey(false);
+				key.setCompressed(true);
 				addressSeed = { address: key.getBitcoinAddress(), wifKey: key.getBitcoinWalletImportFormat() };
 			}
 			ninja.wallets.paperwallet.lastwallet = addressSeed;
@@ -12274,13 +12263,14 @@ ninja.publicKey = {
 				document.getElementById("detailprivb64").innerHTML = btcKey.toString("base64");
 				var bitcoinAddress = btcKey.getBitcoinAddress();
 				var wif = btcKey.getBitcoinWalletImportFormat();
-				ninja.wallets.detailwallet.lastwallet = { address: bitcoinAddress, wifKey: wif };
+				//ninja.wallets.detailwallet.lastwallet = { address: bitcoinAddress, wifKey: wif };
 				document.getElementById("detailpubkey").innerHTML = btcKey.getPubKeyHex();
 				document.getElementById("detailaddress").innerHTML = bitcoinAddress;
 				document.getElementById("detailprivwif").innerHTML = wif;
 				btcKey.setCompressed(true);
 				var bitcoinAddressComp = btcKey.getBitcoinAddress();
 				var wifComp = btcKey.getBitcoinWalletImportFormat();
+				ninja.wallets.detailwallet.lastwallet = { address: bitcoinAddressComp, wifKey: wifComp };
 				document.getElementById("detailpubkeycomp").innerHTML = btcKey.getPubKeyHex();
 				document.getElementById("detailaddresscomp").innerHTML = bitcoinAddressComp;
 				document.getElementById("detailprivwifcomp").innerHTML = wifComp;
@@ -13506,14 +13496,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "PRIVATE KEY / WITHDRAW",
 			backLongTextFontSize: "9px",
-			backPaperWallet: "BITCOIN PAPER WALLET",
+			backPaperWallet: "MINEXCOIN PAPER WALLET",
 			backAmount: "Amount Added",
 			backDate: "Date",
 			backNotes: "Notes:",
 			backInst1: "To deposit additional funds to this paper wallet, send bitcoins to its public address, anytime.",
-			backInst2: "Verify your balance by searching for the public address using a service such as blockchain.info",
+			backInst2: "Verify your balance by searching for the public address using a service such as minexexplorer.com",
 			backInst3: "<strong>Do not reveal the private key</strong> until you are ready to import the balance on this wallet to a bitcoin client, exchange, or online wallet.",
-			backInst4: "When withdrawing your funds from this wallet you should remove the <strong>ENTIRE BALANCE</strong>. If you attempt to spend only some of the funds you will likely lose the remaining bitcoins forever.<br />For instructions visit bitcoinpaperwallet.com",
+			backInst4: "When withdrawing your funds from this wallet you should remove the <strong>ENTIRE BALANCE</strong>. If you attempt to spend only some of the funds you will likely lose the remaining minexcoins forever.<br />For instructions visit bitcoinpaperwallet.com",
 		},
 
 		'chinese': {
@@ -13523,12 +13513,12 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "私钥/取款",
 			backLongTextFontSize: "10px",
-			backPaperWallet: "BITCOIN 纸钱包",
+			backPaperWallet: "MINEXCOIN 纸钱包",
 			backAmount: "添加数量",
 			backDate: "日期",
 			backNotes: "注释",
 			backInst1: "可以随时向公开地址发送比特币为该纸钱包添加资金。",
-			backInst2: "使用例如blockchain.info这样的服务，通过搜索公开地址来查询你的余额。",
+			backInst2: "使用例如minexexplorer.com这样的服务，通过搜索公开地址来查询你的余额。",
 			backInst3: "在你准备将余额导入到比特币客户端、交易平台或者在线钱包之前，<strong>请勿泄露私钥</strong>。",
 			backInst4: "从此钱包取出资金时，请将<strong>全部余额一次性</strong>取走。如果你试图只取走一部分，那么你很有可能永远失去剩余的比特币。<br /><br />有疑问？请访问 : bitcoinpaperwallet.com",
 		},
@@ -13540,12 +13530,12 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "錢包導入格式",
 			withdraw: "取款",
 			backLongTextFontSize: "10px",
-			backPaperWallet: "BITCOIN 紙錢包",
+			backPaperWallet: "MINEXCOIN 紙錢包",
 			backAmount: "添加數量",
 			backDate: "日期",
 			backNotes: "註釋",
 			backInst1: "可以隨時向公開地址發送比特幣為該紙錢包添加資金。",
-			backInst2: "使用例如blockchain.info這樣的服務，通過搜索公開地址來查詢你的餘額。",
+			backInst2: "使用例如minexexplorer.com這樣的服務，通過搜索公開地址來查詢你的餘額。",
 			backInst3: "在你準備將餘額導入到比特幣客戶端、交易平台或者在線錢包之前，<strong>請勿洩露私鑰</strong>。",
 			backInst4: "從此錢包取出資金時，請將<strong>全部餘額一次性</strong>取走。如果你試圖只取走一部分，那麼你很有可能會永遠失去剩餘的比特幣。<br /><br />有疑問？請訪問 : bitcoinpaperwallet.com",
 		},
@@ -13557,12 +13547,12 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "SOUKROMÝ KLÍČ / VYBRAT",
 			backLongTextFontSize: "9px",
-			backPaperWallet: "BITCOIN Papírová peněženka",
+			backPaperWallet: "MINEXCOIN Papírová peněženka",
 			backAmount: "Částka",
 			backDate: "Datum",
 			backNotes: "Poznámky:",
 			backInst1: "Pokud chcete vložit více peněz do této peněženky, můžete kdykoli použít stejnou veřejnou adresu.",
-			backInst2: "Pokud chcete ověřit zůstatek v peněžence, můžete použít službu blockchain.info a zadat veřejnou adresu.",
+			backInst2: "Pokud chcete ověřit zůstatek v peněžence, můžete použít službu minexexplorer.com a zadat veřejnou adresu.",
 			backInst3: "<strong>NEUKAZUJTE NIKOMU SOUKROMÝ KLÍČ</strong> dokud se nerozhodnete opravdu převést zůstatek do klienta,na burzu nebo do online peněženky. ",
 			backInst4: "Při výběru z této peněženky byste měli převést <strong>CELÝ ZŮSTATEK</strong>. Pokud převedete jen část, je možné že příjdete o zbytek.<br />Dotazy? Navštivte bitcoinpaperwallet.com",
 		},
@@ -13574,14 +13564,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "TEGNEBOGENS IMPORTFORMAT",
 			withdraw: "PRIVAT NØGLE / UDBETAL",
 			backLongTextFontSize: "9px",
-			backPaperWallet: "BITCOIN-PAPIRTEGNEBOG",
+			backPaperWallet: "MINEXCOIN-PAPIRTEGNEBOG",
 			backAmount: "Indbetalt beløb",
 			backDate: "Dato",
 			backNotes: "Noter:",
 			backInst1: "For at indbetale yderligere beløb til denne papirtegnebog sendes når som helst bitcoins til dens offentlige adresse.",
-			backInst2: "Verificér din saldo ved at søge efter den offentlige adresse vha. en tjeneste som fx blockchain.info",
+			backInst2: "Verificér din saldo ved at søge efter den offentlige adresse vha. en tjeneste som fx minexexplorer.com",
 			backInst3: "<strong>Afslør ikke den private nøgle</strong> før du er klar til at importere saldoen i denne tegnebog til en bitcoinklient, -børs eller online tegnebog.",
-			backInst4: "Når du udbetaler dine penge fra denne tegnebog, bør du fjerne <strong>HELE SALDOEN</strong>. Hvis du forsøger kun at bruge nogle af pengene, vil du sandsynligvis miste de resterende bitcoins for evigt.<br />For vejledning, besøg bitcoinpaperwallet.com",
+			backInst4: "Når du udbetaler dine penge fra denne tegnebog, bør du fjerne <strong>HELE SALDOEN</strong>. Hvis du forsøger kun at bruge nogle af pengene, vil du sandsynligvis miste de resterende minexcoins for evigt.<br />For vejledning, besøg bitcoinpaperwallet.com",
 		},
 
 		'dutch': {
@@ -13591,14 +13581,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "PRIVÉ SLEUTEL",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN Papieren portemonnee",
+			backPaperWallet: "MINEXCOIN Papieren portemonnee",
 			backAmount: "Bedrag toegevoegd",
 			backDate: "Datum",
 			backNotes: "Notities:",
 			backInst1: "Om meer geld naar deze papieren portemonnee over te maken kun je altijd bitcoins naar het publieke adres sturen.",
-			backInst2: "Verifieer je saldo door het publieke adress op te zoeken met een service zoals blockchain.info",
+			backInst2: "Verifieer je saldo door het publieke adress op te zoeken met een service zoals minexexplorer.com",
 			backInst3: "<strong>LAAT JE PRIVÉ SLEUTEL NIET ZIEN</strong> totdat je het saldo van deze portemonnee over wilt maken naar een bitcoin client, exchange of online portemonnee.",
-			backInst4: "Als je het saldo van deze portemonnee uit wilt laten betalen, dan kun je het beste het <strong>HELE BEDRAG</strong> opnemen. Als je probeert een beetje op te nemen ben je waarschijnlijk de overige bitcoins kwijt.<br /><br />Vragen? Ga naar bitcoinpaperwallet.com",
+			backInst4: "Als je het saldo van deze portemonnee uit wilt laten betalen, dan kun je het beste het <strong>HELE BEDRAG</strong> opnemen. Als je probeert een beetje op te nemen ben je waarschijnlijk de overige minexcoins kwijt.<br /><br />Vragen? Ga naar bitcoinpaperwallet.com",
 		},
 
 		'french': {
@@ -13608,14 +13598,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "CLÉ SECRÈTE / FAIRE UN RETRAIT",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN Portefeuille papier",
+			backPaperWallet: "MINEXCOIN Portefeuille papier",
 			backAmount: "Montant ajouté",
 			backDate: "Date",
 			backNotes: "Notes:",
 			backInst1: "Pour déposer plus de fonds dans ce portefeuille papier, envoyer des Bitcoins à son adresse publique n'importe quand.",
-			backInst2: "Vérifiez le solde en faisant une recherche de l'adresse publique en utilisant un service tel que blockchain.info",
+			backInst2: "Vérifiez le solde en faisant une recherche de l'adresse publique en utilisant un service tel que minexexplorer.com",
 			backInst3: "<strong>NE RÉVÉLEZ PAS VOTRE CLÉ SECRÈTE</strong> jusqu'à ce que vous soyez prêt à transférer le solde de ce portefeuille à un client Bitcoin, une plate-forme d'échange ou un portefeuille en-ligne.",
-			backInst4: "Lorsque vous allez retirer des fonds de ce portefeuille, vous devriez transférer le <strong>SOLDE EN ENTIER</strong>. Si vous essayez de ne dépenser qu'une partie des fonds, vous risquez de perdre le reste des Bitcoins à tout jamais.<br /><br />Questions ? Visitez : bitcoinpaperwallet.com",
+			backInst4: "Lorsque vous allez retirer des fonds de ce portefeuille, vous devriez transférer le <strong>SOLDE EN ENTIER</strong>. Si vous essayez de ne dépenser qu'une partie des fonds, vous risquez de perdre le reste des Minexcoins à tout jamais.<br /><br />Questions ? Visitez : bitcoinpaperwallet.com",
 		},
 		
 		'german': {
@@ -13625,12 +13615,12 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "PRIVATER SCHLÜSSEL / ABHEBEN",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN PAPIERBRIEFTASCHE",
+			backPaperWallet: "MINEXCOIN PAPIERBRIEFTASCHE",
 			backAmount: "Gutschriften",
 			backDate: "Datum",
 			backNotes: "Notizen:",
 			backInst1: "Um das Guthaben auf dieser Papierbrieftasche zu erhöhen, sende Bitcoins an ihre öffentliche Adresse; jederzeit.",
-			backInst2: "Um das Guthaben zu bestätigen, suche nach der öffentlichen Adresse auf einem Service wie blockchain.info",
+			backInst2: "Um das Guthaben zu bestätigen, suche nach der öffentlichen Adresse auf einem Service wie minexexplorer.com",
 			backInst3: "<strong>Mache den privaten Schlüssel nie bekannt</strong> bis du bereit bist, das Guthaben auf dieser Brieftasche entweder auf einen Bitcoin-Client, eine Wechselbörse oder eine Onlinebrieftasche abzuheben.",
 			backInst4: "Beim Abheben des Guthabens sollte das <strong>ganze Guthaben</strong> auf einmal abgehoben werden. Beim Versuch, nur einen Teil des Guthaben auszugeben, kann es zum dauerhaften Verlust des restlichen Guthabens kommen. <br /><br />Fragen? Geh auf bitcoinpaperwallet.com",
 		}, 
@@ -13647,7 +13637,7 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			backDate: "תאריך",
 			backNotes: "הערות",
 			backInst1: "כדי להפקיד לארנק זה, שלחו ביטקוינים לכתובת הפומבית, בכל זמן",
-			backInst2: "ודאו את המאזן שלכם ע\"י חיפוש הכתובת הפומבית בעזרת שירות כמו blockchain.info",
+			backInst2: "ודאו את המאזן שלכם ע\"י חיפוש הכתובת הפומבית בעזרת שירות כמו minexexplorer.com",
 			backInst3: "אף פעם אל תגלו לאף אחד את המפתח הפרטי שלכם עד שאתם מוכנים לייצא את המטבעות לארנק ביטקוין ממוחשב, בורסאת ביטקוין או ארנק מקוון",
 			backInst4: "בעת משיכת המטבעות, יש למשוך את -כל המטבעות- שבארנק. אם תנסו להוציא רק חלק מהמטבעות, תאבדו את המטבעות הנשארים לנצח שאלות? פנו ל: bitcoinpaperwallet.com",
 		},
@@ -13659,14 +13649,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "CHIAVE PRIVATA / PRELEVA",
 			backLongTextFontSize: "9px",
-			backPaperWallet: "BITCOIN PORTAFOGLIO CARTACEO",
+			backPaperWallet: "MINEXCOIN PORTAFOGLIO CARTACEO",
 			backAmount: "Importo depositato",
 			backDate: "Data",
 			backNotes: "Note:",
 			backInst1: "Per depositare altri fondi su questo portafoglio cartaceo, invia bitcoins al suo indirizzo pubblico, in qualsiasi momento.",
-			backInst2: "Puoi verificare il saldo cercando l'indirizzo pubblico su un servizio tipo blockchain.info",
+			backInst2: "Puoi verificare il saldo cercando l'indirizzo pubblico su un servizio tipo minexexplorer.com",
 			backInst3: "<strong>NON ESPORRE LA CHIAVE PRIVATA</strong> se non per importare immediatamente il contenuto del portafoglio su un client bitcoin, un exchange o un portafoglio online.",
-			backInst4: "Se prelevi i fondi depositati su questo portafoglio, ti consigliamo di prelevare l'<strong>INTERO IMPORTO</strong> depositato. Se cerchi di spendere i fondi solo in parte, probabilmente perderai i bitcoins residui.<br />Domande? Visita : bitcoinpaperwallet.com",
+			backInst4: "Se prelevi i fondi depositati su questo portafoglio, ti consigliamo di prelevare l'<strong>INTERO IMPORTO</strong> depositato. Se cerchi di spendere i fondi solo in parte, probabilmente perderai i minexcoins residui.<br />Domande? Visita : bitcoinpaperwallet.com",
 		},
 
 		'japanese': {
@@ -13676,12 +13666,12 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "秘 密 鍵 / 出 金",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN ペーパーウォレット",
+			backPaperWallet: "MINEXCOIN ペーパーウォレット",
 			backAmount: "入金金額",
 			backDate: "日付",
 			backNotes: "メモ:",
 			backInst1: "公開アドレス宛てに入金することで、このウォレットにいつでもビットコインを追加することができます。",
-			backInst2: "blockchain.infoのようなサービスで公開アドレスを検索することで、残高を確認することができます。",
+			backInst2: "minexexplorer.comのようなサービスで公開アドレスを検索することで、残高を確認することができます。",
 			backInst3: "ビットコインクライアントやオンラインウォレット、交換所にビットコインを移動する必要があるまで、<strong>秘密鍵を開封しないでください</strong>。",
 			backInst4: "このウォレットからビットコインを出金する際には、<strong>全ての残高</strong>を出金してください。一部を残して出金した場合、残ったビットコインが永遠に失われる恐れがあります。<br /><br />詳しい情報は、bitcoinpaperwallet.comを参照してください。",
 		},
@@ -13692,12 +13682,12 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			privateKey: "KLUCZ PRYWATNY",
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "KLUCZ PRYWATNY / WYPŁATA",
-			backPaperWallet: "PAPIEROWY PORTFEL BITCOIN",
+			backPaperWallet: "PAPIEROWY PORTFEL MINEXCOIN",
 			backAmount: "Wpłacona kwota",
 			backDate: "Data",
 			backNotes: "Uwagi:",
-			backInst1: "Aby wpłacić dodatkowe fundusze do tego portfela, wyślij bitcoiny na publiczny adres.",
-			backInst2: "Sprawdź dostępne środki szukając publicznego adresu w usługach takich jak <u>blockchain.info</u>.",
+			backInst1: "Aby wpłacić dodatkowe fundusze do tego portfela, wyślij minexcoiny na publiczny adres.",
+			backInst2: "Sprawdź dostępne środki szukając publicznego adresu w usługach takich jak <u>minexexplorer.com</u>.",
 			backInst3: "<strong>Nie odsłaniaj prywatnego klucza</strong>, dopóki nie jesteś gotowy na wydanie wszystkich bitcoinów znajdujących się w tym portfelu.",
 			backInst4: "Podczas wypłacania środków, <strong>powinieneś wypłacić WSZYSTKO</strong>. Jeśli spróbujesz wydać tylko trochę, prawdopodobnie stracisz całą resztę. Na zawsze.<br />Instrukcje znajdziesz na <u>bitcoinpaperwallet.com</u>.",
 		},
@@ -13709,14 +13699,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "CHAVE PRIVADA / SAQUE",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN PAPER WALLET",
+			backPaperWallet: "MINEXCOIN PAPER WALLET",
 			backAmount: "Saldo",
 			backDate: "Data",
 			backNotes: "Anotações:",
-			backInst1: "Para depositar fundos adicionais na sua paper wallet deve-se enviar os bitcoins para seu endereço público, a qualquer hora.",
-			backInst2: "Verifique o saldo através do seu endereço público usando um serviço como o blockchain.info",
-			backInst3: "<strong>NÃO REVELE A SUA CHAVE PRIVADA</strong> até que você esteja pronto a importar o saldo total para um cliente bitcoin ou uma carteira online ou, ainda, trocar sua paper wallet com alguém.",
-			backInst4: "<strong>TRANSFIRA TODO O SALDO</strong> dessa carteira ao importá-la. Se você tentar importar somente uma parcela provavelmente o risco de perder o restante dos bitcoins é alto.<br /><br />Para mais informações visite bitcoinpaperwallet.com",
+			backInst1: "Para depositar fundos adicionais na sua paper wallet deve-se enviar os minexcoin para seu endereço público, a qualquer hora.",
+			backInst2: "Verifique o saldo através do seu endereço público usando um serviço como o minexexplorer.com",
+			backInst3: "<strong>NÃO REVELE A SUA CHAVE PRIVADA</strong> até que você esteja pronto a importar o saldo total para um cliente minexcoin ou uma carteira online ou, ainda, trocar sua paper wallet com alguém.",
+			backInst4: "<strong>TRANSFIRA TODO O SALDO</strong> dessa carteira ao importá-la. Se você tentar importar somente uma parcela provavelmente o risco de perder o restante dos minexcoins é alto.<br /><br />Para mais informações visite bitcoinpaperwallet.com",
 		},
 
 		'russian': {
@@ -13726,13 +13716,13 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "ЗАКРЫТЫЙ КЛЮЧ / ВЫВОД",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN БУМАЖНЫЙ КОШЕЛЁК",
+			backPaperWallet: "MINEXCOIN БУМАЖНЫЙ КОШЕЛЁК",
 			backAmount: "Внесено",
 			backDate: "Дата",
 			backNotes: "Заметки:",
 			backInst1: "Для внесения дополнительных финансов на этот бумажный кошелёк отправьте биткоины на его открытый адрес в любое время.",
-			backInst2: "Проверьте баланс найдя открытый адрес в таком сервисе, как blockchain.info",
-			backInst3: "<strong>НЕ ВСКРЫВАЙТЕ СВОЙ ЗАКРЫТЫЙ КЛЮЧ</strong> до тех пор, пока вы не будете готовы импортировать баланс этого кошелька в свой bitcoin-клиент, обменник, или онлайн-кошелёк.",
+			backInst2: "Проверьте баланс найдя открытый адрес в таком сервисе, как minexexplorer.com",
+			backInst3: "<strong>НЕ ВСКРЫВАЙТЕ СВОЙ ЗАКРЫТЫЙ КЛЮЧ</strong> до тех пор, пока вы не будете готовы импортировать баланс этого кошелька в свой minexcoin-клиент, обменник, или онлайн-кошелёк.",
 			backInst4: "Вы должны снять <strong>ВСЕ</strong> свои средства с этого кошелька единовременно. Если вы попытаетесь истратить только некую часть своих финансов, то, скорее всего, потеряете оставшиеся биткоины навсегда.<br /><br />Вопросы? Посетите: bitcoinpaperwallet.com.",
 		},
 
@@ -13743,14 +13733,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "CLAVE PRIVADA / RETIRAR",
 			backLongTextFontSize: "9px",
-			backPaperWallet: "BITCOIN Cartera de papel",
+			backPaperWallet: "MINEXCOIN Cartera de papel",
 			backAmount: "Cantidad añadida",
 			backDate: "Fecha",
 			backNotes: "Notas:",
-			backInst1: "Para depositar fondos adicionales en esta cartera de papel, envíe unos Bitcoins a su dirección pública.",
-			backInst2: "Para verificar su saldo, busque su dirección pública en un sitio web como blockchain.info",
-			backInst3: "<strong>NUNCA DEBE MOSTRAR SU CLAVE PRIVADA</strong> hasta que este preparado para importar el saldo de esta cartera a un cliente de bitcoin, un sitio de cambio, o una cartera de internet.",
-			backInst4: "Cuando este sacando sus fondos, debe sacar <strong>LA TOTALIDAD DE SU SALDO</strong>. Si no hace esto, es posible que pierda sus Bitcoin.<br /><br />¿Dudas? Vaya a bitcoinpaperwallet.com",
+			backInst1: "Para depositar fondos adicionales en esta cartera de papel, envíe unos Minexcoins a su dirección pública.",
+			backInst2: "Para verificar su saldo, busque su dirección pública en un sitio web como minexexplorer.com",
+			backInst3: "<strong>NUNCA DEBE MOSTRAR SU CLAVE PRIVADA</strong> hasta que este preparado para importar el saldo de esta cartera a un cliente de minexcoin, un sitio de cambio, o una cartera de internet.",
+			backInst4: "Cuando este sacando sus fondos, debe sacar <strong>LA TOTALIDAD DE SU SALDO</strong>. Si no hace esto, es posible que pierda sus Minexcoin.<br /><br />¿Dudas? Vaya a bitcoinpaperwallet.com",
 		},
 
 		'swedish': {
@@ -13760,14 +13750,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALLET IMPORT FORMAT",
 			withdraw: "PRIVAT NYCKEL / TA UT",
 			backLongTextFontSize: "9px",
-			backPaperWallet: "BITCOIN PAPER WALLET",
+			backPaperWallet: "MINEXCOIN PAPER WALLET",
 			backAmount: "Insatt belopp",
 			backDate: "Datum",
 			backNotes: "Anteckningar:",
-			backInst1: "För att sätta in bitcoin: använd den publika adressen.",
-			backInst2: "Kontrollera saldot genom att söka efter den publika adressen på till exempel blockchain.info",
-			backInst3: "<strong>ANVÄND ELLER VISA INTE DEN PRIVATA NYCKELN</strong> förrän det är dags att flytta saldot till en bitcoinklient, börs eller online-plånbok.",
-			backInst4: "När du flyttar bitcoin från en paperwallet bör du alltid <strong>TÖMMA DEN HELT</strong>. Om du inte gör det riskerar du att förlora kvarvarande bitcoin.<br /><br />Frågor? Besök bitcoinpaperwallet.com",
+			backInst1: "För att sätta in minexcoin: använd den publika adressen.",
+			backInst2: "Kontrollera saldot genom att söka efter den publika adressen på till exempel minexexplorer.com",
+			backInst3: "<strong>ANVÄND ELLER VISA INTE DEN PRIVATA NYCKELN</strong> förrän det är dags att flytta saldot till en minexcoinklient, börs eller online-plånbok.",
+			backInst4: "När du flyttar minexcoin från en paperwallet bör du alltid <strong>TÖMMA DEN HELT</strong>. Om du inte gör det riskerar du att förlora kvarvarande minexcoin.<br /><br />Frågor? Besök bitcoinpaperwallet.com",
 		},
 
 		'welsh': {
@@ -13777,14 +13767,14 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 			walletImportFormat: "WALED FFORMAT MEWNFORIO",
 			withdraw: "KEY PREIFAT / DYNNU",
 			backLongTextFontSize: "8px",
-			backPaperWallet: "BITCOIN PAPUR WALED",
+			backPaperWallet: "MINEXCOIN PAPUR WALED",
 			backAmount: "Swm Ychwanegwyd",
 			backDate: "Dyddiad",
 			backNotes: "Nodiadau:",
-			backInst1: "I adneuo arian ychwanegol i waled papur hyn, anfonwch bitcoins at eu cyfeiriad cyhoedd, unrhyw bryd.",
-			backInst2: "Gwirio eich balans drwy chwilio am y cyfeiriad cyhoedd sy'n defnyddio'r gwasanaeth fel blockchain.info",
-			backInst3: "<strong>PEIDIWCH Â DATGELU'R ALLWEDD BREIFAT</strong> hyd nes y byddwch yn barod i fewnforio balans ar waled yma i gleient Bitcoin, cyfnewid, neu waled ar-lein.",
-			backInst4: "Wrth dynnu allan eich arian o'r waled yma, dylech gael gwared ar y <strong>BALANS CYFAN</strong>. Os ydych yn ceisio gwario dim ond rhai o'r cronfeydd byddwch yn debygol o golli'r bitcoins sy'n weddill am byth.<br /><br />Ar gyfer cyfarwyddiadau ewch i bitcoinpaperwallet.com",
+			backInst1: "I adneuo arian ychwanegol i waled papur hyn, anfonwch minexcoins at eu cyfeiriad cyhoedd, unrhyw bryd.",
+			backInst2: "Gwirio eich balans drwy chwilio am y cyfeiriad cyhoedd sy'n defnyddio'r gwasanaeth fel minexexplorer.com",
+			backInst3: "<strong>PEIDIWCH Â DATGELU'R ALLWEDD BREIFAT</strong> hyd nes y byddwch yn barod i fewnforio balans ar waled yma i gleient Minexcoins, cyfnewid, neu waled ar-lein.",
+			backInst4: "Wrth dynnu allan eich arian o'r waled yma, dylech gael gwared ar y <strong>BALANS CYFAN</strong>. Os ydych yn ceisio gwario dim ond rhai o'r cronfeydd byddwch yn debygol o golli'r minexcoins sy'n weddill am byth.<br /><br />Ar gyfer cyfarwyddiadau ewch i bitcoinpaperwallet.com",
 		}
 	};
 	
@@ -13800,9 +13790,9 @@ function setDesign (whichDesign, isOnLoad, whichLanguage) {
 	}
 
 	// if we used the dropdown menu to select an alt-coin, we need to reload the page altogether.
-	if (!isOnLoad && whichDesign.substring(0,4) == 'alt-') window.location='?design=' + whichDesign;
+	//if (!isOnLoad && whichDesign.substring(0,4) == 'alt-') window.location='?design=' + whichDesign;
 	// if we're already using an altcoin, reload the page no matter which design we choose.
-	if (!isOnLoad && window.networkVersion != 0x00 ) window.location='?design=' + whichDesign;
+	//if (!isOnLoad && window.networkVersion != 0x00 ) window.location='?design=' + whichDesign;
 
 	// reload background and add altcoin donation addresses if necessary
 	if (isOnLoad && whichDesign.substring(0,4) == 'alt-') {
